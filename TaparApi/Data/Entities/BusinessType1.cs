@@ -12,6 +12,9 @@ public class BusinessType1:BaseEntity<long>
     [Required(ErrorMessage = "لطفا توضیحات دسته بندی را وارد کنید")]
     [MaxLength(1000, ErrorMessage = "تعداد کاراکترهای فیلد نمیتواند بیشتر از 1000 باشد")]
     public string gdesc { get; set; }
+    public DateTime? approvedDate { get; set; }
+    public DateTime? deactivatedDate { get; set; }
+    public DateTime? deletedDate { get; set; }
 
     [ForeignKey(nameof(BusinessCategory))]
     [Required]

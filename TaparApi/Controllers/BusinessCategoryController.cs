@@ -9,9 +9,8 @@ using TaparApi.Data.Entities;
 
 namespace TaparApi.Controllers
 {
-    [Route("[controller]")]
-    [ApiController]
-    public class BusinessCategoryController : ControllerBase
+  
+    public class BusinessCategoryController : BaseController
     {
         public IRepository<BusinessCategory> Repository { get; set; }
         public IMapper Mapper { get; set; }
@@ -66,7 +65,7 @@ namespace TaparApi.Controllers
         public async Task<ApiResult> Delete(long id, CancellationToken cancellationToken)
         {
             var category = await Repository.GetByIdAsync(cancellationToken, id);
-            category.deactivatedDate = category.deletedDate != null
+            category.deletedDate = category.deletedDate != null
                 ? category.deletedDate = null
                 : category.deletedDate = DateTime.Now;
             await Repository.UpdateAsync(category, cancellationToken);
