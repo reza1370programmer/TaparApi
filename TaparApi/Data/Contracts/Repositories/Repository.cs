@@ -23,7 +23,7 @@ namespace TaparApi.Data.Contracts.Repositories
         #region Async Method
         public virtual async Task<TEntity> GetByIdAsync(CancellationToken cancellationToken, params object[] ids)
         {
-            return await Entities.FindAsync(ids, cancellationToken);
+            return (await Entities.FindAsync(ids, cancellationToken))!;
         }
 
         public virtual async Task AddAsync(TEntity entity, CancellationToken cancellationToken, bool saveNow = true)
