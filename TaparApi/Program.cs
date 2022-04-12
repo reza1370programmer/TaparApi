@@ -17,6 +17,7 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped(typeof(IAccountRepository), typeof(AccountRepository));
 builder.Services.AddScoped(typeof(IBusinessType1Repsitory), typeof(BusinessType1Repository));
 builder.Services.AddScoped(typeof(IBusinessType2Repository), typeof(BusinessType2Repository));
+builder.Services.AddScoped(typeof(IDynamicFieldsRepsitory), typeof(DynamicFieldsRepository));
 builder.Services.AddScoped(typeof(IJwtService), typeof(JwtService));
 builder.Services.AddJwtAuthentication(siteSettings.JwtSettings);
 builder.Services.AddCors();

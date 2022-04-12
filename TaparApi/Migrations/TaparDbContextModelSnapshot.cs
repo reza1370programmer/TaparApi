@@ -821,10 +821,11 @@ namespace TaparApi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
-                    b.Property<long>("businessType1Id")
+                    b.Property<long?>("businessType1Id")
+                        .IsRequired()
                         .HasColumnType("bigint");
 
-                    b.Property<long>("businessType2Id")
+                    b.Property<long?>("businessType2Id")
                         .HasColumnType("bigint");
 
                     b.Property<string>("enTitle")
@@ -834,6 +835,22 @@ namespace TaparApi.Migrations
 
                     b.Property<int>("fieldTypeId")
                         .HasColumnType("int");
+
+                    b.Property<string>("maxLength")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("minLength")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("multiSelect")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("regex")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("title")
                         .IsRequired()
@@ -1119,9 +1136,7 @@ namespace TaparApi.Migrations
 
                     b.HasOne("TaparApi.Data.Entities.BusinessType2", "BusinessType2")
                         .WithMany("SpecialTypeFields")
-                        .HasForeignKey("businessType2Id")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasForeignKey("businessType2Id");
 
                     b.HasOne("TaparApi.Data.Entities.FieldType", "FieldType")
                         .WithMany()

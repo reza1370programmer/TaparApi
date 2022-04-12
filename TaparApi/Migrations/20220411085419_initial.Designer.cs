@@ -12,8 +12,8 @@ using TaparApi.Data;
 namespace TaparApi.Migrations
 {
     [DbContext(typeof(TaparDbContext))]
-    [Migration("20220329095115_adminType")]
-    partial class adminType
+    [Migration("20220411085419_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -153,6 +153,15 @@ namespace TaparApi.Migrations
                         .HasColumnType("bigint");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<DateTime?>("approvedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("deactivatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("deletedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("gdesc")
                         .IsRequired()
@@ -412,8 +421,17 @@ namespace TaparApi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
+                    b.Property<DateTime?>("approvedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<long>("businessCategoryId")
                         .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("deactivatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("deletedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("gdesc")
                         .IsRequired()
@@ -440,8 +458,17 @@ namespace TaparApi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
+                    b.Property<DateTime?>("approvedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<long>("businessType1Id")
                         .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("deactivatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("deletedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("gdesc")
                         .IsRequired()
@@ -796,10 +823,12 @@ namespace TaparApi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
-                    b.Property<long>("businessType1Id")
+                    b.Property<long?>("businessType1Id")
+                        .IsRequired()
                         .HasColumnType("bigint");
 
-                    b.Property<long>("businessType2Id")
+                    b.Property<long?>("businessType2Id")
+                        .IsRequired()
                         .HasColumnType("bigint");
 
                     b.Property<string>("enTitle")
@@ -809,6 +838,22 @@ namespace TaparApi.Migrations
 
                     b.Property<int>("fieldTypeId")
                         .HasColumnType("int");
+
+                    b.Property<string>("maxLength")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("minLength")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("multiSelect")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("regex")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("title")
                         .IsRequired()

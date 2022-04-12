@@ -25,7 +25,7 @@ namespace TaparApi.Common.Filters
             }
             else if (context.Result is BadRequestObjectResult badRequestObjectResult)
             {
-                var message = badRequestObjectResult.Value.ToString();
+                var message = badRequestObjectResult.Value?.ToString();
                 if (badRequestObjectResult.Value is ValidationProblemDetails errors)
                 {
                     var errorMessages = errors.Errors.SelectMany(p => (string[])p.Value).Distinct();

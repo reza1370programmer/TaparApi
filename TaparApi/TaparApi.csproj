@@ -28,6 +28,7 @@
     <Folder Include="Common\Dtos\BusinessType2\" />
     <Folder Include="Common\Mappings\" />
     <Folder Include="Data\Entities\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

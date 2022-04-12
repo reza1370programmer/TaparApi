@@ -16,7 +16,10 @@ namespace TaparApi.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    gdesc = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false)
+                    gdesc = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
+                    approvedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    deactivatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    deletedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -57,7 +60,8 @@ namespace TaparApi.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     userName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    fullName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    fullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    adminType = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -92,6 +96,9 @@ namespace TaparApi.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     gdesc = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
+                    approvedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    deactivatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    deletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     businessCategoryId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
@@ -124,56 +131,6 @@ namespace TaparApi.Migrations
                         name: "FK_Locations_LocationTypes_locationTypeId",
                         column: x => x.locationTypeId,
                         principalTable: "LocationTypes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "BusinessOffices",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    gKey = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    phone1 = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
-                    phone2 = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
-                    phone3 = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
-                    fax = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
-                    mob1 = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
-                    mob2 = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
-                    longitude = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
-                    latitude = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
-                    postCode = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    address = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    viewPic = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    area = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    website = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    email = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    telegram = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    whatsapp = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
-                    instagram = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
-                    parentId = table.Column<long>(type: "bigint", nullable: true),
-                    userId = table.Column<long>(type: "bigint", nullable: false),
-                    cDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    cUserId = table.Column<long>(type: "bigint", nullable: true),
-                    modifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    modifiedUserId = table.Column<long>(type: "bigint", nullable: true),
-                    approvedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    approvedUserId = table.Column<long>(type: "bigint", nullable: true),
-                    deactivatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    deactivatedUserId = table.Column<long>(type: "bigint", nullable: true),
-                    deactivatedDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    deletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    deletedUserId = table.Column<long>(type: "bigint", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_BusinessOffices", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_BusinessOffices_Users_userId",
-                        column: x => x.userId,
-                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -222,6 +179,9 @@ namespace TaparApi.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     gdesc = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
+                    approvedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    deactivatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    deletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     businessType1Id = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
@@ -236,12 +196,13 @@ namespace TaparApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "OfficeUpdates",
+                name: "BusinessOffices",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    gKey = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     phone1 = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
                     phone2 = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
                     phone3 = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
@@ -259,17 +220,73 @@ namespace TaparApi.Migrations
                     telegram = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     whatsapp = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
                     instagram = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    parentId = table.Column<long>(type: "bigint", nullable: true),
+                    userId = table.Column<long>(type: "bigint", nullable: false),
+                    locationId = table.Column<int>(type: "int", nullable: false),
+                    cDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    cUserId = table.Column<long>(type: "bigint", nullable: true),
                     modifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     modifiedUserId = table.Column<long>(type: "bigint", nullable: true),
-                    businessOfficeId = table.Column<long>(type: "bigint", nullable: false)
+                    approvedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    approvedUserId = table.Column<long>(type: "bigint", nullable: true),
+                    deactivatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    deactivatedUserId = table.Column<long>(type: "bigint", nullable: true),
+                    deactivatedDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    deletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    deletedUserId = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OfficeUpdates", x => x.Id);
+                    table.PrimaryKey("PK_BusinessOffices", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OfficeUpdates_BusinessOffices_businessOfficeId",
-                        column: x => x.businessOfficeId,
-                        principalTable: "BusinessOffices",
+                        name: "FK_BusinessOffices_Locations_locationId",
+                        column: x => x.locationId,
+                        principalTable: "Locations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_BusinessOffices_Users_userId",
+                        column: x => x.userId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SpecialTypeFields",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    title = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    enTitle = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    minLength = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    maxLength = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    regex = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    multiSelect = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    businessType1Id = table.Column<long>(type: "bigint", nullable: false),
+                    businessType2Id = table.Column<long>(type: "bigint", nullable: false),
+                    fieldTypeId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SpecialTypeFields", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SpecialTypeFields_BusinessType1s_businessType1Id",
+                        column: x => x.businessType1Id,
+                        principalTable: "BusinessType1s",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_SpecialTypeFields_BusinessType2s_businessType2Id",
+                        column: x => x.businessType2Id,
+                        principalTable: "BusinessType2s",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_SpecialTypeFields_FieldTypes_fieldTypeId",
+                        column: x => x.fieldTypeId,
+                        principalTable: "FieldTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -332,36 +349,40 @@ namespace TaparApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SpecialTypeFields",
+                name: "OfficeUpdates",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    title = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    enTitle = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    businessType1Id = table.Column<long>(type: "bigint", nullable: false),
-                    businessType2Id = table.Column<long>(type: "bigint", nullable: false),
-                    fieldTypeId = table.Column<int>(type: "int", nullable: false)
+                    title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    phone1 = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    phone2 = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    phone3 = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    fax = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    mob1 = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    mob2 = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    longitude = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    latitude = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    postCode = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    address = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    viewPic = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    area = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    website = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    email = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    telegram = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    whatsapp = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    instagram = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    modifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    modifiedUserId = table.Column<long>(type: "bigint", nullable: true),
+                    businessOfficeId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SpecialTypeFields", x => x.Id);
+                    table.PrimaryKey("PK_OfficeUpdates", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SpecialTypeFields_BusinessType1s_businessType1Id",
-                        column: x => x.businessType1Id,
-                        principalTable: "BusinessType1s",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_SpecialTypeFields_BusinessType2s_businessType2Id",
-                        column: x => x.businessType2Id,
-                        principalTable: "BusinessType2s",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_SpecialTypeFields_FieldTypes_fieldTypeId",
-                        column: x => x.fieldTypeId,
-                        principalTable: "FieldTypes",
+                        name: "FK_OfficeUpdates_BusinessOffices_businessOfficeId",
+                        column: x => x.businessOfficeId,
+                        principalTable: "BusinessOffices",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -498,6 +519,11 @@ namespace TaparApi.Migrations
                 column: "businessType2Id");
 
             migrationBuilder.CreateIndex(
+                name: "IX_BusinessOffices_locationId",
+                table: "BusinessOffices",
+                column: "locationId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_BusinessOffices_userId",
                 table: "BusinessOffices",
                 column: "userId");
@@ -590,9 +616,6 @@ namespace TaparApi.Migrations
                 name: "LikeCounts");
 
             migrationBuilder.DropTable(
-                name: "Locations");
-
-            migrationBuilder.DropTable(
                 name: "OfficeUpdates");
 
             migrationBuilder.DropTable(
@@ -603,9 +626,6 @@ namespace TaparApi.Migrations
 
             migrationBuilder.DropTable(
                 name: "ViewCounts");
-
-            migrationBuilder.DropTable(
-                name: "LocationTypes");
 
             migrationBuilder.DropTable(
                 name: "FieldTypes");
@@ -623,10 +643,16 @@ namespace TaparApi.Migrations
                 name: "BusinessType2s");
 
             migrationBuilder.DropTable(
+                name: "Locations");
+
+            migrationBuilder.DropTable(
                 name: "Users");
 
             migrationBuilder.DropTable(
                 name: "BusinessType1s");
+
+            migrationBuilder.DropTable(
+                name: "LocationTypes");
 
             migrationBuilder.DropTable(
                 name: "BusinessCategories");
