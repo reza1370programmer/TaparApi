@@ -12,14 +12,14 @@ using TaparApi.Data;
 namespace TaparApi.Migrations
 {
     [DbContext(typeof(TaparDbContext))]
-    [Migration("20220411091023_initial2")]
-    partial class initial2
+    [Migration("20220414145425_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.3")
+                .HasAnnotation("ProductVersion", "6.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -824,7 +824,6 @@ namespace TaparApi.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
                     b.Property<long?>("businessType1Id")
-                        .IsRequired()
                         .HasColumnType("bigint");
 
                     b.Property<long?>("businessType2Id")
@@ -1132,9 +1131,7 @@ namespace TaparApi.Migrations
                 {
                     b.HasOne("TaparApi.Data.Entities.BusinessType1", "BusinessType1")
                         .WithMany("SpecialTypeFields")
-                        .HasForeignKey("businessType1Id")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasForeignKey("businessType1Id");
 
                     b.HasOne("TaparApi.Data.Entities.BusinessType2", "BusinessType2")
                         .WithMany("SpecialTypeFields")

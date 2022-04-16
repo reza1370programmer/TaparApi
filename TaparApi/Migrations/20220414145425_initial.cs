@@ -264,8 +264,8 @@ namespace TaparApi.Migrations
                     maxLength = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
                     regex = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     multiSelect = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-                    businessType1Id = table.Column<long>(type: "bigint", nullable: false),
-                    businessType2Id = table.Column<long>(type: "bigint", nullable: false),
+                    businessType1Id = table.Column<long>(type: "bigint", nullable: true),
+                    businessType2Id = table.Column<long>(type: "bigint", nullable: true),
                     fieldTypeId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -275,14 +275,12 @@ namespace TaparApi.Migrations
                         name: "FK_SpecialTypeFields_BusinessType1s_businessType1Id",
                         column: x => x.businessType1Id,
                         principalTable: "BusinessType1s",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_SpecialTypeFields_BusinessType2s_businessType2Id",
                         column: x => x.businessType2Id,
                         principalTable: "BusinessType2s",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_SpecialTypeFields_FieldTypes_fieldTypeId",
                         column: x => x.fieldTypeId,

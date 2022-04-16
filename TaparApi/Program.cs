@@ -1,4 +1,4 @@
-using Microsoft.Extensions.DependencyInjection;
+using AspNetCore.ServiceRegistration.Dynamic;
 using TaparApi.Common;
 using TaparApi.Common.Extensions;
 using TaparApi.Common.Services;
@@ -12,16 +12,11 @@ var siteSettings = builder.Configuration.GetSection(nameof(SiteSettings)).Get<Si
 builder.Services.AddControllers();
 builder.Services.Configure<SiteSettings>(builder.Configuration.GetSection(nameof(SiteSettings)));
 builder.Services.AddDbContext(builder.Configuration);
-builder.Services.AddAutoMapper();
-builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-builder.Services.AddScoped(typeof(IAccountRepository), typeof(AccountRepository));
-builder.Services.AddScoped(typeof(IBusinessType1Repsitory), typeof(BusinessType1Repository));
-builder.Services.AddScoped(typeof(IBusinessType2Repository), typeof(BusinessType2Repository));
-builder.Services.AddScoped(typeof(IDynamicFieldsRepsitory), typeof(DynamicFieldsRepository));
-builder.Services.AddScoped(typeof(IJwtService), typeof(JwtService));
+//using package AspNetCore.ServiceRegistration.Dynamic for inserting services dynamically by inheriting IScopedService
+builder.Services.AddServicesOfType<IScopedService>();
 builder.Services.AddJwtAuthentication(siteSettings.JwtSettings);
+builder.Services.AddAutoMapper();
 builder.Services.AddCors();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using TaparApi.Common.Extensions;
 using TaparApi.Data.Common;
+using TaparApi.Data.Entities;
 
 namespace TaparApi.Data
 {
@@ -14,6 +15,7 @@ namespace TaparApi.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+           
             base.OnModelCreating(modelBuilder); //in khat behtar hast aval az hame farakhani beshe
 
             var entitiesAssembly =

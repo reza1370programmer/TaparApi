@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using TaparApi.Data.Common;
 using TaparApi.Data.Contracts.Interfaces;
 using TaparApi.Data.Entities;
 

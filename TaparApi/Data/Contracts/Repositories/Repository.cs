@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using AspNetCore.ServiceRegistration.Dynamic;
 using Microsoft.EntityFrameworkCore;
 using TaparApi.Common.Extensions;
 using TaparApi.Data.Common;
@@ -7,7 +8,7 @@ using TaparApi.Data.Contracts.Interfaces;
 namespace TaparApi.Data.Contracts.Repositories
 {
     public class Repository<TEntity> : IRepository<TEntity>
-        where TEntity : class, IEntity
+        where TEntity : class
     {
         protected readonly TaparDbContext DbContext;
         public DbSet<TEntity> Entities { get; }

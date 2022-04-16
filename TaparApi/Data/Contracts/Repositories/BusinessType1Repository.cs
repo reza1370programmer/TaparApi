@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TaparApi.Common.Dtos.FirstTypeBusiness;
+using TaparApi.Data.Common;
 using TaparApi.Data.Contracts.Interfaces;
 using TaparApi.Data.Entities;
 

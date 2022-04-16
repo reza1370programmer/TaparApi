@@ -1,10 +1,10 @@
 ﻿using System.Linq.Expressions;
+using AspNetCore.ServiceRegistration.Dynamic;
 using Microsoft.EntityFrameworkCore;
-using TaparApi.Data.Common;
 
 namespace TaparApi.Data.Contracts.Interfaces
 {
-    public interface IRepository<TEntity> where TEntity : class, IEntity
+    public interface IRepository<TEntity>:IScopedService where TEntity : class
     {
         DbSet<TEntity> Entities { get; }
         IQueryable<TEntity> Table { get; }
