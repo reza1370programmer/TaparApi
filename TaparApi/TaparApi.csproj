@@ -27,6 +27,7 @@
   <ItemGroup>
     <Folder Include="Common\Dtos\BusinessCategory\" />
     <Folder Include="Common\Dtos\BusinessType2\" />
+    <Folder Include="Common\Dtos\BusinessOfficeType\" />
     <Folder Include="Common\Mappings\" />
     <Folder Include="Data\Entities\" />
   </ItemGroup>

@@ -53,6 +53,9 @@ public class BusinessOffice : SharedEntity
     [ForeignKey(nameof(Location))]
     public int locationId { get; set; }
     public Location Location { get; set; }
+    [ForeignKey(nameof(BusinessOfficeType))]
+    public int businessOfficeTypeId { get; set; }
+    public BusinessOfficeType BusinessOfficeType { get; set; }
     public List<Business> Businesses { get; set; }
     public List<OfficeUpdate> OfficeUpdates { get; set; }
 

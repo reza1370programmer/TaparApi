@@ -12,20 +12,19 @@ public class User : BaseEntity<long>
     public string password { get; set; }
     [StringLength(15)]
     [Required]
-    public string mobile { get; set; }
+    public string? mobile { get; set; }
     [StringLength(50)]
-    public string email { get; set; }
+    public string? email { get; set; }
     [StringLength(20)]
     public string? nickName { get; set; }
     [StringLength(20)]
-    public string firstName { get; set; }
+    public string? firstName { get; set; }
     [StringLength(20)]
-    public string lastName { get; set; }
+    public string? lastName { get; set; }
     [StringLength(20)]
-    public string nationalCode { get; set; }
+    public string? nationalCode { get; set; }
 
     public List<BusinessOffice>? BusinessOffices { get; set; }
-    public List<BusinessPerson>? BusinessPersons { get; set; }
     public List<Comment>? Comments { get; set; }
     public List<ViewCount>? ViewCounts { get; set; }
     public List<LikeCount>? LikeCounts { get; set; }

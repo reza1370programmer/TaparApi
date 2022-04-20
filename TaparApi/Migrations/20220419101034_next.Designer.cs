@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TaparApi.Data;
 
@@ -11,9 +12,10 @@ using TaparApi.Data;
 namespace TaparApi.Migrations
 {
     [DbContext(typeof(TaparDbContext))]
-    partial class TaparDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220419101034_next")]
+    partial class next
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -225,9 +227,6 @@ namespace TaparApi.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<int>("businessOfficeTypeId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("cDate")
                         .HasColumnType("datetime2");
 
@@ -351,36 +350,11 @@ namespace TaparApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("businessOfficeTypeId");
-
                     b.HasIndex("locationId");
 
                     b.HasIndex("userId");
 
                     b.ToTable("BusinessOffices");
-                });
-
-            modelBuilder.Entity("TaparApi.Data.Entities.BusinessOfficeType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("gdesc")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("name")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("BusinessOfficeTypes");
                 });
 
             modelBuilder.Entity("TaparApi.Data.Entities.BusinessType1", b =>
@@ -966,12 +940,6 @@ namespace TaparApi.Migrations
 
             modelBuilder.Entity("TaparApi.Data.Entities.BusinessOffice", b =>
                 {
-                    b.HasOne("TaparApi.Data.Entities.BusinessOfficeType", "BusinessOfficeType")
-                        .WithMany("BusinessOffices")
-                        .HasForeignKey("businessOfficeTypeId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("TaparApi.Data.Entities.Location", "Location")
                         .WithMany("BusinessOffices")
                         .HasForeignKey("locationId")
@@ -983,8 +951,6 @@ namespace TaparApi.Migrations
                         .HasForeignKey("userId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("BusinessOfficeType");
 
                     b.Navigation("Location");
 
@@ -1145,11 +1111,6 @@ namespace TaparApi.Migrations
                     b.Navigation("Businesses");
 
                     b.Navigation("OfficeUpdates");
-                });
-
-            modelBuilder.Entity("TaparApi.Data.Entities.BusinessOfficeType", b =>
-                {
-                    b.Navigation("BusinessOffices");
                 });
 
             modelBuilder.Entity("TaparApi.Data.Entities.BusinessType1", b =>

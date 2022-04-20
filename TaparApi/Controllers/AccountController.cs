@@ -1,11 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using TaparApi.Common.Api;
 using TaparApi.Common.Dtos.Account;
 using TaparApi.Common.Services;
 using TaparApi.Data.Contracts.Interfaces;
-using TaparApi.Data.Entities;
 
 namespace TaparApi.Controllers
 {
@@ -13,23 +10,35 @@ namespace TaparApi.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        public IAccountRepository AccountRepository { get; set; }
+        public ISuperAdminRepository SuperAdminRepository { get; set; }
+        public IUserRepository UserRepository { get; set; }
         public IJwtService JwtService { get; set; }
 
-        public AccountController(IAccountRepository accountRepository, IJwtService jwtService)
+        public AccountController(IJwtService jwtService, ISuperAdminRepository superAdminRepository, IUserRepository userRepository)
         {
-            AccountRepository = accountRepository;
             JwtService = jwtService;
+            SuperAdminRepository = superAdminRepository;
+            UserRepository = userRepository;
         }
 
         [HttpPost("[action]")]
         public async Task<ApiResult<object>> Login(LoginSuperAdminDTO loginUserDto, CancellationToken cancellationToken)
         {
-            var admin = await AccountRepository.LoginSuperAdmin(loginUserDto, cancellationToken);
+            var admin = await SuperAdminRepository.LoginSuperAdmin(loginUserDto, cancellationToken);
             if (admin == null)
                 return NotFound("نام کاربری یا کلمه عبور اشتباه است");
             var token = await JwtService.GenerateAsync(admin);
             return new { adminType = admin.adminType, fullName = admin.fullName, token = token, userId = admin.Id.ToString(), expirationTime = 30 };
+
+        }
+        [HttpPost("[action]")]
+        public async Task<ApiResult<object>> LoginUser(LoginUserDto loginUserDto, CancellationToken cancellationToken)
+        {
+            var admin = await UserRepository.LoginUser(loginUserDto, cancellationToken);
+            if (admin == null)
+                return NotFound("نام کاربری یا کلمه عبور اشتباه است");
+            var token = await JwtService.GenerateAsync(admin);
+            return new { firstName = admin.firstName, lastName = admin.lastName, userName = admin.userName, token = token, userId = admin.Id.ToString(), expirationTime = 30 };
 
         }
     }

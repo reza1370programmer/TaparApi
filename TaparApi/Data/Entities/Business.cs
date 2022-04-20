@@ -32,15 +32,29 @@ public class Business:SharedEntity
     public string tabloPic { get; set; }
     [StringLength(500)]
     public string workTime { get; set; }
+
+    #region BusinessPerson
+    [StringLength(20)]
+    public string firstName { get; set; }
+    [StringLength(20)]
+    public string lastName { get; set; }
+    [StringLength(20)]
+    public string gender { get; set; }
+    [StringLength(100)]
+    public string gdesc { get; set; }
+    [StringLength(15)]
+    public string nationalCode { get; set; }
+    [StringLength(100)]
+    public string picture { get; set; }
+
+    #endregion
+
     [ForeignKey(nameof(BusinessOffice))]
     public long businessOfficeId { get; set; }
     public BusinessOffice BusinessOffice { get; set; }
     [ForeignKey(nameof(BusinessType2))]
     public long businessType2Id { get; set; }
     public BusinessType2 BusinessType2 { get; set; }
-    [ForeignKey(nameof(BusinessPerson))]
-    public long businessPersonId { get; set; }
-    public BusinessPerson BusinessPerson { get; set; }
     public List<Comment>? Comments { get; set; }
     public List<ViewCount>? ViewCounts { get; set; }
     public List<LikeCount>? LikeCounts { get; set; }
