@@ -15,6 +15,7 @@ builder.Services.AddDbContext(builder.Configuration);
 //using package AspNetCore.ServiceRegistration.Dynamic for inserting services dynamically by inheriting IScopedService
 builder.Services.AddServicesOfType<IScopedService>();
 builder.Services.AddJwtAuthentication(siteSettings.JwtSettings);
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddAutoMapper();
 builder.Services.AddCors();
 builder.Services.AddEndpointsApiExplorer();
@@ -30,7 +31,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

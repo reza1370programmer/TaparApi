@@ -39,11 +39,9 @@ namespace TaparApi.Common.Services
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();
-
+            JwtSecurityTokenHandler.DefaultMapInboundClaims = true;
             var securityToken = tokenHandler.CreateToken(descriptor);
-
             var jwt = tokenHandler.WriteToken(securityToken);
-
             return jwt;
         }
 
@@ -51,9 +49,18 @@ namespace TaparApi.Common.Services
         {
 
             var list = new List<Claim>();
-            list.Add(typeof(T) == typeof(SuperAdmin)
-                ? new Claim(ClaimTypes.Role, "admin")
-                : new Claim(ClaimTypes.Role, "user"));
+            if (typeof(T) == typeof(SuperAdmin))
+            {
+                var superadmin =(SuperAdmin) Convert.ChangeType(user, typeof(SuperAdmin));
+                list.Add(new Claim(ClaimTypes.Role, "admin"));
+                
+            }
+            else
+            {
+                var logUser =(User)Convert.ChangeType(user, typeof(User));
+                list.Add(new Claim(ClaimTypes.Role,"user"));
+                list.Add(new Claim(ClaimTypes.NameIdentifier, logUser.Id.ToString()));
+            }
             return list;
 
         }

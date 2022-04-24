@@ -58,7 +58,8 @@ namespace TaparApi.Common.Filters
             }
             else if (context.Result is UnauthorizedResult unauthorizedResult)
             {
-                //todo unauthorize message
+                var apiResult = new ApiResult<object>(true, ApiResultStatusCode.UnAuthorized,null,"باید لاگین کنید");
+                context.Result = new JsonResult(apiResult) { StatusCode = unauthorizedResult.StatusCode };
             }
 
             base.OnResultExecuting(context);

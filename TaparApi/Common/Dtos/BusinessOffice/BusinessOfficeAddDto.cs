@@ -1,17 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using TaparApi.Data.Common;
 
-namespace TaparApi.Data.Entities;
+namespace TaparApi.Common.Dtos.BusinessOffice;
 
-public class BusinessOffice : SharedEntity
+public class BusinessOfficeAddDto
 {
     [MaxLength(100)]
     [Required]
     public string title { get; set; }
-    [Required]
-    [MaxLength(50)]
-    public string gKey { get; set; }
     [MaxLength(15)]
     public string? phone1 { get; set; }
     [MaxLength(15)]
@@ -33,7 +28,7 @@ public class BusinessOffice : SharedEntity
     [MaxLength(500)]
     public string? address { get; set; }
     [MaxLength(50)]
-    public string? viewPic { get; set; }
+    public string viewPic { get; set; }
     [MaxLength(20)]
     public string? area { get; set; }
     [MaxLength(50)]
@@ -46,17 +41,8 @@ public class BusinessOffice : SharedEntity
     public string? whatsapp { get; set; }
     [MaxLength(15)]
     public string? instagram { get; set; }
-    public long? parentId { get; set; }
-    [ForeignKey(nameof(User))]
-    public long userId { get; set; }
-    public User User { get; set; }
-    [ForeignKey(nameof(Location))]
+    [Required]
     public int locationId { get; set; }
-    public Location Location { get; set; }
-    [ForeignKey(nameof(BusinessOfficeType))]
+    [Required]
     public int businessOfficeTypeId { get; set; }
-    public BusinessOfficeType BusinessOfficeType { get; set; }
-    public List<Business> Businesses { get; set; }
-    public List<OfficeUpdate> OfficeUpdates { get; set; }
-
 }

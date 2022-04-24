@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using TaparApi.Common.Dtos.BusinessCategory;
+using TaparApi.Common.Dtos.BusinessOffice;
 using TaparApi.Common.Dtos.BusinessOfficeType;
 using TaparApi.Common.Dtos.BusinessType2;
 using TaparApi.Common.Dtos.DynamicFields;
 using TaparApi.Common.Dtos.FirstTypeBusiness;
+using TaparApi.Common.Dtos.Location;
 using TaparApi.Data.Entities;
 
 namespace TaparApi.Common.Mappings;
@@ -20,6 +22,9 @@ public class Mappings : Profile
             ForMember(dest => dest.BusinessType2, opt => opt.Ignore())
             .ReverseMap();
         CreateMap<BusinessOfficeType, BusinessOfficeTypeDto>().ReverseMap();
+        CreateMap<Location, LocationDto>().ReverseMap();
+        CreateMap<BusinessOfficeAddDto, BusinessOffice>().ReverseMap();
+        CreateMap<BusinessOfficeDto, BusinessOffice>().ReverseMap();
 
     }
 }
