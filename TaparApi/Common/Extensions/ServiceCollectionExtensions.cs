@@ -3,6 +3,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using TaparApi.Common.Middlewares;
 using TaparApi.Data;
 
 namespace TaparApi.Common.Extensions
@@ -33,7 +34,7 @@ namespace TaparApi.Common.Extensions
             {
                 var secretkey = Encoding.UTF8.GetBytes(jwtSettings.SecretKey);
                 var encryptionkey = Encoding.UTF8.GetBytes(jwtSettings.Encryptkey);
-               
+
 
                 var validationParameters = new TokenValidationParameters
                 {
@@ -61,6 +62,5 @@ namespace TaparApi.Common.Extensions
             });
         }
 
-      
     }
 }
