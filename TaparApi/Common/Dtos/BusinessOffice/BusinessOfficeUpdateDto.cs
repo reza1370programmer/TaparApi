@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace TaparApi.Common.Dtos.BusinessOffice;
+﻿namespace TaparApi.Common.Dtos.BusinessOffice;
 
 public class BusinessOfficeUpdateDto
 {

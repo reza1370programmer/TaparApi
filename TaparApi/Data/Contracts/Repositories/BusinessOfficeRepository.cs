@@ -31,14 +31,8 @@ public class BusinessOfficeRepository : Repository<BusinessOffice>, IBusinessOff
 
     public async Task<List<BusinessOffice>> GetBusinessOfficesByUserId(long userId, CancellationToken cancellationToken)
     {
-        return await TableNoTracking.Where(b => b.userId == userId).ToListAsync(cancellationToken);
+        return await TableNoTracking.Where(b => b.userId == userId).Where(b => b.deletedDate == null && b.deactivatedDate == null).ToListAsync(cancellationToken);
     }
 
-    public async Task<bool> AddUpdateDocument(BusinessOfficeUpdateDocumentDto officeUpdate, CancellationToken cancellationToken)
-    {
-        var office = Mapper.Map<BusinessOffice>(officeUpdate);
-        await DbContext.AddAsync(office, cancellationToken);
-        var result = await DbContext.SaveChangesAsync(cancellationToken);
-        return result > 0;
-    }
+
 }

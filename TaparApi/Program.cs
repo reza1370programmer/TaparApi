@@ -7,8 +7,8 @@ using TaparApi.Common.Middlewares;
 var webApplicationOptions =
     new WebApplicationOptions
     {
-        //EnvironmentName = Environments.Development,
-        EnvironmentName = Environments.Production,
+       // EnvironmentName = Environments.Development,
+         EnvironmentName = Environments.Production,
     };
 
 //var webApplicationOptions =

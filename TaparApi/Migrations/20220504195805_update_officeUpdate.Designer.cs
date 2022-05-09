@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TaparApi.Data;
 
@@ -11,9 +12,10 @@ using TaparApi.Data;
 namespace TaparApi.Migrations
 {
     [DbContext(typeof(TaparDbContext))]
-    partial class TaparDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220504195805_update_officeUpdate")]
+    partial class update_officeUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -444,22 +446,6 @@ namespace TaparApi.Migrations
                     b.Property<long>("businessId")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("firstName")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<string>("gdesc")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("gender")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<string>("lastName")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
                     b.Property<string>("lattitude")
                         .IsRequired()
                         .HasMaxLength(15)
@@ -476,18 +462,10 @@ namespace TaparApi.Migrations
                     b.Property<long?>("modifiedUserId")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("nationalCode")
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)");
-
                     b.Property<string>("phone")
                         .IsRequired()
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
-
-                    b.Property<string>("picture")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("serviceDesc")
                         .IsRequired()
@@ -501,8 +479,8 @@ namespace TaparApi.Migrations
 
                     b.Property<string>("tabloPic")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("titel")
                         .IsRequired()
@@ -511,8 +489,8 @@ namespace TaparApi.Migrations
 
                     b.Property<string>("visitPic")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("workTime")
                         .IsRequired()

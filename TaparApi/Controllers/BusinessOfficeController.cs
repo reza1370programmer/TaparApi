@@ -14,12 +14,14 @@ namespace TaparApi.Controllers
         public IMapper Mapper { get; set; }
         public IBusinessOfficeRepository Repository { get; set; }
         public IHttpContextAccessor HttpContextAccessor { get; }
+        public IRepository<OfficeUpdate> OfficeUpdateRepository { get; }
 
-        public BusinessOfficeController(IMapper mapper, IBusinessOfficeRepository repository, IHttpContextAccessor httpContextAccessor)
+        public BusinessOfficeController(IMapper mapper, IBusinessOfficeRepository repository, IHttpContextAccessor httpContextAccessor, IRepository<OfficeUpdate> officeUpdateRepository)
         {
             Mapper = mapper;
             Repository = repository;
             HttpContextAccessor = httpContextAccessor;
+            OfficeUpdateRepository = officeUpdateRepository;
         }
         [HttpPost]
         public async Task<ActionResult> AddBusinessOffice(BusinessOfficeAddDto addDto, CancellationToken cancellationToken)
@@ -64,21 +66,39 @@ namespace TaparApi.Controllers
             try
             {
                 var businessOffice = await Repository.GetByIdAsync(cancellationToken, dto.id);
-                var officeUpdateDocument = Mapper.Map<BusinessOfficeUpdateDocumentDto>(businessOffice);
-                await Repository.AddUpdateDocument(officeUpdateDocument, cancellationToken);
-                var result = Mapper.Map<BusinessOffice>(dto);
+                var officeUpdateDocument = Mapper.Map<OfficeUpdate>(businessOffice);
+                var result = Mapper.Map(dto, businessOffice);
                 result.modifiedDate = DateTime.Now;
                 result.modifiedUserId = Convert.ToInt64(HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
+                officeUpdateDocument.modifiedUserId = result.modifiedUserId;
+                officeUpdateDocument.modifiedDate = result.modifiedDate;
+                await OfficeUpdateRepository.AddAsync(officeUpdateDocument, cancellationToken);
                 await Repository.UpdateAsync(result, cancellationToken);
                 return Ok("اطلاعات به خوبی ویرایش شد");
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 throw new Exception("در ویرایش اطلاعات مشکلی رخ داده هست");
             }
 
         }
-       
+        [HttpDelete("{id:long}")]
+        public async Task<ActionResult> DeleteBusinessOffice(long id, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var businessOffice = await Repository.GetByIdAsync(cancellationToken, id);
+                businessOffice.deletedDate = DateTime.Now;
+                businessOffice.deletedUserId = Convert.ToInt64(HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
+                await Repository.UpdateAsync(businessOffice, cancellationToken);
+                return Ok("کسب و کار مورد نظر حذف گردید");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("عملیات حذف موفقیت آمیز نبود");
+            }
+        }
+
     }
 }

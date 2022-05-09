@@ -8,5 +8,4 @@ public interface IBusinessOfficeRepository:IScopedService,IRepository<BusinessOf
 {
     public Task<string> getTaparKey(CancellationToken cancellationToken);
     public Task<List<BusinessOffice>> GetBusinessOfficesByUserId(long userId, CancellationToken cancellationToken);
-    public Task<bool> AddUpdateDocument(BusinessOfficeUpdateDocumentDto officeUpdate, CancellationToken cancellationToken);
 }

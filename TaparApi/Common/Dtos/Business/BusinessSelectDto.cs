@@ -4,6 +4,7 @@ namespace TaparApi.Common.Dtos.Business;
 
 public class BusinessSelectDto
 {
+    public long id { get; set; }
     public string? titel { get; set; }
     public string? serviceDesc { get; set; }
     public string? phone { get; set; }
@@ -17,5 +18,10 @@ public class BusinessSelectDto
     public string? gdesc { get; set; }
     public string? nationalCode { get; set; }
     public string? gvalue { get; set; }
+    public string? visitPic { get; set; }
+    public string? tabloPic { get; set; }
+    public string? picture { get; set; }
+    public string? longitude { get; set; }
+    public string? lattitude { get; set; }
     public BusinessOfficeSelectDto? businessOfficeDto { get; set; }
 }

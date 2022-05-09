@@ -28,7 +28,7 @@ public class BusinessOfficeAddDto
     [MaxLength(500)]
     public string? address { get; set; }
     [MaxLength(50)]
-    public string viewPic { get; set; }
+    public string? viewPic { get; set; }
     [MaxLength(20)]
     public string? area { get; set; }
     [MaxLength(50)]

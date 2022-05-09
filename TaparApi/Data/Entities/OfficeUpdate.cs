@@ -7,44 +7,44 @@ namespace TaparApi.Data.Entities;
 public class OfficeUpdate:BaseEntity<long>
 {
     [MaxLength(100)]
-    public string title { get; set; }
+    public string? title { get; set; }
     [MaxLength(15)]
-    public string phone1 { get; set; }
+    public string? phone1 { get; set; }
     [MaxLength(15)]
-    public string phone2 { get; set; }
+    public string? phone2 { get; set; }
     [MaxLength(15)]
-    public string phone3 { get; set; }
+    public string? phone3 { get; set; }
     [MaxLength(15)]
-    public string fax { get; set; }
+    public string? fax { get; set; }
     [MaxLength(15)]
-    public string mob1 { get; set; }
+    public string? mob1 { get; set; }
     [MaxLength(15)]
-    public string mob2 { get; set; }
+    public string? mob2 { get; set; }
     [MaxLength(15)]
-    public string longitude { get; set; }
+    public string? longitude { get; set; }
     [MaxLength(15)]
-    public string latitude { get; set; }
+    public string? latitude { get; set; }
     [MaxLength(20)]
-    public string postCode { get; set; }
+    public string? postCode { get; set; }
     [MaxLength(500)]
-    public string address { get; set; }
+    public string? address { get; set; }
     [MaxLength(50)]
-    public string viewPic { get; set; }
+    public string? viewPic { get; set; }
     [MaxLength(20)]
-    public string area { get; set; }
+    public string? area { get; set; }
     [MaxLength(50)]
-    public string website { get; set; }
+    public string? website { get; set; }
     [MaxLength(50)]
-    public string email { get; set; }
+    public string? email { get; set; }
     [MaxLength(20)]
-    public string telegram { get; set; }
+    public string? telegram { get; set; }
     [MaxLength(15)]
-    public string whatsapp { get; set; }
+    public string? whatsapp { get; set; }
     [MaxLength(15)]
-    public string instagram { get; set; }
+    public string? instagram { get; set; }
     public DateTime? modifiedDate { get; set; }
     public long? modifiedUserId { get; set; }
     [ForeignKey(nameof(BusinessOffice))]
-    public long businessOfficeId { get; set; }
-    public BusinessOffice BusinessOffice { get; set; }
+    public long? businessOfficeId { get; set; }
+    public BusinessOffice? BusinessOffice { get; set; }
 }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Routing.Constraints;
 using TaparApi.Common.Dtos.Business;
 using TaparApi.Common.Dtos.BusinessCategory;
 using TaparApi.Common.Dtos.BusinessOffice;
@@ -25,14 +26,17 @@ public class Mappings : Profile
         CreateMap<BusinessOfficeType, BusinessOfficeTypeDto>().ReverseMap();
         CreateMap<Location, LocationDto>().ReverseMap();
         CreateMap<BusinessOfficeAddDto, BusinessOffice>().ReverseMap();
-        CreateMap<BusinessOfficeDto, BusinessOffice>().ReverseMap();
+        CreateMap<BusinessOffice, BusinessOfficeDto>().ReverseMap().ForMember(dist => dist.cUserId, opt => opt.Ignore())
+            .ForMember(dist => dist.cDate, opt => opt.Ignore());
         CreateMap<BusinessOfficeSelectDto, BusinessOffice>().ReverseMap();
-        CreateMap<BusinessOfficeUpdateDocumentDto, BusinessOffice>().ReverseMap();
-        CreateMap<BusinessOfficeUpdateDocumentDto, OfficeUpdate>().ReverseMap();
-        CreateMap<BusinessOfficeUpdateDto, OfficeUpdate>().ReverseMap();
+        CreateMap<BusinessOfficeUpdateDto, BusinessOffice>().ReverseMap();
+        CreateMap<OfficeUpdate, BusinessOffice>().ReverseMap()
+            .ForMember(dest => dest.businessOfficeId, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.Id, opt => opt.Ignore());
         CreateMap<BusinessAddDto, Business>().ReverseMap();
         CreateMap<BusinessDto, Business>().ReverseMap();
-        CreateMap<BusinessSelectDto,Business>().ReverseMap().ForMember(dest=>dest.businessOfficeDto,opt=>opt.MapFrom(src=>src.BusinessOffice));
+        CreateMap<BusinessSelectDto, Business>().ReverseMap().ForMember(dest => dest.businessOfficeDto, opt => opt.MapFrom(src => src.BusinessOffice));
+        CreateMap<Business, BusinessUpdate>().ForMember(dist=>dist.Id,opt=>opt.Ignore());
 
     }
 }
