@@ -22,5 +22,4 @@ public class BusinessOfficeDto
     public string instagram { get; set; }
     public DateTime? cDate { get; set; }
     public int locationId { get; set; }
-    public int businessOfficeTypeId { get; set; }
 }

@@ -23,5 +23,4 @@ public class BusinessOfficeUpdateDto
     public string whatsapp { get; set; }
     public string instagram { get; set; }
     public int locationId { get; set; }
-    public int businessOfficeTypeId { get; set; }
 }

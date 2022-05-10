@@ -40,15 +40,20 @@ namespace TaparApi.Controllers
         [HttpGet("[action]/{id:long}")]
         public async Task<ActionResult> GetBusinessesByBusinessOfficeId(long id, CancellationToken cancellationToken)
         {
-            var businessList = await Repository.TableNoTracking.Where(b => b.businessOfficeId == id).ToListAsync(cancellationToken);
+            var businessList = await Repository.TableNoTracking.Where(b => b.businessOfficeId == id && b.deletedDate == null && b.deactivatedDate == null).ToListAsync(cancellationToken);
             return Ok(Mapper.Map<List<BusinessDto>>(businessList));
         }
         [HttpGet("[action]/{id}")]
         public async Task<ActionResult> GetBusinessById(long id, CancellationToken cancellationToken)
         {
-            var business = await Repository.GetByIdAsync(cancellationToken, id);
-            await Repository.LoadReferenceAsync(business, b => b.BusinessOffice, cancellationToken);
-            return Ok(Mapper.Map<BusinessSelectDto>(business));
+            var business = await Repository.TableNoTracking.Where(b => b.Id == id && b.deletedDate == null && b.deactivatedDate == null)
+                .SingleOrDefaultAsync(cancellationToken);
+            if (business != null)
+            {
+                await Repository.LoadReferenceAsync(business, b => b.BusinessOffice, cancellationToken);
+                return Ok(Mapper.Map<BusinessSelectDto>(business));
+            }
+            return NotFound("کسب و کار مورد نظر پیدا نشد");
         }
         [HttpPut]
         public async Task<ActionResult> UpdateBusiness(BusinessSelectDto dto, CancellationToken cancellationToken)
@@ -59,7 +64,7 @@ namespace TaparApi.Controllers
                 var businessUpdate = Mapper.Map<BusinessUpdate>(oldBusiness);
                 var userId = Convert.ToInt64(HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
                 var newBusiness = Mapper.Map(dto, oldBusiness);
-                newBusiness.modifiedDate=DateTime.Now;
+                newBusiness.modifiedDate = DateTime.Now;
                 newBusiness.modifiedUserId = userId;
                 businessUpdate.modifiedDate = newBusiness.modifiedDate;
                 businessUpdate.modifiedUserId = newBusiness.modifiedUserId;
@@ -67,6 +72,22 @@ namespace TaparApi.Controllers
                 await BusinessUpdateRepository.AddAsync(businessUpdate, cancellationToken);
                 await Repository.UpdateAsync(newBusiness, cancellationToken);
                 return Ok("عملیات ویرایش به خوبی انجام شد");
+            }
+            catch (Exception)
+            {
+                throw new Exception("مشکل ناشناخته ای اتفاق افتاد");
+            }
+        }
+        [HttpDelete("{id:long}")]
+        public async Task<ActionResult> DeleteBusiness(long id, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var business = await Repository.GetByIdAsync(cancellationToken, id);
+                business.deletedDate = DateTime.Now;
+                business.deletedUserId = Convert.ToInt64(HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
+                await Repository.UpdateAsync(business, cancellationToken);
+                return Ok("کسب و کار از سیستم حذف گردید");
             }
             catch (Exception)
             {

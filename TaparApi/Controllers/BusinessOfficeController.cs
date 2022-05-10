@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using TaparApi.Common.Api;
 using TaparApi.Common.Dtos.BusinessOffice;
 using TaparApi.Data.Contracts.Interfaces;
@@ -15,13 +16,15 @@ namespace TaparApi.Controllers
         public IBusinessOfficeRepository Repository { get; set; }
         public IHttpContextAccessor HttpContextAccessor { get; }
         public IRepository<OfficeUpdate> OfficeUpdateRepository { get; }
+        public IRepository<Business> BusinessRepository { get; set; }
 
-        public BusinessOfficeController(IMapper mapper, IBusinessOfficeRepository repository, IHttpContextAccessor httpContextAccessor, IRepository<OfficeUpdate> officeUpdateRepository)
+        public BusinessOfficeController(IMapper mapper, IBusinessOfficeRepository repository, IHttpContextAccessor httpContextAccessor, IRepository<OfficeUpdate> officeUpdateRepository, IRepository<Business> businessRepository)
         {
             Mapper = mapper;
             Repository = repository;
             HttpContextAccessor = httpContextAccessor;
             OfficeUpdateRepository = officeUpdateRepository;
+            BusinessRepository = businessRepository;
         }
         [HttpPost]
         public async Task<ActionResult> AddBusinessOffice(BusinessOfficeAddDto addDto, CancellationToken cancellationToken)
@@ -53,10 +56,10 @@ namespace TaparApi.Controllers
             return Ok(result);
         }
         [HttpGet("[action]/{id:long}")]
-        public async Task<ActionResult<BusinessOfficeSelectDto>> GetBusinessOfficeById(long id, CancellationToken cancellationToken)
+        public async Task<ActionResult<BusinessOfficeDto>> GetBusinessOfficeById(long id, CancellationToken cancellationToken)
         {
             var businessOffice = await Repository.GetByIdAsync(cancellationToken, id);
-            var result = Mapper.Map<BusinessOfficeSelectDto>(businessOffice);
+            var result = Mapper.Map<BusinessOfficeDto>(businessOffice);
             return Ok(result);
         }
         [HttpPut]
@@ -89,8 +92,16 @@ namespace TaparApi.Controllers
             try
             {
                 var businessOffice = await Repository.GetByIdAsync(cancellationToken, id);
+                var businessList = await BusinessRepository.Table
+                    .Where(b => b.businessOfficeId == businessOffice.Id)
+                        .ToListAsync();
                 businessOffice.deletedDate = DateTime.Now;
                 businessOffice.deletedUserId = Convert.ToInt64(HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
+                foreach (var business in businessList)
+                {
+                    business.deletedDate = businessOffice.deletedDate;
+                    business.deletedUserId = businessOffice.deletedUserId;
+                }
                 await Repository.UpdateAsync(businessOffice, cancellationToken);
                 return Ok("کسب و کار مورد نظر حذف گردید");
             }
