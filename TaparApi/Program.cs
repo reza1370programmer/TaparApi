@@ -1,5 +1,7 @@
 using AspNetCore.ServiceRegistration.Dynamic;
 using Newtonsoft.Json;
+using Serilog;
+using Serilog.Exceptions;
 using TaparApi.Common;
 using TaparApi.Common.Extensions;
 using TaparApi.Common.Middlewares;
@@ -7,8 +9,8 @@ using TaparApi.Common.Middlewares;
 var webApplicationOptions =
     new WebApplicationOptions
     {
-       // EnvironmentName = Environments.Development,
-         EnvironmentName = Environments.Production,
+        // EnvironmentName = Environments.Development,
+        EnvironmentName = Environments.Production,
     };
 
 //var webApplicationOptions =
@@ -25,7 +27,18 @@ var builder = WebApplication.CreateBuilder(webApplicationOptions);
 var siteSettings = builder.Configuration.GetSection(nameof(SiteSettings)).Get<SiteSettings>();
 // Add services to the container.
 
-builder.Services.AddControllers().AddNewtonsoftJson(q=>q.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
+#region SerilogConfiguration
+
+var logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .Enrich.FromLogContext()
+    .CreateLogger();
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog(logger);
+
+#endregion
+
+builder.Services.AddControllers().AddNewtonsoftJson(q => q.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 builder.Services.Configure<SiteSettings>(builder.Configuration.GetSection(nameof(SiteSettings)));
 builder.Services.AddDbContext(builder.Configuration);
 //using package AspNetCore.ServiceRegistration.Dynamic for inserting services dynamically by inheriting IScopedService

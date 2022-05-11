@@ -58,10 +58,14 @@ namespace TaparApi.Common.Filters
             }
             else if (context.Result is UnauthorizedResult unauthorizedResult)
             {
-                var apiResult = new ApiResult<object>(true, ApiResultStatusCode.UnAuthorized,null,"باید لاگین کنید");
+                var apiResult = new ApiResult<object>(false, ApiResultStatusCode.UnAuthorized, null, "باید لاگین کنید");
                 context.Result = new JsonResult(apiResult) { StatusCode = unauthorizedResult.StatusCode };
             }
-
+            else if (context.Result is UnauthorizedObjectResult unauthorizedObjectResult)
+            {
+                var apiResult = new ApiResult<object>(false, ApiResultStatusCode.UnAuthorized, null, unauthorizedObjectResult?.Value?.ToString()!);
+                context.Result = new JsonResult(apiResult) { StatusCode = unauthorizedObjectResult?.StatusCode };
+            }
             base.OnResultExecuting(context);
         }
     }

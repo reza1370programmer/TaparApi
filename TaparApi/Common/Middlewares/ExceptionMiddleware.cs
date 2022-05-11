@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Runtime.CompilerServices;
 using TaparApi.Common.Api;
 
 namespace TaparApi.Common.Middlewares;
@@ -6,10 +7,12 @@ namespace TaparApi.Common.Middlewares;
 public class ExceptionMiddleware
 {
     private readonly RequestDelegate _next;
+    public ILogger<ExceptionMiddleware> Logger { get; set; }
 
-    public ExceptionMiddleware(RequestDelegate next)
+    public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger)
     {
         _next = next;
+        Logger = logger;
     }
 
     public async Task InvokeAsync(HttpContext httpContext)
@@ -20,6 +23,7 @@ public class ExceptionMiddleware
         }
         catch (Exception ex)
         {
+            Logger.LogError(ex.Message);
             await HandleGlobalExceptionAsync(httpContext, ex);
         }
     }
