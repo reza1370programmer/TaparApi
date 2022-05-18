@@ -1,5 +1,9 @@
-﻿using System.Security.Claims;
+﻿using System.Net;
+using System.Security.Claims;
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TaparApi.Common.Api;
@@ -22,7 +26,7 @@ namespace TaparApi.Controllers
             Repository = repository;
             BusinessUpdateRepository = businessUpdateRepository;
         }
-        [HttpPost]
+        [HttpPost,Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult> AddBusiness([FromBody] BusinessAddDto addDto, CancellationToken cancellationToken)
         {
             if (ModelState.IsValid)

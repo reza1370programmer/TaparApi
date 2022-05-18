@@ -23,10 +23,11 @@ public class User : BaseEntity<long>
     public string? lastName { get; set; }
     [StringLength(20)]
     public string? nationalCode { get; set; }
+  
 
     public List<BusinessOffice>? BusinessOffices { get; set; }
     public List<Comment>? Comments { get; set; }
     public List<ViewCount>? ViewCounts { get; set; }
     public List<LikeCount>? LikeCounts { get; set; }
-
+    public List<RefreshTokens>? refreshTokens { get; set; }
 }

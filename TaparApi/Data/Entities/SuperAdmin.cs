@@ -8,4 +8,5 @@ public class SuperAdmin:BaseEntity
     public string password { get; set; }
     public string fullName { get; set; }
     public int adminType { get; set; } = 1;
+    public List<RefreshTokens>? refreshTokens { get; set; }
 }

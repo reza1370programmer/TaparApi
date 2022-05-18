@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TaparApi.Data;
 
@@ -11,9 +12,10 @@ using TaparApi.Data;
 namespace TaparApi.Migrations
 {
     [DbContext(typeof(TaparDbContext))]
-    partial class TaparDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220515083542_Alter_RefreshTokens")]
+    partial class Alter_RefreshTokens
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -773,8 +775,8 @@ namespace TaparApi.Migrations
                     b.Property<DateTime?>("expirationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("refreshToken")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid?>("refreshToken")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int?>("superAdminId")
                         .HasColumnType("int");

@@ -58,4 +58,5 @@ public class Business:SharedEntity
     public List<ViewCount>? ViewCounts { get; set; }
     public List<LikeCount>? LikeCounts { get; set; }
     public List<BusinessUpdate> BusinessUpdates { get; set; }
+    
 }

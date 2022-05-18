@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="logs\webapi-20220511.log" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="AspNetCore.ServiceRegistration.Dynamic" Version="2.0.2" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.4" />
@@ -43,8 +39,6 @@
     <Folder Include="Common\Mappings\" />
     <Folder Include="Common\Middlewares\" />
     <Folder Include="Common\Utilities\" />
-    <Folder Include="Data\Entities\" />
-    <Folder Include="logs\" />
   </ItemGroup>
 
 </Project>
