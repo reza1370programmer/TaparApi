@@ -27,7 +27,7 @@ namespace TaparApi.Controllers
         [HttpPost("[action]")]
         public async Task<ApiResult> AddBusinessType1(BusinessType1Dto businessType1Dto, CancellationToken cancellationToken)
         {
-            var businesstype1 = Mapper.Map<BusinessType1>(businessType1Dto);
+            var businesstype1 = Mapper.Map<Cat1>(businessType1Dto);
             businesstype1.approvedDate = DateTime.Now;
             await Repository.AddAsync(businesstype1, cancellationToken);
             return Ok();

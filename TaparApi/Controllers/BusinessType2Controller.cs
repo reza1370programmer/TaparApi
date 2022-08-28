@@ -30,7 +30,7 @@ namespace TaparApi.Controllers
         {
             if (ModelState.IsValid)
             {
-                var businesstype2 = Mapper.Map<BusinessType2>(businessType2Dto);
+                var businesstype2 = Mapper.Map<Cat2>(businessType2Dto);
                 businesstype2.approvedDate = DateTime.Now;
                 await Repository.AddAsync(businesstype2, cancellationToken);
                 return Ok();

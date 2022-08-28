@@ -4,8 +4,8 @@ using TaparApi.Common.Api;
 using TaparApi.Common.Dtos.Account;
 using TaparApi.Common.Dtos.RefreshToken;
 using TaparApi.Common.Services;
-using TaparApi.Data.Contracts.Interfaces;
-using TaparApi.Data.Entities;
+
+
 
 namespace TaparApi.Controllers
 {
@@ -70,7 +70,8 @@ namespace TaparApi.Controllers
             {
                 return Unauthorized("Invalid Refresh Token.");
             }
-            else if (refreshToken.expirationDate < DateTime.Now)
+
+            if (refreshToken.expirationDate < DateTime.Now)
             {
                 return Unauthorized("Token expired.");
             }
@@ -79,8 +80,8 @@ namespace TaparApi.Controllers
                 var user = refreshToken.user;
                 token = await JwtService.GenerateAsync(refreshToken.user);
                 var newRefreshToken = GenerateRefreshToken();
-                refreshToken.refreshToken = newRefreshToken.refreshToken;
-                refreshToken.expirationDate = newRefreshToken.expirationDate;
+                refreshToken.refreshToken = newRefreshToken.refreshToken!;
+                refreshToken.expirationDate = (DateTime)newRefreshToken.expirationDate!;
                 await refreshTokenRepository.UpdateAsync(refreshToken, cancellationToken);
                 return new { firstName = user.firstName, lastName = user.lastName, userName = user.userName, refreshToken = newRefreshToken.refreshToken, token = token, userId = user.Id.ToString(), expirationTime = 20 };
 
@@ -91,8 +92,8 @@ namespace TaparApi.Controllers
                 var admin = refreshToken.superAdmin;
                 token = await JwtService.GenerateAsync(refreshToken.superAdmin);
                 var newRefreshToken = GenerateRefreshToken();
-                refreshToken.refreshToken = newRefreshToken.refreshToken;
-                refreshToken.expirationDate = newRefreshToken.expirationDate;
+                refreshToken.refreshToken = newRefreshToken.refreshToken!;
+                refreshToken.expirationDate = (DateTime)newRefreshToken.expirationDate!;
                 await refreshTokenRepository.UpdateAsync(refreshToken, cancellationToken);
                 return new { adminType = admin.adminType, fullName = admin.fullName, refreshToken = newRefreshToken.refreshToken, token = token, userId = admin.Id.ToString(), expirationTime = 30 };
             }
