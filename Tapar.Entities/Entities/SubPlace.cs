@@ -11,7 +11,7 @@ namespace Tapar.Data.Entities
         public string? internalPhone { get; set; }
         public string? personalPic { get; set; }
         public long? placeId { get; set; }
-        public Place place { get; set; }
+        public Place? place { get; set; }
     }
     public class SubPlaceConfiguraion : IEntityTypeConfiguration<SubPlace>
     {

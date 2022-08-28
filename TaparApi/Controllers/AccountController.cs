@@ -4,8 +4,8 @@ using TaparApi.Common.Api;
 using TaparApi.Common.Dtos.Account;
 using TaparApi.Common.Dtos.RefreshToken;
 using TaparApi.Common.Services;
-
-
+using TaparApi.Data.Contracts.Interfaces;
+using TaparApi.Data.Entities;
 
 namespace TaparApi.Controllers
 {

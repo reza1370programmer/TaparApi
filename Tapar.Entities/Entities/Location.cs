@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Tapar.Data.Common;
+using Tapar.Data.Entities;
 
 namespace TaparApi.Data.Entities;
 
@@ -10,6 +11,7 @@ public class Location : BaseEntity
     public string longitude { get; set; }
     public string latitude { get; set; }
     public int? parentId { get; set; }
+    public List<Place> places { get; set; }
 }
 public class LocationConfiguration : IEntityTypeConfiguration<Location>
 {
