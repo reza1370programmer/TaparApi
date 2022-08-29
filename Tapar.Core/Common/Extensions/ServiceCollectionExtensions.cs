@@ -1,10 +1,13 @@
 ﻿using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Tapar.Core.Common;
 using TaparApi.Data;
 
-namespace TaparApi.Common.Extensions
+namespace Tapar.core.Extensions
 {
     public static class ServiceCollectionExtensions
     {

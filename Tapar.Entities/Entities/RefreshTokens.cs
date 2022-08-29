@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using TaparApi.Data.Common;
+using Tapar.Data.Common;
 
 namespace TaparApi.Data.Entities
 {

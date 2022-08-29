@@ -1,9 +1,9 @@
-using AspNetCore.ServiceRegistration.Dynamic;
+
 using Newtonsoft.Json;
 using Serilog;
-using Serilog.Exceptions;
-using TaparApi.Common;
-using TaparApi.Common.Extensions;
+using TanvirArjel.Extensions.Microsoft.DependencyInjection;
+using Tapar.core.Extensions;
+using Tapar.Core.Common;
 using TaparApi.Common.Middlewares;
 
 var webApplicationOptions =
@@ -41,8 +41,8 @@ builder.Logging.AddSerilog(logger);
 builder.Services.AddControllers().AddNewtonsoftJson(q => q.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 builder.Services.Configure<SiteSettings>(builder.Configuration.GetSection(nameof(SiteSettings)));
 builder.Services.AddDbContext(builder.Configuration);
-//using package AspNetCore.ServiceRegistration.Dynamic for inserting services dynamically by inheriting IScopedService
-builder.Services.AddServicesOfType<IScopedService>();
+//using package TanvirArjel.Extensions.Microsoft.DependencyInjection for inserting services dynamically
+builder.Services.AddServicesOfAllTypes("Tapar.Core");
 builder.Services.AddJwtAuthentication(siteSettings.JwtSettings);
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddAutoMapper();

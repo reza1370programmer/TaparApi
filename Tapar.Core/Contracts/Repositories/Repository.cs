@@ -1,8 +1,6 @@
 ﻿using System.Linq.Expressions;
-using AspNetCore.ServiceRegistration.Dynamic;
 using Microsoft.EntityFrameworkCore;
 using TaparApi.Common.Extensions;
-using TaparApi.Data.Common;
 using TaparApi.Data.Contracts.Interfaces;
 
 namespace TaparApi.Data.Contracts.Repositories

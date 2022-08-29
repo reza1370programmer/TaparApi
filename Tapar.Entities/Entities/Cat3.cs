@@ -1,11 +1,12 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Tapar.Data.Common;
 using TaparApi.Data.Entities;
 
 namespace Tapar.Data.Entities
 {
-    public class Cat3
+    public class Cat3:BaseEntity
     {
         public string name { get; set; }
         public string gdesc { get; set; }

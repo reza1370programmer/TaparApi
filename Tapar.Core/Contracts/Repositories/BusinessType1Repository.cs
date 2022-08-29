@@ -1,6 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TaparApi.Common.Dtos.FirstTypeBusiness;
-using TaparApi.Data.Common;
 using TaparApi.Data.Contracts.Interfaces;
 using TaparApi.Data.Entities;
 
@@ -14,6 +12,6 @@ public class BusinessType1Repository:Repository<Cat1>,IBusinessType1Repsitory
 
     public async Task<List<Cat1>> GetBusinessByBusinessCategoriId(long id,CancellationToken cancellationToken)
     {
-        return await TableNoTracking.Where(c => c.businessCategoryId == id).ToListAsync(cancellationToken);
+        return await TableNoTracking.Where(c => c.Id == id).ToListAsync(cancellationToken);
     }
 }

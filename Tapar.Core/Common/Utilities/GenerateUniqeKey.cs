@@ -1,7 +1,8 @@
-﻿using shortid;
+﻿
+using shortid;
 using shortid.Configuration;
 
-namespace TaparApi.Common.Utilities;
+namespace Tapar.Core.Utilities;
 
 public class GenerateUniqeKey
 {

@@ -1,5 +1,6 @@
-﻿using System.Net;
-using System.Runtime.CompilerServices;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
+using System.Net;
 using TaparApi.Common.Api;
 
 namespace TaparApi.Common.Middlewares;

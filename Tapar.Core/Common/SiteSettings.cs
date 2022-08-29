@@ -1,4 +1,4 @@
-﻿namespace TaparApi.Common
+﻿namespace Tapar.Core.Common
 {
     public class SiteSettings
     {

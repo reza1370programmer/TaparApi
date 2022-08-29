@@ -28,7 +28,7 @@ namespace TaparApi.Controllers
         public async Task<ApiResult> AddBusinessType1(BusinessType1Dto businessType1Dto, CancellationToken cancellationToken)
         {
             var businesstype1 = Mapper.Map<Cat1>(businessType1Dto);
-            businesstype1.approvedDate = DateTime.Now;
+           
             await Repository.AddAsync(businesstype1, cancellationToken);
             return Ok();
         }
@@ -50,9 +50,7 @@ namespace TaparApi.Controllers
         public async Task<IActionResult> Delete(long id, CancellationToken cancellationToken)
         {
             var bt1 = await Repository.GetByIdAsync(cancellationToken, id);
-            bt1.deletedDate = bt1.deletedDate != null
-                ? bt1.deletedDate = null
-                : bt1.deletedDate = DateTime.Now;
+           
             await Repository.UpdateAsync(bt1, cancellationToken);
             return Ok("عملیات به خوبی انجام شد");
         }
@@ -60,9 +58,7 @@ namespace TaparApi.Controllers
         public async Task<ApiResult> ActiveDeactive(long id, CancellationToken cancellationToken)
         {
             var bt1 = await Repository.GetByIdAsync(cancellationToken, id);
-            bt1.deactivatedDate = bt1.deactivatedDate != null
-                ? bt1.deactivatedDate = null
-                : bt1.deactivatedDate = DateTime.Now;
+          
             await Repository.UpdateAsync(bt1, cancellationToken);
             return Ok("عملیات به خوبی انجام شد");
         }

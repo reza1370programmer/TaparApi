@@ -1,8 +1,8 @@
-﻿using AspNetCore.ServiceRegistration.Dynamic;
+﻿
 
 namespace TaparApi.Common.Services
 {
-    public interface IJwtService:IScopedService
+    public interface IJwtService
     {
         Task<string> GenerateAsync<T>(T user) where T : class;
     }
