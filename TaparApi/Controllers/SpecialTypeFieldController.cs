@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using TaparApi.Common.Api;
+using Tapar.Core.Common.Api;
+using Tapar.Core.Contracts.Interfaces;
+using Tapar.Data.Entities;
 using TaparApi.Common.Dtos.DynamicFields;
-using TaparApi.Data.Contracts.Interfaces;
-using TaparApi.Data.Entities;
+
 
 namespace TaparApi.Controllers
 {

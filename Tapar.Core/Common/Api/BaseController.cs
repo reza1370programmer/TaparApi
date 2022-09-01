@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using TaparApi.Common.Filters;
 
-namespace TaparApi.Common.Api
+namespace Tapar.Core.Common.Api
 {
     [ApiController]
     [ApiResultFilter]

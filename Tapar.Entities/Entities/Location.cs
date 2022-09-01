@@ -1,9 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Tapar.Data.Common;
-using Tapar.Data.Entities;
 
-namespace TaparApi.Data.Entities;
+namespace Tapar.Data.Entities;
 
 public class Location : BaseEntity
 {

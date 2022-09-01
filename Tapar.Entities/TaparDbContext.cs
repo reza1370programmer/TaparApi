@@ -21,7 +21,7 @@ namespace TaparApi.Data
             modelBuilder.RegisterEntityTypeConfiguration(entitiesAssembly);
             modelBuilder.AddRestrictDeleteBehaviorConvention(); //agar amalyate delete ru database emal beshe in taabe baaes mishe avval child haye parent delete beshan baad parent delete beshe ejaze nemidahad ke aval parent delete beshe
             modelBuilder.AddPluralizingTableNameConvention();
-
+            
         }
         public override int SaveChanges()
         {

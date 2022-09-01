@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Tapar.Data.Common;
 
-namespace TaparApi.Data.Entities;
+namespace Tapar.Data.Entities;
 
 public class SpecialTypeField : BaseEntity
 {

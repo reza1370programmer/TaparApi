@@ -1,8 +1,9 @@
 ﻿
+using Tapar.Data.Entities;
 using TaparApi.Common.Dtos.Account;
-using TaparApi.Data.Entities;
 
-namespace TaparApi.Data.Contracts.Interfaces;
+
+namespace Tapar.Core.Contracts.Interfaces;
 
 public interface IUserRepository:IRepository<User>
 {

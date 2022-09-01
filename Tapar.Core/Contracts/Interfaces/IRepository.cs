@@ -1,9 +1,11 @@
 ﻿using System.Linq.Expressions;
 
 using Microsoft.EntityFrameworkCore;
+using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
-namespace TaparApi.Data.Contracts.Interfaces
+namespace Tapar.Core.Contracts.Interfaces
 {
+    [ScopedService]//TanvirArjel.Extensions.Microsoft.DependencyInjection for dynamic services
     public interface IRepository<TEntity> where TEntity : class
     {
         DbSet<TEntity> Entities { get; }

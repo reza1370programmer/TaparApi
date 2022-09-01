@@ -1,7 +1,8 @@
 ﻿
-using TaparApi.Data.Entities;
 
-namespace TaparApi.Data.Contracts.Interfaces;
+using Tapar.Data.Entities;
+
+namespace Tapar.Core.Contracts.Interfaces;
 
 public interface IDynamicFieldsRepsitory:IRepository<SpecialTypeField>
 {

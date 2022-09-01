@@ -4,7 +4,7 @@ using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Tapar.Core.Common;
-using TaparApi.Data.Entities;
+using Tapar.Data.Entities;
 
 namespace TaparApi.Common.Services
 {

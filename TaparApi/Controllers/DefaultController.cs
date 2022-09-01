@@ -1,14 +1,13 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using TaparApi.Common.Api;
+using Tapar.Core.Common.Api;
 using TaparApi.Common.Dtos.BusinessOfficeType;
 using TaparApi.Common.Dtos.Location;
 
 
 namespace TaparApi.Controllers
 {
-  
+
     public class DefaultController : BaseController
     {
      

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TaparApi.Data.Contracts.Interfaces;
-using TaparApi.Data.Entities;
+using Tapar.Core.Contracts.Interfaces;
+using Tapar.Data.Entities;
 
 namespace TaparApi.Data.Contracts.Repositories;
 

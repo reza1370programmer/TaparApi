@@ -4,13 +4,15 @@ using Serilog;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 using Tapar.core.Extensions;
 using Tapar.Core.Common;
+using Tapar.Core.Contracts.Interfaces;
 using TaparApi.Common.Middlewares;
+using TaparApi.Data.Contracts.Repositories;
 
 var webApplicationOptions =
     new WebApplicationOptions
     {
-        // EnvironmentName = Environments.Development,
-        EnvironmentName = Environments.Production,
+        EnvironmentName = Environments.Development,
+        //EnvironmentName = Environments.Production,
     };
 
 //var webApplicationOptions =
@@ -42,7 +44,7 @@ builder.Services.AddControllers().AddNewtonsoftJson(q => q.SerializerSettings.Re
 builder.Services.Configure<SiteSettings>(builder.Configuration.GetSection(nameof(SiteSettings)));
 builder.Services.AddDbContext(builder.Configuration);
 //using package TanvirArjel.Extensions.Microsoft.DependencyInjection for inserting services dynamically
-builder.Services.AddServicesOfAllTypes("Tapar.Core");
+builder.Services.AddServicesOfAllTypes(typeof(ICat2Repsitory).Assembly);
 builder.Services.AddJwtAuthentication(siteSettings.JwtSettings);
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddAutoMapper();
