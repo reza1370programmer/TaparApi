@@ -10,6 +10,7 @@ public class Location : BaseEntity
     public string longitude { get; set; }
     public string latitude { get; set; }
     public int? parentId { get; set; }
+    public bool isActive { get; set; } = false;
     public List<Place> places { get; set; }
 }
 public class LocationConfiguration : IEntityTypeConfiguration<Location>
