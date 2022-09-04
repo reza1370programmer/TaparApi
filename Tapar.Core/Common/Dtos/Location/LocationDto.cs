@@ -1,4 +1,4 @@
-﻿namespace TaparApi.Common.Dtos.Location;
+﻿namespace Tapar.Core.Common.Dtos.Location;
 
 public class LocationDto
 {

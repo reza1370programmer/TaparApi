@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TaparApi.Common.Dtos.RefreshToken
+namespace Tapar.Core.Common.Dtos.RefreshToken
 {
     public class RefreshTokenDto
     {

@@ -8,10 +8,15 @@ public class SpecialTypeField : BaseEntity
 {
     public string title { get; set; }
     public string enTitle { get; set; }
+    public string? minLength { get; set; }
+    public string? maxLength { get; set; }
+    public bool isRequired { get; set; } = false;
     public int? cat2Id { get; set; }
     public Cat2? cat2 { get; set; }
     public int fieldTypeId { get; set; }
     public FieldType FieldType { get; set; }
+    //public string? regex { get; set; }
+    //public string? multiSelect { get; set; }
 }
 public class SpecialTypeFieldConfiguration : IEntityTypeConfiguration<SpecialTypeField>
 {

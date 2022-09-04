@@ -7,6 +7,5 @@ namespace Tapar.Core.Contracts.Interfaces;
 [ScopedService]
 public interface IDynamicFieldsRepsitory:IRepository<SpecialTypeField>
 {
-    Task<List<SpecialTypeField>> GetDynamicFieldsByBusinessType1Id(long id,CancellationToken cancellationToken);
-    Task<List<SpecialTypeField>> GetDynamicFieldsByBusinessType2Id(long id,CancellationToken cancellationToken);
+    Task<List<SpecialTypeField>> GetDynamicFieldsByCat2Id(int id,CancellationToken cancellationToken);
 }

@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Tapar.Core.Common.Api;
+using Tapar.Core.Common.Dtos.DynamicFields;
 using Tapar.Core.Contracts.Interfaces;
 using Tapar.Data.Entities;
-using TaparApi.Common.Dtos.DynamicFields;
 
 
 namespace TaparApi.Controllers
@@ -19,16 +19,11 @@ namespace TaparApi.Controllers
             Repsitory = repsitory;
             Mapper = mapper;
         }
+
         [HttpGet("[action]/{id}")]
-        public async Task<ActionResult<List<DynamicFieldsDto>>> GetDynamicFieldsByBusinessType1Id(long id, CancellationToken cancellationToken)
+        public async Task<ActionResult<List<DynamicFieldsDto>>> GetDynamicFieldsByCat2Id(int id, CancellationToken cancellationToken)
         {
-            var result = Mapper.Map<List<DynamicFieldsDto>>(await Repsitory.GetDynamicFieldsByBusinessType1Id(id, cancellationToken));
-            return Ok(result);
-        }
-        [HttpGet("[action]/{id}")]
-        public async Task<ActionResult<List<DynamicFieldsDto>>> GetDynamicFieldsByBusinessType2Id(long id, CancellationToken cancellationToken)
-        {
-            var result = Mapper.Map<List<DynamicFieldsDto>>(await Repsitory.GetDynamicFieldsByBusinessType2Id(id, cancellationToken));
+            var result = Mapper.Map<List<DynamicFieldsDto>>(await Repsitory.GetDynamicFieldsByCat2Id(id, cancellationToken));
             return Ok(result);
         }
         [HttpPost("[action]")]
@@ -38,19 +33,6 @@ namespace TaparApi.Controllers
             {
                 var result = Mapper.Map<SpecialTypeField>(addDto);
                 await Repsitory.AddAsync(result, cancellationToken);
-                return Ok();
-            }
-
-            return BadRequest();
-        }
-        [HttpPut("[action]")]
-        public async Task<ActionResult> UpdateDynamicField(DynamicFieldsDto dto, CancellationToken cancellation)
-        {
-            if (ModelState.IsValid)
-            {
-                var item = await this.Repsitory.GetByIdAsync(cancellation, dto.id);
-                var entity = Mapper.Map(dto, item);
-                await Repsitory.UpdateAsync(entity, cancellation);
                 return Ok();
             }
 

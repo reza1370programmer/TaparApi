@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using TaparApi.Common.Extensions;
 
-namespace TaparApi.Common.Api
+namespace Tapar.Core.Common.Api
 {
     public class ApiResult
     {

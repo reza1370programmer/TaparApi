@@ -6,7 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using Tapar.Core.Common;
 using Tapar.Data.Entities;
 
-namespace TaparApi.Common.Services
+namespace Tapar.Core.Common.Services
 {
     public class JwtService : IJwtService
     {

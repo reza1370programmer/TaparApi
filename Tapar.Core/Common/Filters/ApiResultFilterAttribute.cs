@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using TaparApi.Common.Api;
+using Tapar.Core.Common.Api;
 
-namespace TaparApi.Common.Filters
+namespace Tapar.Core.Common.Filters
 {
     public class ApiResultFilterAttribute : ActionFilterAttribute
     {

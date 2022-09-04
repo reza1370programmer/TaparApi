@@ -10,14 +10,9 @@ public class DynamicFieldsRepository : Repository<SpecialTypeField>, IDynamicFie
     {
     }
 
-    public async Task<List<SpecialTypeField>> GetDynamicFieldsByBusinessType1Id(long id, CancellationToken cancellationToken)
+    public async Task<List<SpecialTypeField>> GetDynamicFieldsByCat2Id(int id, CancellationToken cancellationToken)
     {
         return await TableNoTracking.Where(d => d.cat2Id == id).ToListAsync(cancellationToken);
     }
 
-    public async Task<List<SpecialTypeField>> GetDynamicFieldsByBusinessType2Id(long id, CancellationToken cancellationToken)
-    {
-        return await TableNoTracking.Where(d => d.cat2Id == id).ToListAsync(cancellationToken);
-
-    }
 }

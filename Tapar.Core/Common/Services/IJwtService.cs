@@ -1,6 +1,6 @@
 ﻿
 
-namespace TaparApi.Common.Services
+namespace Tapar.Core.Common.Services
 {
     public interface IJwtService
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-namespace TaparApi.Common.Extensions
+namespace Tapar.Core.Common.Extensions
 {
     public static class Assert
     {

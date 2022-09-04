@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TaparApi.Common.Dtos.Account
+namespace Tapar.Core.Common.Dtos.Account
 {
     public class LoginSuperAdminDTO
     {

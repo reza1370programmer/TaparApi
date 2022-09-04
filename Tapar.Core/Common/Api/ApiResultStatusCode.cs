@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TaparApi.Common.Api
+namespace Tapar.Core.Common.Api
 {
     public enum ApiResultStatusCode
     {

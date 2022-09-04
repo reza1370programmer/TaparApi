@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TaparApi.Common.Dtos.DynamicFields;
+namespace Tapar.Core.Common.Dtos.DynamicFields;
 
 public class DynamicFieldsAddDto
 {

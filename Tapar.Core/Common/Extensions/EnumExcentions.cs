@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
-namespace TaparApi.Common.Extensions
+namespace Tapar.Core.Common.Extensions
 {
     public static class EnumExtensions
     {
