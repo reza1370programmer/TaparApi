@@ -1,6 +1,6 @@
 ﻿
 using Microsoft.AspNetCore.Mvc;
-using TaparApi.Common.Filters;
+using Tapar.Core.Common.Filters;
 
 namespace Tapar.Core.Common.Api
 {

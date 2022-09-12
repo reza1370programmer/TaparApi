@@ -11,6 +11,7 @@ namespace Tapar.Data.Entities
         public string gdesc { get; set; }
         public Cat2? cat2 { get; set; }
         public int? cat2Id { get; set; }
+        public List<TagCat>? tagCats { get; set; }
         public List<Place> places { get; set; }
         public List<SpecialTypeField> SpecialTypeFields { get; set; }
     }

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using TaparApi.Common.Extensions;
+using Tapar.Core.Common.Extensions;
 
 namespace Tapar.Core.Common.Api
 {

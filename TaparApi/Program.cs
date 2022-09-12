@@ -4,9 +4,8 @@ using Serilog;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 using Tapar.core.Extensions;
 using Tapar.Core.Common;
+using Tapar.Core.Common.Middlewares;
 using Tapar.Core.Contracts.Interfaces;
-using TaparApi.Common.Middlewares;
-using TaparApi.Data.Contracts.Repositories;
 
 var webApplicationOptions =
     new WebApplicationOptions

@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Tapar.Core.Common.Api;
 using Tapar.Core.Contracts.Interfaces;
-using TaparApi.Common.Api;
-using TaparApi.Common.Dtos.BusinessType2;
 
 
 namespace TaparApi.Controllers

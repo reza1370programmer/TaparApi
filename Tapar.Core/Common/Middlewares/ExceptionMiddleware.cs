@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System.Net;
+using Tapar.Core.Common.Api;
 
 namespace Tapar.Core.Common.Middlewares;
 

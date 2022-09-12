@@ -1,6 +1,6 @@
 ﻿using TanvirArjel.Extensions.Microsoft.DependencyInjection;
+using Tapar.Core.Common.Dtos.Account;
 using Tapar.Data.Entities;
-using TaparApi.Common.Dtos.Account;
 
 
 namespace Tapar.Core.Contracts.Interfaces;

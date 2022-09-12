@@ -4,7 +4,7 @@ using Tapar.Data.Common;
 
 namespace Tapar.Data.Entities
 {
-    public class Place : BaseEntity<long>
+    public class Place : SharedEntity
     {
         public string tablo { get; set; }
         public string? manager { get; set; }
@@ -15,7 +15,7 @@ namespace Tapar.Data.Entities
         public string? phone2 { get; set; }
         public string? phone3 { get; set; }
         public string? fax { get; set; }
-        public string address1 { get; set; }
+        public string address { get; set; }
         public string longitude { get; set; }
         public string latitude { get; set; }
         public string? bussiness_pic1 { get; set; }
@@ -29,11 +29,14 @@ namespace Tapar.Data.Entities
         public string? gvalue { get; set; }
         public int? like_count { get; set; } = 0;
         public int? view_count { get; set; } = 0;
+        public bool on_off { get; set; } = true;
+        public WeekDays? weekDay { get; set; }
         public long userId { get; set; }
         public User user { get; set; }
         public int cat3Id { get; set; }
         public Cat3 cat3 { get; set; }
         public int work_time_id { get; set; }
+        public List<Place_Tag>? place_Tags { get; set; }
         public WorkTime workTime { get; set; }
         public List<SubPlace> subPlaces { get; set; }
         public List<Comment> comments { get; set; }
@@ -45,7 +48,7 @@ namespace Tapar.Data.Entities
     {
         public void Configure(EntityTypeBuilder<Place> builder)
         {
-            builder.Property(p => p.tablo).HasMaxLength(100).IsRequired();
+            builder.Property(p => p.tablo).HasMaxLength(500).IsRequired();
             builder.Property(p => p.manager).HasMaxLength(50).IsRequired(false);
             builder.Property(p => p.service_description).HasMaxLength(200).IsRequired(false);
             builder.Property(p => p.mob1).HasMaxLength(11).IsRequired(true);
@@ -54,7 +57,7 @@ namespace Tapar.Data.Entities
             builder.Property(p => p.phone2).HasMaxLength(10).IsRequired(false);
             builder.Property(p => p.phone3).HasMaxLength(10).IsRequired(false);
             builder.Property(p => p.fax).HasMaxLength(20).IsRequired(false);
-            builder.Property(p => p.address1).HasMaxLength(500).IsRequired(true);
+            builder.Property(p => p.address).HasMaxLength(500).IsRequired(true);
             builder.Property(p => p.longitude).HasMaxLength(20).IsRequired();
             builder.Property(p => p.latitude).HasMaxLength(20).IsRequired();
             builder.Property(p => p.bussiness_pic1).HasMaxLength(25).IsRequired(false);
@@ -66,8 +69,8 @@ namespace Tapar.Data.Entities
             builder.Property(p => p.special_message).HasMaxLength(500).IsRequired(false);
             builder.Property(p => p.tags).HasMaxLength(1000).IsRequired();
             builder.Property(p => p.gvalue).HasMaxLength(1000).IsRequired(false);
-            builder.Property(p=>p.like_count).IsRequired(false);
-            builder.Property(p=>p.view_count).IsRequired(false);
+            builder.Property(p => p.like_count).IsRequired(false);
+            builder.Property(p => p.view_count).IsRequired(false);
             builder.HasOne(p => p.cat3).WithMany(p => p.places).HasForeignKey(p => p.cat3Id).IsRequired();
             builder.HasOne(p => p.user).WithMany(p => p.places).HasForeignKey(p => p.userId).IsRequired();
             builder.HasOne(p => p.workTime).WithMany(p => p.places).HasForeignKey(p => p.work_time_id).IsRequired();

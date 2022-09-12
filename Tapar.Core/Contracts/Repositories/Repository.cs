@@ -1,7 +1,8 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using Tapar.Core.Common.Extensions;
 using Tapar.Core.Contracts.Interfaces;
-using TaparApi.Common.Extensions;
+
 
 
 namespace TaparApi.Data.Contracts.Repositories

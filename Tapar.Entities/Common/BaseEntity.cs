@@ -27,5 +27,9 @@
         public DateTime? deletedDate { get; set; }
         public long? deletedUserId { get; set; }
     }
+    public enum TimeEnum
+    {
+        AM = 1, PM = 2, AM_PM = 3, NoTime = 4
+    }
 
 }
