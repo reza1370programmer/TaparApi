@@ -16,10 +16,10 @@ namespace Tapar.Core.Common.Dtos.Account
     }
     public class LoginUserDto
     {
-        [Display(Name = "نام کاربری")]
+        [Display(Name = " شماره موبایل")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-        [MaxLength(100, ErrorMessage = "تعداد کاراکتر های {0} نمیتواند بیشتر از {1} باشد")]
-        public string userName { get; set; }
+        [MaxLength(11, ErrorMessage = "تعداد کاراکتر های {0} نمیتواند بیشتر از {1} باشد")]
+        public string mobile { get; set; }
 
         [Display(Name = "کلمه عبور")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]

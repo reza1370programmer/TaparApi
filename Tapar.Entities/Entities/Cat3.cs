@@ -9,8 +9,8 @@ namespace Tapar.Data.Entities
     {
         public string name { get; set; }
         public string gdesc { get; set; }
-        public Cat2? cat2 { get; set; }
-        public int? cat2Id { get; set; }
+        public Cat2 cat2 { get; set; }
+        public int cat2Id { get; set; }
         public List<TagCat>? tagCats { get; set; }
         public List<Place> places { get; set; }
         public List<SpecialTypeField> SpecialTypeFields { get; set; }
@@ -21,7 +21,7 @@ namespace Tapar.Data.Entities
         {
             builder.Property(p => p.name).HasMaxLength(100).IsRequired(false);
             builder.Property(p => p.gdesc).HasMaxLength(500).IsRequired(false);
-            builder.Property(p => p.cat2Id).IsRequired(false);
+            builder.Property(p => p.cat2Id).IsRequired();
             builder.HasOne(p => p.cat2).WithMany(p => p.cat3s).HasForeignKey(p => p.cat2Id);
         }
     }

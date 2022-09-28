@@ -3,10 +3,9 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Tapar.Core.Common;
 using Tapar.Data.Entities;
 
-namespace Tapar.Core.Common.Services
+namespace Tapar.Core.Common.Services.JwtServices
 {
     public class JwtService : IJwtService
     {
@@ -33,7 +32,7 @@ namespace Tapar.Core.Common.Services
                 Audience = _siteSetting.JwtSettings.Audience,
                 IssuedAt = DateTime.Now,
                 NotBefore = DateTime.Now.AddMinutes(_siteSetting.JwtSettings.NotBeforeMinutes),
-                Expires = DateTime.Now.AddSeconds(_siteSetting.JwtSettings.ExpirationMinutes),
+                Expires = DateTime.Now.AddMinutes(_siteSetting.JwtSettings.ExpirationMinutes),
                 SigningCredentials = signingCredentials,
                 EncryptingCredentials = encryptingCredentials,
                 Subject = new ClaimsIdentity(claims)
@@ -52,14 +51,14 @@ namespace Tapar.Core.Common.Services
             var list = new List<Claim>();
             if (typeof(T) == typeof(SuperAdmin))
             {
-                var superadmin =(SuperAdmin) Convert.ChangeType(user, typeof(SuperAdmin));
+                var superadmin = (SuperAdmin)Convert.ChangeType(user, typeof(SuperAdmin));
                 list.Add(new Claim(ClaimTypes.Role, "admin"));
-                
+
             }
             else
             {
-                var logUser =(User)Convert.ChangeType(user, typeof(User));
-                list.Add(new Claim(ClaimTypes.Role,"user"));
+                var logUser = (User)Convert.ChangeType(user, typeof(User));
+                list.Add(new Claim(ClaimTypes.Role, "user"));
                 list.Add(new Claim(ClaimTypes.NameIdentifier, logUser.Id.ToString()));
             }
             return list;

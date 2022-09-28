@@ -26,17 +26,17 @@ namespace TaparApi.Controllers
         [HttpGet("[action]/{id}")]
         public async Task<IActionResult> GetCat2ById(int id, CancellationToken cancellationToken)
         {
-            var category = await Repository.GetByIdAsync(cancellationToken,id);
+            var category = await Repository.GetByIdAsync(cancellationToken, id);
             return Ok(category);
         }
         [HttpGet("[action]/{id}")]
-        public async Task<IActionResult> GetCat2sByCat1Id(int id,CancellationToken cancellationToken)
+        public async Task<IActionResult> GetCat2sByCat1Id(int id, CancellationToken cancellationToken)
         {
             var list = await Repository.GetCat2sByCat1Id(id, cancellationToken);
-            return Ok(list);
+            return Ok(list.Select(p => new { p.name, p.popup_state, p.Id }));
         }
-    
-     
+
+
 
     }
 }

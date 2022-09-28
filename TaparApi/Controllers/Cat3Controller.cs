@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Tapar.Core.Common.Api;
+using Tapar.Core.Common.Dtos.Filters;
 using Tapar.Core.Contracts.Interfaces;
 
 
@@ -10,12 +11,14 @@ namespace TaparApi.Controllers
     public class Cat3Controller : BaseController
     {
         public ICat3Repository Repository { get; set; }
+        public ICat2Repsitory cat2Repsitory { get; set; }
         public IMapper Mapper { get; set; }
 
-        public Cat3Controller(ICat3Repository repository, IMapper mapper)
+        public Cat3Controller(ICat3Repository repository, IMapper mapper, ICat2Repsitory cat2Repsitory)
         {
             Repository = repository;
             Mapper = mapper;
+            this.cat2Repsitory = cat2Repsitory;
         }
         [HttpGet("[action]")]
         public async Task<IActionResult> GetListOfCat3(CancellationToken cancellationToken)
@@ -32,8 +35,9 @@ namespace TaparApi.Controllers
         [HttpGet("[action]/{id}")]
         public async Task<IActionResult> GetCat3sByCat2Id(int id, CancellationToken cancellationToken)
         {
-            var list = await Repository.GetCat3sByCat2Id(id, cancellationToken);
-            return Ok(list);
+            var list = (await Repository.GetCat3sByCat2Id(id, cancellationToken)).Select(c => new { c.Id, c.name });
+            var filters = Mapper.Map<FilterDto[]>(await cat2Repsitory.GetCat2Filters(id, cancellationToken));
+            return Ok(new { list, filters });
         }
     }
 }

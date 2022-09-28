@@ -1,11 +1,16 @@
 
+using AspNetCore.Totp;
+using AspNetCore.Totp.Interface;
 using Newtonsoft.Json;
 using Serilog;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 using Tapar.core.Extensions;
 using Tapar.Core.Common;
 using Tapar.Core.Common.Middlewares;
 using Tapar.Core.Contracts.Interfaces;
+using Tapar.Core.Common.Dtos.Filters;
 
 var webApplicationOptions =
     new WebApplicationOptions
@@ -44,6 +49,8 @@ builder.Services.Configure<SiteSettings>(builder.Configuration.GetSection(nameof
 builder.Services.AddDbContext(builder.Configuration);
 //using package TanvirArjel.Extensions.Microsoft.DependencyInjection for inserting services dynamically
 builder.Services.AddServicesOfAllTypes(typeof(ICat2Repsitory).Assembly);
+builder.Services.AddScoped<ITotpGenerator, TotpGenerator>();
+builder.Services.AddScoped<ITotpValidator, TotpValidator>();
 builder.Services.AddJwtAuthentication(siteSettings.JwtSettings);
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddAutoMapper();
