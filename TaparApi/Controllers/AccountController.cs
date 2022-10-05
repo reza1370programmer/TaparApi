@@ -56,7 +56,7 @@ namespace TaparApi.Controllers
             //     new RefreshTokens { expirationDate = newRefreshToken.expirationDate, refreshToken = newRefreshToken.refreshToken, userId = admin.Id }
             //     , cancellationToken);
             //return new { firstName = admin.firstName, lastName = admin.lastName, userName = admin.userName, refreshToken = newRefreshToken.refreshToken, token = token, userId = admin.Id.ToString(), expirationTime = 30 };
-            return Ok(new { mobile = admin.mobile, password = admin.password, token = token });
+            return Ok(new { mobile = admin.mobile, password = admin.password, token = token, id = admin.Id });
 
         }
         [HttpGet("refresh-token")]

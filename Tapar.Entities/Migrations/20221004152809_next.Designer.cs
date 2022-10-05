@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TaparApi.Data;
 
@@ -11,9 +12,10 @@ using TaparApi.Data;
 namespace Tapar.Data.Migrations
 {
     [DbContext(typeof(TaparDbContext))]
-    partial class TaparDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221004152809_next")]
+    partial class next
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

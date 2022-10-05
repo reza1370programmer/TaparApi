@@ -19,25 +19,25 @@ namespace TaparApi.Controllers
         {
             var list = await locationRepository
                 .TableNoTracking
-                .Select(l => new { l.Id, l.name, l.longitude, l.latitude })
+                .Select(l => new { l.Id, l.name })
                 .ToListAsync(cancellationToken);
             return Ok(list);
         }
         [HttpGet("[action]")]
-        public async Task<IActionResult> GetActiveLocations(CancellationToken cancellationToken)
+        public async Task<IActionResult> GetOstan(CancellationToken cancellationToken)
         {
             var list = await locationRepository.TableNoTracking
-                .Where(l => l.isActive == true)
-                .Select(l => new { l.Id, l.name, l.longitude, l.latitude })
+                .Where(l => l.isActive == true && l.parentId == null)
+                .Select(l => new { l.Id, l.name })
                 .ToListAsync(cancellationToken);
             return Ok(list);
         }
         [HttpGet("[action]/{id}")]
-        public async Task<IActionResult> GetLocationsByParentId(int id, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetShahrestan(int id, CancellationToken cancellationToken)
         {
             var list = await locationRepository.TableNoTracking
-                .Where(l => l.parentId == id)
-                .Select(l => new { l.Id, l.name, l.longitude, l.latitude })
+                .Where(l => l.parentId == id && l.isActive)
+                .Select(l => new { l.Id, l.name })
                 .ToListAsync(cancellationToken);
             return Ok(list);
         }

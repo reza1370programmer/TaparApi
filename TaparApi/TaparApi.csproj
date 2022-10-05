@@ -34,4 +34,8 @@
     <ProjectReference Include="..\Tapar.Core\Tapar.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\" />
+  </ItemGroup>
+
 </Project>

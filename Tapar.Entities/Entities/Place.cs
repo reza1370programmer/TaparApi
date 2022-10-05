@@ -30,13 +30,15 @@ namespace Tapar.Data.Entities
         public int? like_count { get; set; } = 0;
         public int? view_count { get; set; } = 0;
         public bool on_off { get; set; } = true;
+        public int locationId { get; set; }
+        public Location location { get; set; }
         public WeekDays? weekDay { get; set; }
         public long userId { get; set; }
         public User user { get; set; }
         public int cat3Id { get; set; }
         public Cat3 cat3 { get; set; }
-        public int work_time_id { get; set; }
         public List<Place_Tag>? place_Tags { get; set; }
+        public int workTimeId { get; set; }
         public WorkTime workTime { get; set; }
         public List<SubPlace> subPlaces { get; set; }
         public List<Comment> comments { get; set; }
@@ -71,9 +73,11 @@ namespace Tapar.Data.Entities
             builder.Property(p => p.gvalue).HasMaxLength(1000).IsRequired(false);
             builder.Property(p => p.like_count).IsRequired(false);
             builder.Property(p => p.view_count).IsRequired(false);
+            builder.Property(p => p.locationId).IsRequired();
+            builder.HasOne(p => p.location).WithMany(p => p.places).HasForeignKey(p => p.locationId).IsRequired();
             builder.HasOne(p => p.cat3).WithMany(p => p.places).HasForeignKey(p => p.cat3Id).IsRequired();
             builder.HasOne(p => p.user).WithMany(p => p.places).HasForeignKey(p => p.userId).IsRequired();
-            builder.HasOne(p => p.workTime).WithMany(p => p.places).HasForeignKey(p => p.work_time_id).IsRequired();
+            builder.HasOne(p => p.workTime).WithMany(p => p.places).HasForeignKey(p => p.workTimeId).IsRequired();
         }
     }
 }
