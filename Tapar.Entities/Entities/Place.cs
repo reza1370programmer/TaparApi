@@ -6,6 +6,11 @@ namespace Tapar.Data.Entities
 {
     public class Place : SharedEntity
     {
+        public Place()
+        {
+            place_Filters = new();
+            weekDay = new();
+        }
         public string tablo { get; set; }
         public string? manager { get; set; }
         public string? service_description { get; set; }
@@ -16,8 +21,8 @@ namespace Tapar.Data.Entities
         public string? phone3 { get; set; }
         public string? fax { get; set; }
         public string address { get; set; }
-        public string longitude { get; set; }
-        public string latitude { get; set; }
+        public string? longitude { get; set; }
+        public string? latitude { get; set; }
         public string? bussiness_pic1 { get; set; }
         public string? bussiness_pic2 { get; set; }
         public string? bussiness_pic3 { get; set; }
@@ -60,14 +65,14 @@ namespace Tapar.Data.Entities
             builder.Property(p => p.phone3).HasMaxLength(10).IsRequired(false);
             builder.Property(p => p.fax).HasMaxLength(20).IsRequired(false);
             builder.Property(p => p.address).HasMaxLength(500).IsRequired(true);
-            builder.Property(p => p.longitude).HasMaxLength(20).IsRequired();
-            builder.Property(p => p.latitude).HasMaxLength(20).IsRequired();
-            builder.Property(p => p.bussiness_pic1).HasMaxLength(25).IsRequired(false);
-            builder.Property(p => p.bussiness_pic2).HasMaxLength(25).IsRequired(false);
-            builder.Property(p => p.bussiness_pic3).HasMaxLength(25).IsRequired(false);
-            builder.Property(p => p.personal_pic).HasMaxLength(25).IsRequired(false);
-            builder.Property(p => p.visitCart_front).HasMaxLength(25).IsRequired(false);
-            builder.Property(p => p.visitCart_back).HasMaxLength(25).IsRequired(false);
+            builder.Property(p => p.longitude).HasMaxLength(20).IsRequired(false);
+            builder.Property(p => p.latitude).HasMaxLength(20).IsRequired(false);
+            builder.Property(p => p.bussiness_pic1).HasMaxLength(50).IsRequired(false);
+            builder.Property(p => p.bussiness_pic2).HasMaxLength(50).IsRequired(false);
+            builder.Property(p => p.bussiness_pic3).HasMaxLength(50).IsRequired(false);
+            builder.Property(p => p.personal_pic).HasMaxLength(50).IsRequired(false);
+            builder.Property(p => p.visitCart_front).HasMaxLength(50).IsRequired(false);
+            builder.Property(p => p.visitCart_back).HasMaxLength(50).IsRequired(false);
             builder.Property(p => p.special_message).HasMaxLength(500).IsRequired(false);
             builder.Property(p => p.tags).HasMaxLength(1000).IsRequired();
             builder.Property(p => p.gvalue).HasMaxLength(1000).IsRequired(false);

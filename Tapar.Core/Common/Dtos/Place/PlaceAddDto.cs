@@ -7,8 +7,8 @@ namespace Tapar.Core.Common.Dtos.Place
     {
         public string tablo { get; set; }
         public string description { get; set; }
-        public string modir { get; set; }
-        public string gValue { get; set; }
+        public string? modir { get; set; }
+        public string? gValue { get; set; }
         public long userId { get; set; }
         public int cat3Id { get; set; }
         public List<int> filters { get; set; }
@@ -16,10 +16,10 @@ namespace Tapar.Core.Common.Dtos.Place
         public RelationWays relationWays { get; set; }
         public int workingTimeId { get; set; }
         public List<WorkingDays> workingDays { get; set; }
-        public List<string> tags { get; set; }
-        public List<IFormFile> businessPics { get; set; }
-        public List <IFormFile> modirPic { get; set; }
-        public List<IFormFile> visitCartPics { get; set; }
+        public List<string>? tags { get; set; }
+        public List<IFormFile>? businessPics { get; set; }
+        public List <IFormFile>? modirPic { get; set; }
+        public List<IFormFile>? visitCartPics { get; set; }
     }
     public class Address
     {

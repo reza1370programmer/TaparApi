@@ -5,7 +5,7 @@ using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 namespace Tapar.Core.Common.Services.ImageUploader
 {
     [ScopedService]
-    internal interface IImageUploader
+    public interface IImageUploader
     {
         Task<string> UploadImage(IFormFile file);
     }

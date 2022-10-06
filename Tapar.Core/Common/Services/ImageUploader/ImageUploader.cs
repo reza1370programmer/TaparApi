@@ -5,7 +5,7 @@ using Microsoft.Extensions.FileProviders;
 
 namespace Tapar.Core.Common.Services.ImageUploader
 {
-    internal class ImageUploader : IImageUploader
+    public class ImageUploader : IImageUploader
     {
         public async Task<string> UploadImage(IFormFile file)
         {
