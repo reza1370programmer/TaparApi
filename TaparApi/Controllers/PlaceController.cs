@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Tapar.Core.Common.Api;
 using Tapar.Core.Common.Dtos.Place;
-using Tapar.Core.Common.Services.ImageUploader;
 using Tapar.Core.Contracts.Interfaces;
-using Tapar.Data.Entities;
+
 
 namespace TaparApi.Controllers
 {

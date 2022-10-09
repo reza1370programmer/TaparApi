@@ -3,21 +3,19 @@ using AspNetCore.Totp;
 using AspNetCore.Totp.Interface;
 using Newtonsoft.Json;
 using Serilog;
-using System.Text.Json.Serialization;
-using System.Text.Json;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 using Tapar.core.Extensions;
 using Tapar.Core.Common;
 using Tapar.Core.Common.Middlewares;
 using Tapar.Core.Contracts.Interfaces;
-using Tapar.Core.Common.Dtos.Filters;
 
-var webApplicationOptions =
-    new WebApplicationOptions
-    {
-        EnvironmentName = Environments.Development,
-        //EnvironmentName = Environments.Production,
-    };
+
+//var webApplicationOptions =
+//    new WebApplicationOptions
+//    {
+//        EnvironmentName = Environments.Development,
+//        //EnvironmentName = Environments.Production,
+//    };
 
 //var webApplicationOptions =
 //    new WebApplicationOptions
@@ -27,8 +25,8 @@ var webApplicationOptions =
 //                Environments.Development : Environments.Production,
 //    };
 
-//var builder = WebApplication.CreateBuilder(args);
-var builder = WebApplication.CreateBuilder(webApplicationOptions);
+var builder = WebApplication.CreateBuilder(args);
+//var builder = WebApplication.CreateBuilder(webApplicationOptions);
 
 var siteSettings = builder.Configuration.GetSection(nameof(SiteSettings)).Get<SiteSettings>();
 // Add services to the container.
