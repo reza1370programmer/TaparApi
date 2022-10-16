@@ -15,17 +15,17 @@
 
     public abstract class SharedEntity : BaseEntity<long>
     {
-        public DateTime? cDate { get; set; }
-        public long?  cUserId { get; set; }
-        public DateTime? modifiedDate { get; set; }
-        public long? modifiedUserId { get; set; }
-        public DateTime? approvedDate { get; set; }
-        public long? approvedUserId { get; set; }
-        public DateTime? deactivatedDate { get; set; }
-        public long? deactivatedUserId { get; set; }
-        public string? deactivatedDescription { get; set; }
-        public DateTime? deletedDate { get; set; }
-        public long? deletedUserId { get; set; }
+        public DateTime? cDate { get; set; } = null;
+        public long?  cUserId { get; set; } = null;
+        public DateTime? modifiedDate { get; set; } = null;
+        public long? modifiedUserId { get; set; } = null;
+        public DateTime? approvedDate { get; set; } = null;
+        public long? approvedUserId { get; set; } = null;
+        public DateTime? deactivatedDate { get; set; } = null;
+        public long? deactivatedUserId { get; set; } = null;
+        public string? deactivatedDescription { get; set; } = null;
+        public DateTime? deletedDate { get; set; } = null;
+        public long? deletedUserId { get; set; } = null;
     }
     public enum TimeEnum
     {

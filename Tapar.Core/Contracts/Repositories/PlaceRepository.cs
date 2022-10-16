@@ -1,4 +1,9 @@
 ﻿
+using AutoMapper;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
+using Tapar.Core.Common.Dtos.Filters;
 using Tapar.Core.Common.Dtos.Place;
 using Tapar.Core.Common.Enums;
 using Tapar.Core.Common.Services.ImageUploader;
@@ -12,9 +17,15 @@ namespace Tapar.Core.Contracts.Repositories
     public class PlaceRepository : Repository<Place>, IPlaceRepository
     {
         public IImageUploader imageUploader { get; set; }
-        public PlaceRepository(TaparDbContext dbContext, IImageUploader imageUploader) : base(dbContext)
+        public IHttpContextAccessor httpContextAccessor { get; set; }
+        public IMapper mapper { get; set; }
+        public ICat2Repsitory cat2Repository { get; set; }
+        public PlaceRepository(TaparDbContext dbContext, IImageUploader imageUploader, IHttpContextAccessor httpContextAccessor, IMapper mapper, ICat2Repsitory cat2Repository) : base(dbContext)
         {
             this.imageUploader = imageUploader;
+            this.httpContextAccessor = httpContextAccessor;
+            this.mapper = mapper;
+            this.cat2Repository = cat2Repository;
         }
 
         public async Task AddPlace(PlaceAddDto dto, CancellationToken cancellationToken)
@@ -31,6 +42,12 @@ namespace Tapar.Core.Contracts.Repositories
             place.phone3 = dto.relationWays.phone3 ?? null;
             place.mob1 = dto.relationWays.mob1;
             place.mob2 = dto.relationWays.mob2 ?? null;
+            place.fax = dto.relationWays.fax;
+            place.website = dto.relationWays.website;
+            place.email = dto.relationWays.email;
+            place.telegram = dto.relationWays.telegram;
+            place.instagram = dto.relationWays.instagram;
+            place.whatsapp = dto.relationWays.whatsapp;
             place.workTimeId = dto.workingTimeId;
             place.cat3Id = dto.cat3Id;
             place.userId = dto.userId;
@@ -65,7 +82,7 @@ namespace Tapar.Core.Contracts.Repositories
                     place.visitCart_back = (await imageUploader.UploadImage(dto.visitCartPics[1])).Replace('-', ' ');
                     break;
             }
-            place.tags = string.Join(',', dto.tags?.Count > 0 ? dto.tags : "");
+            place.tags = dto.tags?.Count() > 0 ? String.Join(',', dto.tags?.ToArray()!) : null!;
             foreach (int item in dto.filters)
             {
                 place.place_Filters.Add(new Place_Filter { filterId = item });
@@ -146,7 +163,39 @@ namespace Tapar.Core.Contracts.Repositories
                         break;
                 }
             }
+            place.cDate = DateTime.Now;
+            place.cUserId = long.Parse(httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier)!);
             await AddAsync(place, cancellationToken);
+        }
+
+        public async Task<List<Place>> SearchPlace(string SearchKey, CancellationToken cancellationToken)
+        {
+            return await TableNoTracking.Where(p => p.tablo.Contains(SearchKey) || p.tags.Contains(SearchKey)).ToListAsync(cancellationToken);
+        }
+
+        public async Task<PlaceGetDto?> GetPlaceById(long id, CancellationToken cancellationToken)
+        {
+            PlaceGetDto getPlace = new();
+            var place = await TableNoTracking.
+                Include(p => p.weekDay).
+                Include(p => p.cat3).
+                ThenInclude(p => p.cat2).
+                ThenInclude(p => p.cat1).
+                AsSplitQuery().
+                SingleOrDefaultAsync(p => p.Id == id);
+            if (place != null)
+            {
+                getPlace = mapper.Map<PlaceGetDto>(place);
+                getPlace.cat1Id = place.cat3.cat2.cat1.Id;
+                getPlace.cat1Title = place.cat3.cat2.cat1.name;
+                getPlace.cat2Title = place.cat3.cat2.name;
+                getPlace.cat3Title = place.cat3.name;
+                getPlace.filters = mapper.Map<IEnumerable<FilterDto>>(await cat2Repository.GetCat2Filters(place.cat3.cat2.Id, cancellationToken));
+                return getPlace;
+            }
+            return null;
+            
+
         }
     }
 }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TaparApi.Data;
 
@@ -11,9 +12,10 @@ using TaparApi.Data;
 namespace Tapar.Data.Migrations
 {
     [DbContext(typeof(TaparDbContext))]
-    partial class TaparDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221015054727_tt")]
+    partial class tt
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -364,9 +366,6 @@ namespace Tapar.Data.Migrations
                     b.Property<long?>("deletedUserId")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("email")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("fax")
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
@@ -374,9 +373,6 @@ namespace Tapar.Data.Migrations
                     b.Property<string>("gvalue")
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
-
-                    b.Property<string>("instagram")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("latitude")
                         .HasMaxLength(20)
@@ -448,9 +444,6 @@ namespace Tapar.Data.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
-                    b.Property<string>("telegram")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<long>("userId")
                         .HasColumnType("bigint");
 
@@ -464,12 +457,6 @@ namespace Tapar.Data.Migrations
                     b.Property<string>("visitCart_front")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("website")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("whatsapp")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("workTimeId")
                         .HasColumnType("int");

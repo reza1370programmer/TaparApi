@@ -9,5 +9,7 @@ namespace Tapar.Core.Contracts.Interfaces
     public interface IPlaceRepository:IRepository<Place>
     {
         Task AddPlace(PlaceAddDto dto,CancellationToken cancellationToken);
+        Task<List<Place>> SearchPlace(string SearchKey,CancellationToken cancellationToken);
+        Task<PlaceGetDto> GetPlaceById(long id, CancellationToken cancellationToken);
     }
 }

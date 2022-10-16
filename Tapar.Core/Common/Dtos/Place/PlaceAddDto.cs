@@ -38,6 +38,7 @@ namespace Tapar.Core.Common.Dtos.Place
         public string? email { get; set; }
         public string? website { get; set; }
         public string? telegram { get; set; }
+        public string? instagram { get; set; }
         public string? whatsapp { get; set; }
     }
     public class WorkingDays

@@ -1,8 +1,4 @@
 ﻿
-using System.Runtime.Serialization;
-using System.Text.Json.Serialization;
-using System.Xml.Linq;
-using Tapar.Data.Entities;
 
 namespace Tapar.Core.Common.Dtos.Filters
 {

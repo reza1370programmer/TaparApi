@@ -12,26 +12,31 @@ namespace Tapar.Data.Entities
             weekDay = new();
         }
         public string tablo { get; set; }
-        public string? manager { get; set; }
-        public string? service_description { get; set; }
+        public string? manager { get; set; } = null;
+        public string? service_description { get; set; } = null;
         public string mob1 { get; set; }
-        public string? mob2 { get; set; }
+        public string? mob2 { get; set; } = null;
         public string phone1 { get; set; }
-        public string? phone2 { get; set; }
-        public string? phone3 { get; set; }
-        public string? fax { get; set; }
+        public string? phone2 { get; set; } = null;
+        public string? phone3 { get; set; } = null;
+        public string? fax { get; set; } = null;
+        public string? website { get; set; } = null;
+        public string? email { get; set; } = null;
+        public string? telegram { get; set; } = null;
+        public string? instagram { get; set; } = null;
+        public string? whatsapp { get; set; } = null;
         public string address { get; set; }
-        public string? longitude { get; set; }
-        public string? latitude { get; set; }
-        public string? bussiness_pic1 { get; set; }
-        public string? bussiness_pic2 { get; set; }
-        public string? bussiness_pic3 { get; set; }
-        public string? personal_pic { get; set; }
-        public string? visitCart_front { get; set; }
-        public string? visitCart_back { get; set; }
-        public string? special_message { get; set; }
-        public string tags { get; set; }
-        public string? gvalue { get; set; }
+        public string? longitude { get; set; } = null;
+        public string? latitude { get; set; } = null;
+        public string? bussiness_pic1 { get; set; }= null;
+        public string? bussiness_pic2 { get; set; }=null;
+        public string? bussiness_pic3 { get; set; }=null;
+        public string? personal_pic { get; set; } = null;
+        public string? visitCart_front { get; set; } = null;
+        public string? visitCart_back { get; set; } = null;
+        public string? special_message { get; set; } = null;
+        public string? tags { get; set; } = null;
+        public string? gvalue { get; set; } = null;
         public int? like_count { get; set; } = 0;
         public int? view_count { get; set; } = 0;
         public bool on_off { get; set; } = true;
@@ -50,6 +55,8 @@ namespace Tapar.Data.Entities
         public List<ViewCount> viewCounts { get; set; }
         public List<LikeCount> likeCounts { get; set; }
         public List<Place_Filter> place_Filters { get; set; }
+
+
     }
     public class PlaceConfiguration : IEntityTypeConfiguration<Place>
     {
@@ -74,7 +81,7 @@ namespace Tapar.Data.Entities
             builder.Property(p => p.visitCart_front).HasMaxLength(50).IsRequired(false);
             builder.Property(p => p.visitCart_back).HasMaxLength(50).IsRequired(false);
             builder.Property(p => p.special_message).HasMaxLength(500).IsRequired(false);
-            builder.Property(p => p.tags).HasMaxLength(1000).IsRequired();
+            builder.Property(p => p.tags).HasMaxLength(1000).IsRequired(false);
             builder.Property(p => p.gvalue).HasMaxLength(1000).IsRequired(false);
             builder.Property(p => p.like_count).IsRequired(false);
             builder.Property(p => p.view_count).IsRequired(false);
