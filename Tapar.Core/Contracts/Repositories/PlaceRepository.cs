@@ -38,10 +38,10 @@ namespace Tapar.Core.Contracts.Repositories
             place.locationId = int.Parse(dto.address.shahrestan);
             place.address = dto.address.restAddress;
             place.phone1 = dto.relationWays.phone1;
-            place.phone2 = dto.relationWays.phone2 ?? null;
-            place.phone3 = dto.relationWays.phone3 ?? null;
+            place.phone2 = dto.relationWays.phone2 != "undefined" ? dto.relationWays.phone2 : null;
+            place.phone3 = dto.relationWays.phone3 != "undefined" ? dto.relationWays.phone3 : null;
             place.mob1 = dto.relationWays.mob1;
-            place.mob2 = dto.relationWays.mob2 ?? null;
+            place.mob2 = dto.relationWays.mob2 != "undefined" ? dto.relationWays.mob2 : null;
             place.fax = dto.relationWays.fax;
             place.website = dto.relationWays.website;
             place.email = dto.relationWays.email;
@@ -54,38 +54,38 @@ namespace Tapar.Core.Contracts.Repositories
             switch (dto.businessPics?.Count)
             {
                 case 1:
-                    place.bussiness_pic1 = (await imageUploader.UploadImage(dto.businessPics[0])).Replace('-', ' ');
+                    place.bussiness_pic1 = (await imageUploader.UploadImage(dto.businessPics[0]));
                     break;
                 case 2:
-                    place.bussiness_pic1 = (await imageUploader.UploadImage(dto.businessPics[0])).Replace('-', ' ');
-                    place.bussiness_pic2 = (await imageUploader.UploadImage(dto.businessPics[1])).Replace('-', ' ');
+                    place.bussiness_pic1 = (await imageUploader.UploadImage(dto.businessPics[0]));
+                    place.bussiness_pic2 = (await imageUploader.UploadImage(dto.businessPics[1]));
                     break;
                 case 3:
-                    place.bussiness_pic1 = (await imageUploader.UploadImage(dto.businessPics[0])).Replace('-', ' ');
-                    place.bussiness_pic2 = (await imageUploader.UploadImage(dto.businessPics[1])).Replace('-', ' ');
-                    place.bussiness_pic3 = (await imageUploader.UploadImage(dto.businessPics[2])).Replace('-', ' ');
+                    place.bussiness_pic1 = (await imageUploader.UploadImage(dto.businessPics[0]));
+                    place.bussiness_pic2 = (await imageUploader.UploadImage(dto.businessPics[1]));
+                    place.bussiness_pic3 = (await imageUploader.UploadImage(dto.businessPics[2]));
                     break;
             }
             switch (dto.modirPic?.Count)
             {
                 case 1:
-                    place.personal_pic = (await imageUploader.UploadImage(dto.modirPic[0])).Replace('-', ' ');
+                    place.personal_pic = (await imageUploader.UploadImage(dto.modirPic[0]));
                     break;
             }
             switch (dto.visitCartPics?.Count)
             {
                 case 1:
-                    place.visitCart_front = (await imageUploader.UploadImage(dto.visitCartPics[0])).Replace('-', ' ');
+                    place.visitCart_front = (await imageUploader.UploadImage(dto.visitCartPics[0]));
                     break;
                 case 2:
-                    place.visitCart_front = (await imageUploader.UploadImage(dto.visitCartPics[0])).Replace('-', ' ');
-                    place.visitCart_back = (await imageUploader.UploadImage(dto.visitCartPics[1])).Replace('-', ' ');
+                    place.visitCart_front = (await imageUploader.UploadImage(dto.visitCartPics[0]));
+                    place.visitCart_back = (await imageUploader.UploadImage(dto.visitCartPics[1]));
                     break;
             }
             place.tags = dto.tags?.Count() > 0 ? String.Join(',', dto.tags?.ToArray()!) : null!;
             foreach (int item in dto.filters)
             {
-                place.place_Filters.Add(new Place_Filter { filterId = item });
+                place.place_Filters.Add(new Place_Filter { filterId = item,placeId=place.Id });
             }
             foreach (var item in dto.workingDays)
             {
@@ -194,7 +194,7 @@ namespace Tapar.Core.Contracts.Repositories
                 return getPlace;
             }
             return null;
-            
+
 
         }
     }

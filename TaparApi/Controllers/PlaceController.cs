@@ -30,9 +30,8 @@ namespace TaparApi.Controllers
                         await repository.AddPlace(dto, cancellationToken);
                         return Ok();
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
-
                         throw new Exception("در ثبت اطلاعات مشکلی رخ داده هست");
                     }
                 }

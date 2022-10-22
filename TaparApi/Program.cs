@@ -51,6 +51,10 @@ builder.Services.AddScoped<ITotpGenerator, TotpGenerator>();
 builder.Services.AddScoped<ITotpValidator, TotpValidator>();
 builder.Services.AddJwtAuthentication(siteSettings.JwtSettings);
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddSpaStaticFiles(configuration =>
+{
+    configuration.RootPath = "ClientApp/dist";
+});
 builder.Services.AddAutoMapper();
 builder.Services.AddCors();
 builder.Services.AddEndpointsApiExplorer();
@@ -63,13 +67,21 @@ app.UseMiddleware<ExceptionMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {
-    
+
     app.UseDeveloperExceptionPage();
-    
+
 }
 app.UseSwagger();
 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Server v1"));
-
+app.UseStaticFiles();
+if (app.Environment.IsProduction())
+{
+    app.UseSpaStaticFiles();
+}
+app.UseSpa(spa =>
+{
+    spa.Options.SourcePath = "ClientApp";
+});
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
