@@ -37,6 +37,5 @@ namespace Tapar.Core.Common.Dtos.Place
         public int cat1Id { get; set; }
         public int workTimeId { get; set; }
         public WeekDaysDto weekDay { get; set; }
-        public IEnumerable<FilterDto>  filters { get; set; }
     }
 }

@@ -190,7 +190,7 @@ namespace Tapar.Core.Contracts.Repositories
                 getPlace.cat1Title = place.cat3.cat2.cat1.name;
                 getPlace.cat2Title = place.cat3.cat2.name;
                 getPlace.cat3Title = place.cat3.name;
-                getPlace.filters = mapper.Map<IEnumerable<FilterDto>>(await cat2Repository.GetCat2Filters(place.cat3.cat2.Id, cancellationToken));
+                //getPlace.filters = mapper.Map<IEnumerable<FilterDto>>(await cat2Repository.GetCat2Filters(place.cat3.cat2.Id, cancellationToken));
                 return getPlace;
             }
             return null;

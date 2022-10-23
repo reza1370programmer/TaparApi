@@ -8,7 +8,6 @@ namespace Tapar.Core.Common.Dtos.Filters
         public int id { get; set; }
         public string title { get; set; }
         public string enTitle { get; set; }
-        public int? parentId { get; set; }
         public List<ChildFilterDto>? childFilters { get; set; } = null;
     }
     public class ChildFilterDto
@@ -16,7 +15,6 @@ namespace Tapar.Core.Common.Dtos.Filters
         public int id { get; set; }
         public string title { get; set; }
         public string enTitle { get; set; }
-        public int? parentId { get; set; }
     }
 
 }

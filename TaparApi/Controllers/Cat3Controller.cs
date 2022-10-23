@@ -38,5 +38,11 @@ namespace TaparApi.Controllers
             var cat3List = (await Repository.GetCat3sByCat2Id(id, cancellationToken)).Select(c => new { c.Id, c.name });
             return Ok(cat3List);
         }
+        [HttpGet("[action]/{id}")]
+        public async Task<IActionResult> GetCat2FiltersByCat3Id(int id, CancellationToken cancellationToken)
+        {
+            var filters = Mapper.Map<IEnumerable<FilterDto>>(await Repository.GetCat2FiltersByCat3Id(id, cancellationToken));
+            return Ok(filters);
+        }
     }
 }

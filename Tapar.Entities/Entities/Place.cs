@@ -65,11 +65,11 @@ namespace Tapar.Data.Entities
             builder.Property(p => p.tablo).HasMaxLength(500).IsRequired();
             builder.Property(p => p.manager).HasMaxLength(50).IsRequired(false);
             builder.Property(p => p.service_description).HasMaxLength(200).IsRequired(false);
-            builder.Property(p => p.mob1).HasMaxLength(11).IsRequired(true);
-            builder.Property(p => p.mob2).HasMaxLength(11).IsRequired(false);
-            builder.Property(p => p.phone1).HasMaxLength(10).IsRequired(true);
-            builder.Property(p => p.phone2).HasMaxLength(10).IsRequired(false);
-            builder.Property(p => p.phone3).HasMaxLength(10).IsRequired(false);
+            builder.Property(p => p.mob1).HasMaxLength(20).IsRequired(true);
+            builder.Property(p => p.mob2).HasMaxLength(20).IsRequired(false);
+            builder.Property(p => p.phone1).HasMaxLength(20).IsRequired(true);
+            builder.Property(p => p.phone2).HasMaxLength(20).IsRequired(false);
+            builder.Property(p => p.phone3).HasMaxLength(20).IsRequired(false);
             builder.Property(p => p.fax).HasMaxLength(20).IsRequired(false);
             builder.Property(p => p.address).HasMaxLength(500).IsRequired(true);
             builder.Property(p => p.longitude).HasMaxLength(20).IsRequired(false);

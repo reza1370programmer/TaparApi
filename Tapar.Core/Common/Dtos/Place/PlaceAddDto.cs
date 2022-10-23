@@ -10,6 +10,8 @@ namespace Tapar.Core.Common.Dtos.Place
         public string? modir { get; set; }
         public string? gValue { get; set; }
         public long userId { get; set; }
+        public string? longitude { get; set; }
+        public string? latitude { get; set; } 
         public int cat3Id { get; set; }
         public List<int> filters { get; set; }
         public Address address { get; set; }
