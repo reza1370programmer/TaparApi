@@ -5,7 +5,7 @@ using Tapar.Core.Common.Api;
 using Tapar.Core.Common.Dtos;
 using Tapar.Core.Common.Dtos.Filters;
 using Tapar.Core.Contracts.Interfaces;
-
+using Tapar.Data.Entities;
 
 namespace TaparApi.Controllers
 {
@@ -14,11 +14,12 @@ namespace TaparApi.Controllers
     {
         public ICat2Repsitory Repository { get; set; }
         public IMapper Mapper { get; set; }
-
-        public Cat2Controller(ICat2Repsitory repository, IMapper mapper)
+        public IRepository<TagCat> tagCatRepository { get; set; }
+        public Cat2Controller(ICat2Repsitory repository, IMapper mapper, IRepository<TagCat> tagCatRepository)
         {
             Repository = repository;
             Mapper = mapper;
+            this.tagCatRepository = tagCatRepository;
         }
         [HttpGet("[action]")]
         public async Task<IActionResult> GetListOfCat2(long id, CancellationToken cancellationToken)
@@ -50,6 +51,11 @@ namespace TaparApi.Controllers
             var filters = Mapper.Map<FilterDto[]>(await Repository.GetCat2Filters(id, cancellationToken));
             return Ok(filters);
         }
-
+        [HttpGet("[action]/{cat2Id}")]
+        public async Task<IActionResult> GetTagsByCat2Id(int cat2Id,CancellationToken cancellationToken)
+        {
+            var tags=await tagCatRepository.TableNoTracking.Where(p=>p.cat2Id==cat2Id).Select(q=>q.tag.title).ToListAsync(cancellationToken);
+            return Ok(tags);
+        }
     }
 }

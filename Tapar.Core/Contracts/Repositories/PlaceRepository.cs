@@ -1,9 +1,8 @@
-﻿
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
-using Tapar.Core.Common.Dtos.Filters;
+using Tapar.Core.Common.Dtos;
 using Tapar.Core.Common.Dtos.Place;
 using Tapar.Core.Common.Enums;
 using Tapar.Core.Common.Services.ImageUploader;
@@ -85,82 +84,85 @@ namespace Tapar.Core.Contracts.Repositories
             place.tags = dto.tags?.Count() > 0 ? String.Join(',', dto.tags?.ToArray()!) : null!;
             foreach (int item in dto.filters)
             {
-                place.place_Filters.Add(new Place_Filter { filterId = item,placeId=place.Id });
+                place.place_Filters.Add(new Place_Filter { filterId = item, placeId = place.Id });
             }
-            foreach (var item in dto.workingDays)
+            if (place.workTimeId == 3)
             {
-                switch (item.id)
+                foreach (var item in dto.workingDays)
                 {
-                    case 1:
-                        if (item.am && !item.pm)
-                            place.weekDay!.saturday = (int)WeekDaysEnum.Morning;
-                        if (!item.am && item.pm)
-                            place.weekDay!.saturday = (int)WeekDaysEnum.Evening;
-                        if (item.am && item.pm)
-                            place.weekDay!.saturday = (int)WeekDaysEnum.Morning_Evening;
-                        if (!item.am && !item.pm)
-                            place.weekDay!.saturday = (int)WeekDaysEnum.NoTime;
-                        break;
-                    case 2:
-                        if (item.am && !item.pm)
-                            place.weekDay!.sunday = (int)WeekDaysEnum.Morning;
-                        if (!item.am && item.pm)
-                            place.weekDay!.sunday = (int)WeekDaysEnum.Evening;
-                        if (item.am && item.pm)
-                            place.weekDay!.sunday = (int)WeekDaysEnum.Morning_Evening;
-                        if (!item.am && !item.pm)
-                            place.weekDay!.sunday = (int)WeekDaysEnum.NoTime;
-                        break;
-                    case 3:
-                        if (item.am && !item.pm)
-                            place.weekDay!.monday = (int)WeekDaysEnum.Morning;
-                        if (!item.am && item.pm)
-                            place.weekDay!.monday = (int)WeekDaysEnum.Evening;
-                        if (item.am && item.pm)
-                            place.weekDay!.monday = (int)WeekDaysEnum.Morning_Evening;
-                        if (!item.am && !item.pm)
-                            place.weekDay!.monday = (int)WeekDaysEnum.NoTime;
-                        break;
-                    case 4:
-                        if (item.am && !item.pm)
-                            place.weekDay!.tuesday = (int)WeekDaysEnum.Morning;
-                        if (!item.am && item.pm)
-                            place.weekDay!.tuesday = (int)WeekDaysEnum.Evening;
-                        if (item.am && item.pm)
-                            place.weekDay!.tuesday = (int)WeekDaysEnum.Morning_Evening;
-                        if (!item.am && !item.pm)
-                            place.weekDay!.tuesday = (int)WeekDaysEnum.NoTime;
-                        break;
-                    case 5:
-                        if (item.am && !item.pm)
-                            place.weekDay!.wednesday = (int)WeekDaysEnum.Morning;
-                        if (!item.am && item.pm)
-                            place.weekDay!.wednesday = (int)WeekDaysEnum.Evening;
-                        if (item.am && item.pm)
-                            place.weekDay!.wednesday = (int)WeekDaysEnum.Morning_Evening;
-                        if (!item.am && !item.pm)
-                            place.weekDay!.wednesday = (int)WeekDaysEnum.NoTime;
-                        break;
-                    case 6:
-                        if (item.am && !item.pm)
-                            place.weekDay!.thursday = (int)WeekDaysEnum.Morning;
-                        if (!item.am && item.pm)
-                            place.weekDay!.thursday = (int)WeekDaysEnum.Evening;
-                        if (item.am && item.pm)
-                            place.weekDay!.thursday = (int)WeekDaysEnum.Morning_Evening;
-                        if (!item.am && !item.pm)
-                            place.weekDay!.thursday = (int)WeekDaysEnum.NoTime;
-                        break;
-                    case 7:
-                        if (item.am && !item.pm)
-                            place.weekDay!.friday = (int)WeekDaysEnum.Morning;
-                        if (!item.am && item.pm)
-                            place.weekDay!.friday = (int)WeekDaysEnum.Evening;
-                        if (item.am && item.pm)
-                            place.weekDay!.friday = (int)WeekDaysEnum.Morning_Evening;
-                        if (!item.am && !item.pm)
-                            place.weekDay!.friday = (int)WeekDaysEnum.NoTime;
-                        break;
+                    switch (item.id)
+                    {
+                        case 1:
+                            if (item.am && !item.pm)
+                                place.weekDay!.saturday = (int)WeekDaysEnum.Morning;
+                            if (!item.am && item.pm)
+                                place.weekDay!.saturday = (int)WeekDaysEnum.Evening;
+                            if (item.am && item.pm)
+                                place.weekDay!.saturday = (int)WeekDaysEnum.Morning_Evening;
+                            if (!item.am && !item.pm)
+                                place.weekDay!.saturday = (int)WeekDaysEnum.NoTime;
+                            break;
+                        case 2:
+                            if (item.am && !item.pm)
+                                place.weekDay!.sunday = (int)WeekDaysEnum.Morning;
+                            if (!item.am && item.pm)
+                                place.weekDay!.sunday = (int)WeekDaysEnum.Evening;
+                            if (item.am && item.pm)
+                                place.weekDay!.sunday = (int)WeekDaysEnum.Morning_Evening;
+                            if (!item.am && !item.pm)
+                                place.weekDay!.sunday = (int)WeekDaysEnum.NoTime;
+                            break;
+                        case 3:
+                            if (item.am && !item.pm)
+                                place.weekDay!.monday = (int)WeekDaysEnum.Morning;
+                            if (!item.am && item.pm)
+                                place.weekDay!.monday = (int)WeekDaysEnum.Evening;
+                            if (item.am && item.pm)
+                                place.weekDay!.monday = (int)WeekDaysEnum.Morning_Evening;
+                            if (!item.am && !item.pm)
+                                place.weekDay!.monday = (int)WeekDaysEnum.NoTime;
+                            break;
+                        case 4:
+                            if (item.am && !item.pm)
+                                place.weekDay!.tuesday = (int)WeekDaysEnum.Morning;
+                            if (!item.am && item.pm)
+                                place.weekDay!.tuesday = (int)WeekDaysEnum.Evening;
+                            if (item.am && item.pm)
+                                place.weekDay!.tuesday = (int)WeekDaysEnum.Morning_Evening;
+                            if (!item.am && !item.pm)
+                                place.weekDay!.tuesday = (int)WeekDaysEnum.NoTime;
+                            break;
+                        case 5:
+                            if (item.am && !item.pm)
+                                place.weekDay!.wednesday = (int)WeekDaysEnum.Morning;
+                            if (!item.am && item.pm)
+                                place.weekDay!.wednesday = (int)WeekDaysEnum.Evening;
+                            if (item.am && item.pm)
+                                place.weekDay!.wednesday = (int)WeekDaysEnum.Morning_Evening;
+                            if (!item.am && !item.pm)
+                                place.weekDay!.wednesday = (int)WeekDaysEnum.NoTime;
+                            break;
+                        case 6:
+                            if (item.am && !item.pm)
+                                place.weekDay!.thursday = (int)WeekDaysEnum.Morning;
+                            if (!item.am && item.pm)
+                                place.weekDay!.thursday = (int)WeekDaysEnum.Evening;
+                            if (item.am && item.pm)
+                                place.weekDay!.thursday = (int)WeekDaysEnum.Morning_Evening;
+                            if (!item.am && !item.pm)
+                                place.weekDay!.thursday = (int)WeekDaysEnum.NoTime;
+                            break;
+                        case 7:
+                            if (item.am && !item.pm)
+                                place.weekDay!.friday = (int)WeekDaysEnum.Morning;
+                            if (!item.am && item.pm)
+                                place.weekDay!.friday = (int)WeekDaysEnum.Evening;
+                            if (item.am && item.pm)
+                                place.weekDay!.friday = (int)WeekDaysEnum.Morning_Evening;
+                            if (!item.am && !item.pm)
+                                place.weekDay!.friday = (int)WeekDaysEnum.NoTime;
+                            break;
+                    }
                 }
             }
             place.cDate = DateTime.Now;
@@ -168,9 +170,31 @@ namespace Tapar.Core.Contracts.Repositories
             await AddAsync(place, cancellationToken);
         }
 
-        public async Task<List<Place>> SearchPlace(string SearchKey, CancellationToken cancellationToken)
+        public async Task<List<Place>> SearchPlace(SearchParams searchParams, CancellationToken cancellationToken)
         {
-            return await TableNoTracking.Where(p => p.tablo.Contains(SearchKey) || p.tags.Contains(SearchKey)).ToListAsync(cancellationToken);
+            var query = TableNoTracking.
+                Where(p => p.tablo.Contains(searchParams.searchKey) || p.tags.Contains(searchParams.searchKey))
+                .AsQueryable();
+
+            if (searchParams.cat3Id != null)
+                query = query.Where(p => p.cat3Id.ToString() == searchParams.cat3Id);
+
+            if (searchParams?.filters?.Count() > 0)
+            {
+                query = query.Include(p => p.place_Filters).AsSplitQuery();
+                //query = query.SelectMany(p => p.place_Filters)
+                //    .Where(a => searchParams.filters.Contains(a.filterId))
+                //    .Select(q => q.place).Distinct();
+
+                foreach (var item in searchParams.filters)
+                {
+                    query = query.SelectMany(p => p.place_Filters).
+                        Where(a => item == a.filterId).Select(p => p.place);
+                }
+
+            }
+            query = query.Skip((searchParams.pageIndex - 1) * 5).Take(5);
+            return await query.ToListAsync(cancellationToken);
         }
 
         public async Task<PlaceGetDto?> GetPlaceById(long id, CancellationToken cancellationToken)
@@ -190,7 +214,6 @@ namespace Tapar.Core.Contracts.Repositories
                 getPlace.cat1Title = place.cat3.cat2.cat1.name;
                 getPlace.cat2Title = place.cat3.cat2.name;
                 getPlace.cat3Title = place.cat3.name;
-                //getPlace.filters = mapper.Map<IEnumerable<FilterDto>>(await cat2Repository.GetCat2Filters(place.cat3.cat2.Id, cancellationToken));
                 return getPlace;
             }
             return null;

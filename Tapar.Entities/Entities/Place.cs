@@ -12,11 +12,11 @@ namespace Tapar.Data.Entities
             weekDay = new();
         }
         public string tablo { get; set; }
-        public string? manager { get; set; } = null;
+        public string manager { get; set; }
         public string? service_description { get; set; } = null;
-        public string mob1 { get; set; }
+        public string? mob1 { get; set; } = null;
         public string? mob2 { get; set; } = null;
-        public string phone1 { get; set; }
+        public string? phone1 { get; set; }= null;
         public string? phone2 { get; set; } = null;
         public string? phone3 { get; set; } = null;
         public string? fax { get; set; } = null;
@@ -35,7 +35,7 @@ namespace Tapar.Data.Entities
         public string? visitCart_front { get; set; } = null;
         public string? visitCart_back { get; set; } = null;
         public string? special_message { get; set; } = null;
-        public string? tags { get; set; } = null;
+        public string tags { get; set; }
         public string? gvalue { get; set; } = null;
         public int? like_count { get; set; } = 0;
         public int? view_count { get; set; } = 0;
@@ -62,15 +62,22 @@ namespace Tapar.Data.Entities
     {
         public void Configure(EntityTypeBuilder<Place> builder)
         {
+            builder.HasIndex(p => p.tablo);
+            builder.HasIndex(p => p.tags);
             builder.Property(p => p.tablo).HasMaxLength(500).IsRequired();
-            builder.Property(p => p.manager).HasMaxLength(50).IsRequired(false);
+            builder.Property(p => p.manager).HasMaxLength(50).IsRequired();
             builder.Property(p => p.service_description).HasMaxLength(200).IsRequired(false);
-            builder.Property(p => p.mob1).HasMaxLength(20).IsRequired(true);
+            builder.Property(p => p.mob1).HasMaxLength(20).IsRequired(false);
             builder.Property(p => p.mob2).HasMaxLength(20).IsRequired(false);
-            builder.Property(p => p.phone1).HasMaxLength(20).IsRequired(true);
+            builder.Property(p => p.phone1).HasMaxLength(20).IsRequired(false);
             builder.Property(p => p.phone2).HasMaxLength(20).IsRequired(false);
             builder.Property(p => p.phone3).HasMaxLength(20).IsRequired(false);
             builder.Property(p => p.fax).HasMaxLength(20).IsRequired(false);
+            builder.Property(p => p.website).HasMaxLength(50).IsRequired(false);
+            builder.Property(p => p.email).HasMaxLength(50).IsRequired(false);
+            builder.Property(p => p.telegram).HasMaxLength(50).IsRequired(false);
+            builder.Property(p => p.instagram).HasMaxLength(50).IsRequired(false);
+            builder.Property(p => p.whatsapp).HasMaxLength(50).IsRequired(false);
             builder.Property(p => p.address).HasMaxLength(500).IsRequired(true);
             builder.Property(p => p.longitude).HasMaxLength(20).IsRequired(false);
             builder.Property(p => p.latitude).HasMaxLength(20).IsRequired(false);
@@ -81,7 +88,7 @@ namespace Tapar.Data.Entities
             builder.Property(p => p.visitCart_front).HasMaxLength(50).IsRequired(false);
             builder.Property(p => p.visitCart_back).HasMaxLength(50).IsRequired(false);
             builder.Property(p => p.special_message).HasMaxLength(500).IsRequired(false);
-            builder.Property(p => p.tags).HasMaxLength(1000).IsRequired(false);
+            builder.Property(p => p.tags).HasMaxLength(1000).IsRequired(true);
             builder.Property(p => p.gvalue).HasMaxLength(1000).IsRequired(false);
             builder.Property(p => p.like_count).IsRequired(false);
             builder.Property(p => p.view_count).IsRequired(false);

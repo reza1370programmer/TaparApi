@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TaparApi.Data;
 
@@ -11,9 +12,10 @@ using TaparApi.Data;
 namespace Tapar.Data.Migrations
 {
     [DbContext(typeof(TaparDbContext))]
-    partial class TaparDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221030161655_index")]
+    partial class index
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -707,7 +709,7 @@ namespace Tapar.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
-                    b.Property<int>("cat2Id")
+                    b.Property<int>("catId")
                         .HasColumnType("int");
 
                     b.Property<long>("tagId")
@@ -715,7 +717,7 @@ namespace Tapar.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("cat2Id");
+                    b.HasIndex("catId");
 
                     b.HasIndex("tagId");
 
@@ -1044,9 +1046,9 @@ namespace Tapar.Data.Migrations
 
             modelBuilder.Entity("Tapar.Data.Entities.TagCat", b =>
                 {
-                    b.HasOne("Tapar.Data.Entities.Cat2", "cat2")
+                    b.HasOne("Tapar.Data.Entities.Cat3", "cat3")
                         .WithMany("tagCats")
-                        .HasForeignKey("cat2Id")
+                        .HasForeignKey("catId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -1056,7 +1058,7 @@ namespace Tapar.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("cat2");
+                    b.Navigation("cat3");
 
                     b.Navigation("tag");
                 });
@@ -1099,8 +1101,6 @@ namespace Tapar.Data.Migrations
                     b.Navigation("cat3s");
 
                     b.Navigation("filters_Cat2s");
-
-                    b.Navigation("tagCats");
                 });
 
             modelBuilder.Entity("Tapar.Data.Entities.Cat3", b =>
@@ -1108,6 +1108,8 @@ namespace Tapar.Data.Migrations
                     b.Navigation("SpecialTypeFields");
 
                     b.Navigation("places");
+
+                    b.Navigation("tagCats");
                 });
 
             modelBuilder.Entity("Tapar.Data.Entities.FieldType", b =>

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Tapar.Core.Common.Api;
+using Tapar.Core.Common.Dtos;
 using Tapar.Core.Common.Dtos.Place;
 using Tapar.Core.Contracts.Interfaces;
 
@@ -49,11 +50,17 @@ namespace TaparApi.Controllers
             if (place == null) return NotFound();
             return Ok(place);
         }
-        [HttpGet("[action]/{searchKey}")]
-        public async Task<IActionResult> SearchPlace(string searchKey, CancellationToken cancellationToken)
+        [HttpGet("[action]")]
+        public async Task<IActionResult> SearchPlace([FromQuery] SearchParams searchParams, CancellationToken cancellationToken)
         {
-            var placeList = mapper.Map<List<PlaceSearchDto>>(await repository.SearchPlace(searchKey, cancellationToken));
-            return Ok(placeList);
+            if(ModelState.IsValid)
+            {
+                var placeList = mapper.Map<List<PlaceSearchDto>>(await repository.SearchPlace(searchParams, cancellationToken));
+                if(placeList == null) return NotFound();
+                return Ok(placeList);
+            }
+            return BadRequest();
         }
+     
     }
 }

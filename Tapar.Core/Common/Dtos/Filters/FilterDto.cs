@@ -2,7 +2,7 @@
 
 namespace Tapar.Core.Common.Dtos.Filters
 {
- 
+
     public class FilterDto
     {
         public int id { get; set; }
@@ -15,6 +15,7 @@ namespace Tapar.Core.Common.Dtos.Filters
         public int id { get; set; }
         public string title { get; set; }
         public string enTitle { get; set; }
+        public bool isSelected { get; set; } = false;
     }
 
 }
