@@ -32,7 +32,7 @@ namespace Tapar.Core.Common.Services.JwtServices
                 Audience = _siteSetting.JwtSettings.Audience,
                 IssuedAt = DateTime.Now,
                 NotBefore = DateTime.Now.AddMinutes(_siteSetting.JwtSettings.NotBeforeMinutes),
-                Expires = DateTime.Now.AddMinutes(_siteSetting.JwtSettings.ExpirationMinutes),
+                Expires = DateTime.Now.AddDays(_siteSetting.JwtSettings.ExpirationDays),
                 SigningCredentials = signingCredentials,
                 EncryptingCredentials = encryptingCredentials,
                 Subject = new ClaimsIdentity(claims)

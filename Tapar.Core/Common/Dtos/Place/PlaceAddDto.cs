@@ -15,21 +15,18 @@ namespace Tapar.Core.Common.Dtos.Place
         [MaxLength(50, ErrorMessage = "تعداد کاراکترهای مدیر نمیتواند از 50 بیشتر باشد")]
         public string modir { get; set; }
         public string? gValue { get; set; }
-        [Required(ErrorMessage = "شماره کاربری را وارد کنید")]
-        public long userId { get; set; }
         public string? longitude { get; set; }
         public string? latitude { get; set; }
         [Required(ErrorMessage = "شماره دسته بندی سطح 3 را وارد کنید")]
         public int cat3Id { get; set; }
         [Required(ErrorMessage = "فیلترها را انتخاب کنید")]
-        public List<int> filters { get; set; }
+        public List<int>? filters { get; set; }
         public Address address { get; set; }
         public RelationWays relationWays { get; set; }
         [Required(ErrorMessage = "آیدی زمان کاری را وارد کنید")]
         public int workingTimeId { get; set; }
         public List<WorkingDays>? workingDays { get; set; }
         [Required(ErrorMessage = "تگ های کسب و کار را وارد کنید")]
-        [MaxLength(1000, ErrorMessage = "تعداد کاراکترهای تگ نمیتواند از 1000 بیشتر باشد")]
         public List<string> tags { get; set; }
         public List<IFormFile>? businessPics { get; set; }
         public List<IFormFile>? modirPic { get; set; }
@@ -63,11 +60,11 @@ namespace Tapar.Core.Common.Dtos.Place
         public string? email { get; set; }
         [MaxLength(50, ErrorMessage = "تعداد کاراکترهای وبسایت نمیتواند از 50 بیشتر باشد")]
         public string? website { get; set; }
-        [MaxLength(50, ErrorMessage = "تعداد کاراکترهای تلگرام نمیتواند از 50 بیشتر باشد")]
+        [MaxLength(20, ErrorMessage = "تعداد کاراکترهای تلگرام نمیتواند از 20 بیشتر باشد")]
         public string? telegram { get; set; }
-        [MaxLength(50, ErrorMessage = "تعداد کاراکترهای اینستاگرام نمیتواند از 50 بیشتر باشد")]
+        [MaxLength(20, ErrorMessage = "تعداد کاراکترهای اینستاگرام نمیتواند از 20 بیشتر باشد")]
         public string? instagram { get; set; }
-        [MaxLength(50, ErrorMessage = "تعداد کاراکترهای واتساپ نمیتواند از 50 بیشتر باشد")]
+        [MaxLength(20, ErrorMessage = "تعداد کاراکترهای واتساپ نمیتواند از 20 بیشتر باشد")]
         public string? whatsapp { get; set; }
     }
     public class WorkingDays

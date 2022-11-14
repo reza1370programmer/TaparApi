@@ -11,6 +11,7 @@ namespace Tapar.Core.Contracts.Interfaces
     {
         Task AddPlace(PlaceAddDto dto,CancellationToken cancellationToken);
         Task<List<Place>> SearchPlace(SearchParams searchParams,CancellationToken cancellationToken);
-        Task<PlaceGetDto> GetPlaceById(long id, CancellationToken cancellationToken);
+        Task<int?> AddLikeForPlace(long placeId,CancellationToken cancellationToken);
+        //Task<PlaceGetDto> GetPlaceById(long id, CancellationToken cancellationToken);
     }
 }

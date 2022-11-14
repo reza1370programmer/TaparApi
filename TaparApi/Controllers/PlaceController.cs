@@ -43,23 +43,33 @@ namespace TaparApi.Controllers
 
 
         }
-        [HttpGet("[action]")]
-        public async Task<IActionResult> GetPlaceById([FromQuery] long id, CancellationToken cancellationToken)
-        {
-            var place = await repository.GetPlaceById(id, cancellationToken);
-            if (place == null) return NotFound();
-            return Ok(place);
-        }
+        //[HttpGet("[action]")]
+        //public async Task<IActionResult> GetPlaceById([FromQuery] long id, CancellationToken cancellationToken)
+        //{
+        //    var place = await repository.GetPlaceById(id, cancellationToken);
+        //    if (place == null) return NotFound();
+        //    return Ok(place);
+        //}
         [HttpGet("[action]")]
         public async Task<IActionResult> SearchPlace([FromQuery] SearchParams searchParams, CancellationToken cancellationToken)
         {
             if(ModelState.IsValid)
             {
                 var placeList = mapper.Map<List<PlaceSearchDto>>(await repository.SearchPlace(searchParams, cancellationToken));
-                if(placeList == null) return NotFound();
+                if (placeList == null) return NotFound();
                 return Ok(placeList);
             }
             return BadRequest();
+        }
+        [HttpGet("[action]/{placeId}")]
+        public async Task<IActionResult> AddLikeToPlace(long placeId,CancellationToken cancellationToken)
+        {
+            if(UserIsAutheticated)
+            {
+                var likecount = await repository.AddLikeForPlace(placeId, cancellationToken);
+                return Ok(likecount);
+            }
+            return Unauthorized();
         }
      
     }

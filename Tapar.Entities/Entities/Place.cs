@@ -54,7 +54,7 @@ namespace Tapar.Data.Entities
         public List<Comment> comments { get; set; }
         public List<ViewCount> viewCounts { get; set; }
         public List<LikeCount> likeCounts { get; set; }
-        public List<Place_Filter> place_Filters { get; set; }
+        public List<Place_Filter>? place_Filters { get; set; }
 
 
     }
@@ -75,9 +75,9 @@ namespace Tapar.Data.Entities
             builder.Property(p => p.fax).HasMaxLength(20).IsRequired(false);
             builder.Property(p => p.website).HasMaxLength(50).IsRequired(false);
             builder.Property(p => p.email).HasMaxLength(50).IsRequired(false);
-            builder.Property(p => p.telegram).HasMaxLength(50).IsRequired(false);
-            builder.Property(p => p.instagram).HasMaxLength(50).IsRequired(false);
-            builder.Property(p => p.whatsapp).HasMaxLength(50).IsRequired(false);
+            builder.Property(p => p.telegram).HasMaxLength(20).IsRequired(false);
+            builder.Property(p => p.instagram).HasMaxLength(20).IsRequired(false);
+            builder.Property(p => p.whatsapp).HasMaxLength(20).IsRequired(false);
             builder.Property(p => p.address).HasMaxLength(500).IsRequired(true);
             builder.Property(p => p.longitude).HasMaxLength(20).IsRequired(false);
             builder.Property(p => p.latitude).HasMaxLength(20).IsRequired(false);

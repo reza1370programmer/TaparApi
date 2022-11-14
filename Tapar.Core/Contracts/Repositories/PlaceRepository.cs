@@ -49,7 +49,7 @@ namespace Tapar.Core.Contracts.Repositories
             place.whatsapp = dto.relationWays.whatsapp;
             place.workTimeId = dto.workingTimeId;
             place.cat3Id = dto.cat3Id;
-            place.userId = dto.userId;
+            place.userId = long.Parse(httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier)!);
             switch (dto.businessPics?.Count)
             {
                 case 1:
@@ -172,9 +172,15 @@ namespace Tapar.Core.Contracts.Repositories
 
         public async Task<List<Place>> SearchPlace(SearchParams searchParams, CancellationToken cancellationToken)
         {
-            var query = TableNoTracking.
-                Where(p => p.tablo.Contains(searchParams.searchKey) || p.tags.Contains(searchParams.searchKey))
-                .AsQueryable();
+            var query = TableNoTracking
+                .Include(p => p.weekDay).Include(p => p.cat3).
+                ThenInclude(p => p.cat2).
+                ThenInclude(p => p.cat1).
+                AsSplitQuery().AsQueryable();
+            if (searchParams.searchKey != null)
+            {
+                query = query.Where(p => p.tablo.Contains(searchParams.searchKey) || p.tags.Contains(searchParams.searchKey));
+            }
 
             if (searchParams.cat3Id != null)
                 query = query.Where(p => p.cat3Id.ToString() == searchParams.cat3Id);
@@ -197,28 +203,45 @@ namespace Tapar.Core.Contracts.Repositories
             return await query.ToListAsync(cancellationToken);
         }
 
-        public async Task<PlaceGetDto?> GetPlaceById(long id, CancellationToken cancellationToken)
+        public async Task<int?> AddLikeForPlace(long idplaceId,CancellationToken cancellationToken)
         {
-            PlaceGetDto getPlace = new();
-            var place = await TableNoTracking.
-                Include(p => p.weekDay).
-                Include(p => p.cat3).
-                ThenInclude(p => p.cat2).
-                ThenInclude(p => p.cat1).
-                AsSplitQuery().
-                SingleOrDefaultAsync(p => p.Id == id);
-            if (place != null)
+            var userid = long.Parse(httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            var place = await Table.Include(p => p.likeCounts).SingleOrDefaultAsync(p => p.Id == idplaceId);
+            if (!place.likeCounts.Any(p => p.userId == userid))
             {
-                getPlace = mapper.Map<PlaceGetDto>(place);
-                getPlace.cat1Id = place.cat3.cat2.cat1.Id;
-                getPlace.cat1Title = place.cat3.cat2.cat1.name;
-                getPlace.cat2Title = place.cat3.cat2.name;
-                getPlace.cat3Title = place.cat3.name;
-                return getPlace;
+                place.likeCounts.Add(new LikeCount()
+                {
+                    likeDate = new DateTime(),
+                    placeId = idplaceId,
+                    userId = userid
+                });
+                place.like_count = place.likeCounts.Count();
+                await UpdateAsync(place, cancellationToken);
+                return place.like_count;
             }
-            return null;
-
-
+            return -1;
         }
+
+        //public async Task<PlaceGetDto?> GetPlaceById(long id, CancellationToken cancellationToken)
+        //{
+        //    PlaceGetDto getPlace = new();
+        //    var place = await TableNoTracking.
+        //        Include(p => p.weekDay).
+        //        Include(p => p.cat3).
+        //        ThenInclude(p => p.cat2).
+        //        ThenInclude(p => p.cat1).
+        //        AsSplitQuery().
+        //        SingleOrDefaultAsync(p => p.Id == id);
+        //    if (place != null)
+        //    {
+        //        getPlace = mapper.Map<PlaceGetDto>(place);
+        //        getPlace.cat1Id = place.cat3.cat2.cat1.Id;
+        //        getPlace.cat1Title = place.cat3.cat2.cat1.name;
+        //        getPlace.cat2Title = place.cat3.cat2.name;
+        //        getPlace.cat3Title = place.cat3.name;
+        //        return getPlace;
+        //    }
+        //    return null;
+        //}
     }
 }
