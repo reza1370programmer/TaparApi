@@ -19,7 +19,7 @@ namespace TaparApi.Controllers
         [HttpGet("[action]")]
         public async Task<IActionResult> GetListOfCat1(CancellationToken cancellationToken)
         {
-            var list = await repository.TableNoTracking.ToListAsync(cancellationToken);
+            var list = await repository.TableNoTracking.OrderBy(p => p.Id).ToListAsync(cancellationToken);
             return Ok(list);
         }
         [HttpGet("[action]/{id}")]

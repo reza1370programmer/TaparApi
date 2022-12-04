@@ -1,12 +1,10 @@
-﻿
-
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Tapar.Data.Common;
 
 namespace Tapar.Data.Entities
 {
-    public class Filters:BaseEntity
+    public class Filters : BaseEntity
     {
         public string title { get; set; }
         public string enTitle { get; set; }
@@ -20,6 +18,8 @@ namespace Tapar.Data.Entities
     {
         public void Configure(EntityTypeBuilder<Filters> builder)
         {
+            builder.HasIndex(u => u.title).IsUnique();
+            builder.HasIndex(u => u.enTitle).IsUnique();
             builder.Property(p => p.title).HasMaxLength(50).IsRequired();
             builder.Property(p => p.enTitle).HasMaxLength(50).IsRequired();
             builder.HasMany(p => p.childFilters).WithOne(p => p.parent).HasForeignKey(p => p.parentId);

@@ -12,7 +12,6 @@ public class Cat2 : BaseEntity
     public Cat1? cat1 { get; set; }
     public int? cat1Id { get; set; }
     public List<Cat3> cat3s { get; set; }
-    public List<TagCat>? tagCats { get; set; }
     public List<SpecialTypeField> SpecialTypeFields { get; set; }
     public List<Filters_Cat2> filters_Cat2s { get; set; }
 }

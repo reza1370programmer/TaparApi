@@ -9,9 +9,18 @@ namespace Tapar.Core.Contracts.Interfaces
     [ScopedService]
     public interface IPlaceRepository:IRepository<Place>
     {
-        Task AddPlace(PlaceAddDto dto,CancellationToken cancellationToken);
-        Task<List<Place>> SearchPlace(SearchParams searchParams,CancellationToken cancellationToken);
-        Task<int?> AddLikeForPlace(long placeId,CancellationToken cancellationToken);
+        #region General
+        Task AddPlace(PlaceAddDto dto, CancellationToken cancellationToken);
+        Task<List<Place>> SearchPlace(SearchParams searchParams, CancellationToken cancellationToken);
+        Task<int?> AddLikeForPlace(long placeId, CancellationToken cancellationToken);
+        Task AddView(long placeId, CancellationToken cancellationToken);
+        #endregion
+
+        #region UserPanel
+        Task<List<Place>> GetPlacesByUserId(long userid, CancellationToken cancellationToken);
+        Task<PlaceForEditAdminPanelDto> GetPlaceForEditAdminPanel(long placeid, CancellationToken cancellationToken);
+        #endregion
+
         //Task<PlaceGetDto> GetPlaceById(long id, CancellationToken cancellationToken);
     }
 }

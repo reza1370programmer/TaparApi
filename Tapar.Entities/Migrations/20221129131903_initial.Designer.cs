@@ -12,8 +12,8 @@ using TaparApi.Data;
 namespace Tapar.Data.Migrations
 {
     [DbContext(typeof(TaparDbContext))]
-    [Migration("20221004152809_next")]
-    partial class next
+    [Migration("20221129131903_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -32,11 +32,17 @@ namespace Tapar.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("abbreviation")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
                     b.Property<string>("gdesc")
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("name")
+                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
@@ -91,6 +97,7 @@ namespace Tapar.Data.Migrations
                         .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("name")
+                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
@@ -109,18 +116,14 @@ namespace Tapar.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("approv_date")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                    b.Property<DateTime>("approv_date")
+                        .HasColumnType("datetime2");
 
                     b.Property<long>("approv_date_userId")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("create_date")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                    b.Property<DateTime>("create_date")
+                        .HasColumnType("datetime2");
 
                     b.Property<long>("placeId")
                         .HasColumnType("bigint");
@@ -140,24 +143,6 @@ namespace Tapar.Data.Migrations
                     b.HasIndex("userId");
 
                     b.ToTable("Comments");
-                });
-
-            modelBuilder.Entity("Tapar.Data.Entities.FieldType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("FieldTypes");
                 });
 
             modelBuilder.Entity("Tapar.Data.Entities.Filters", b =>
@@ -183,7 +168,13 @@ namespace Tapar.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("enTitle")
+                        .IsUnique();
+
                     b.HasIndex("parentId");
+
+                    b.HasIndex("title")
+                        .IsUnique();
 
                     b.ToTable("Filters");
                 });
@@ -245,6 +236,11 @@ namespace Tapar.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("abbreviation")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
                     b.Property<bool>("isActive")
                         .HasColumnType("bit");
 
@@ -265,6 +261,9 @@ namespace Tapar.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("abbreviation")
+                        .IsUnique();
 
                     b.ToTable("Locations");
                 });
@@ -324,47 +323,27 @@ namespace Tapar.Data.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<DateTime?>("approvedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("approvedUserId")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("bussiness_pic1")
-                        .HasMaxLength(25)
-                        .HasColumnType("nvarchar(25)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("bussiness_pic2")
-                        .HasMaxLength(25)
-                        .HasColumnType("nvarchar(25)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("bussiness_pic3")
-                        .HasMaxLength(25)
-                        .HasColumnType("nvarchar(25)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime?>("cDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<long?>("cUserId")
-                        .HasColumnType("bigint");
-
                     b.Property<int>("cat3Id")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("deactivatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("deactivatedDescription")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long?>("deactivatedUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime?>("deletedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("deletedUserId")
-                        .HasColumnType("bigint");
+                    b.Property<string>("email")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("fax")
                         .HasMaxLength(20)
@@ -374,8 +353,11 @@ namespace Tapar.Data.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
+                    b.Property<string>("instagram")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
                     b.Property<string>("latitude")
-                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
@@ -386,22 +368,21 @@ namespace Tapar.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("longitude")
-                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("manager")
+                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("mob1")
-                        .IsRequired()
-                        .HasMaxLength(11)
-                        .HasColumnType("nvarchar(11)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("mob2")
-                        .HasMaxLength(11)
-                        .HasColumnType("nvarchar(11)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<DateTime?>("modifiedDate")
                         .HasColumnType("datetime2");
@@ -413,21 +394,20 @@ namespace Tapar.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("personal_pic")
-                        .HasMaxLength(25)
-                        .HasColumnType("nvarchar(25)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("phone1")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("phone2")
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("phone3")
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("service_description")
                         .HasMaxLength(200)
@@ -436,6 +416,9 @@ namespace Tapar.Data.Migrations
                     b.Property<string>("special_message")
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
+
+                    b.Property<int>("status")
+                        .HasColumnType("int");
 
                     b.Property<string>("tablo")
                         .IsRequired()
@@ -447,6 +430,15 @@ namespace Tapar.Data.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
+                    b.Property<string>("taparcode")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("telegram")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
                     b.Property<long>("userId")
                         .HasColumnType("bigint");
 
@@ -454,12 +446,20 @@ namespace Tapar.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("visitCart_back")
-                        .HasMaxLength(25)
-                        .HasColumnType("nvarchar(25)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("visitCart_front")
-                        .HasMaxLength(25)
-                        .HasColumnType("nvarchar(25)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("website")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("whatsapp")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<int>("workTimeId")
                         .HasColumnType("int");
@@ -469,6 +469,10 @@ namespace Tapar.Data.Migrations
                     b.HasIndex("cat3Id");
 
                     b.HasIndex("locationId");
+
+                    b.HasIndex("tablo");
+
+                    b.HasIndex("tags");
 
                     b.HasIndex("userId");
 
@@ -560,9 +564,6 @@ namespace Tapar.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("Cat3Id")
-                        .HasColumnType("int");
-
                     b.Property<int?>("cat2Id")
                         .HasColumnType("int");
 
@@ -571,16 +572,10 @@ namespace Tapar.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("fieldTypeId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("isRequired")
                         .HasColumnType("bit");
 
                     b.Property<string>("maxLength")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("minLength")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("title")
@@ -590,11 +585,7 @@ namespace Tapar.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Cat3Id");
-
                     b.HasIndex("cat2Id");
-
-                    b.HasIndex("fieldTypeId");
 
                     b.ToTable("SpecialTypeFields");
                 });
@@ -685,7 +676,7 @@ namespace Tapar.Data.Migrations
                     b.ToTable("Tags");
                 });
 
-            modelBuilder.Entity("Tapar.Data.Entities.TagCat", b =>
+            modelBuilder.Entity("Tapar.Data.Entities.TagCat3", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -693,7 +684,7 @@ namespace Tapar.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
-                    b.Property<int>("catId")
+                    b.Property<int>("cat3Id")
                         .HasColumnType("int");
 
                     b.Property<long>("tagId")
@@ -701,11 +692,11 @@ namespace Tapar.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("catId");
+                    b.HasIndex("cat3Id");
 
                     b.HasIndex("tagId");
 
-                    b.ToTable("TagCats");
+                    b.ToTable("TagCat3s");
                 });
 
             modelBuilder.Entity("Tapar.Data.Entities.User", b =>
@@ -1000,21 +991,9 @@ namespace Tapar.Data.Migrations
 
             modelBuilder.Entity("Tapar.Data.Entities.SpecialTypeField", b =>
                 {
-                    b.HasOne("Tapar.Data.Entities.Cat3", null)
-                        .WithMany("SpecialTypeFields")
-                        .HasForeignKey("Cat3Id");
-
                     b.HasOne("Tapar.Data.Entities.Cat2", "cat2")
                         .WithMany("SpecialTypeFields")
                         .HasForeignKey("cat2Id");
-
-                    b.HasOne("Tapar.Data.Entities.FieldType", "FieldType")
-                        .WithMany("SpecialTypeFields")
-                        .HasForeignKey("fieldTypeId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("FieldType");
 
                     b.Navigation("cat2");
                 });
@@ -1028,11 +1007,11 @@ namespace Tapar.Data.Migrations
                     b.Navigation("place");
                 });
 
-            modelBuilder.Entity("Tapar.Data.Entities.TagCat", b =>
+            modelBuilder.Entity("Tapar.Data.Entities.TagCat3", b =>
                 {
                     b.HasOne("Tapar.Data.Entities.Cat3", "cat3")
-                        .WithMany("tagCats")
-                        .HasForeignKey("catId")
+                        .WithMany("tagCat3s")
+                        .HasForeignKey("cat3Id")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -1089,16 +1068,9 @@ namespace Tapar.Data.Migrations
 
             modelBuilder.Entity("Tapar.Data.Entities.Cat3", b =>
                 {
-                    b.Navigation("SpecialTypeFields");
-
                     b.Navigation("places");
 
-                    b.Navigation("tagCats");
-                });
-
-            modelBuilder.Entity("Tapar.Data.Entities.FieldType", b =>
-                {
-                    b.Navigation("SpecialTypeFields");
+                    b.Navigation("tagCat3s");
                 });
 
             modelBuilder.Entity("Tapar.Data.Entities.Filters", b =>

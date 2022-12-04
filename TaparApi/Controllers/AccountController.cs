@@ -1,17 +1,18 @@
 ﻿using AspNetCore.Totp.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using Tapar.Core.Common.Api;
 using Tapar.Core.Common.Dtos.Account;
 using Tapar.Core.Common.Dtos.RefreshToken;
+using Tapar.Core.Common.Extensions;
 using Tapar.Core.Common.Services.JwtServices;
 using Tapar.Core.Contracts.Interfaces;
 using Tapar.Data.Entities;
 
 namespace TaparApi.Controllers
 {
-    [Route("[controller]")]
-    [ApiController]
+    
     public class AccountController : BaseController
     {
         public ISuperAdminRepository SuperAdminRepository { get; set; }
@@ -31,18 +32,22 @@ namespace TaparApi.Controllers
             this.totpValidator = totpValidator;
         }
         [HttpPost("[action]")]
-        public async Task<ApiResult<object>> Login(LoginSuperAdminDTO loginUserDto, CancellationToken cancellationToken)
+        public async Task<IActionResult> Login(LoginSuperAdminDTO loginUserDto, CancellationToken cancellationToken)
         {
-            var admin = await SuperAdminRepository.LoginSuperAdmin(loginUserDto, cancellationToken);
-            if (admin == null)
-                return NotFound("نام کاربری یا کلمه عبور اشتباه است");
-            var token = await JwtService.GenerateAsync(admin);
-            var newRefreshToken = GenerateRefreshToken();
-            await refreshTokenRepository.AddAsync(
-                 new RefreshTokens { expirationDate = newRefreshToken.expirationDate, refreshToken = newRefreshToken.refreshToken, superAdminId = admin.Id }
-                 , cancellationToken);
-            return new { adminType = admin.adminType, fullName = admin.fullName, refreshToken = newRefreshToken.refreshToken, token = token, userId = admin.Id.ToString(), expirationTime = 30 };
-
+            if(ModelState.IsValid)
+            {
+                var superAdmin = await SuperAdminRepository.LoginSuperAdmin(loginUserDto, cancellationToken);
+                if (superAdmin == null)
+                    return NotFound("نام کاربری یا کلمه عبور اشتباه است");
+                var token = await JwtService.GenerateAsync(superAdmin);
+                //var newRefreshToken = GenerateRefreshToken();
+                //await refreshTokenRepository.AddAsync(
+                //     new RefreshTokens { expirationDate = newRefreshToken.expirationDate, refreshToken = newRefreshToken.refreshToken, superAdminId = admin.Id }
+                //     , cancellationToken);
+                //return new { adminType = admin.adminType, fullName = admin.fullName, refreshToken = newRefreshToken.refreshToken, token = token, userId = admin.Id.ToString(), expirationTime = 30 };
+                return Ok(new { superAdmin.adminType, superAdmin.fullName, token, userId = superAdmin.Id.ToString() });
+            }
+            return BadRequest();
         }
         [HttpPost("[action]")]
         public async Task<IActionResult> LoginUser(LoginUserDto loginUserDto, CancellationToken cancellationToken)
@@ -118,9 +123,21 @@ namespace TaparApi.Controllers
         }
 
         [HttpGet("[action]")]
-        public IActionResult checkToken()
+        public IActionResult CheckUserAuth()
         {
-            return User.Identity!.IsAuthenticated ? Ok("you are authorized") : Unauthorized();
+            return UserIsAutheticated ? Ok(true) : Unauthorized();
+        }
+        [HttpGet("[action]")]
+        public async Task <IActionResult> CheckSuperAdminAuth(CancellationToken cancellationToken)
+        {
+            var role = User.FindFirstValue(ClaimTypes.Role);
+            if (role == "superadmin" && UserIsAutheticated)
+            {
+                var user = await SuperAdminRepository.GetByIdAsync(cancellationToken,User.GetUserId());
+                return Ok(new {user.fullName,userId=user.Id,user.adminType});
+            }
+                
+            return Unauthorized();
         }
         [HttpGet("[action]")]
         public async Task<IActionResult> LogOut([FromQuery] string refreshToken, CancellationToken cancellation)

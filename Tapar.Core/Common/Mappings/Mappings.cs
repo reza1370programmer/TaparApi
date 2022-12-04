@@ -11,11 +11,12 @@ public class Mappings : Profile
 {
     public Mappings()
     {
-
+        CreateMap<CatDto,Cat3>().ReverseMap();
         CreateMap<SpecialTypeField, DynamicFieldsDto>().ReverseMap();
         CreateMap<FilterDto, Data.Entities.Filters>().ReverseMap();
         CreateMap<ChildFilterDto, Data.Entities.Filters>().ReverseMap();
         CreateMap<Place, PlaceAddDto>().ReverseMap();
+        CreateMap<Place, BusinessForAdminPanelDto>().ForMember(x=>x.cdate,y=>y.MapFrom(g=>g.cDate.Value.ToString("yyyy-MM-dd")));
         CreateMap<Place, PlaceSearchDto>()
             .ForMember(x => x.cat3Title, y => y.MapFrom(x => x.cat3.name))
             .ForMember(x => x.cat2Title, y => y.MapFrom(x => x.cat3.cat2.name))

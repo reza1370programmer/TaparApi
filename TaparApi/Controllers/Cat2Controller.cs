@@ -2,10 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Tapar.Core.Common.Api;
-using Tapar.Core.Common.Dtos;
 using Tapar.Core.Common.Dtos.Filters;
 using Tapar.Core.Contracts.Interfaces;
-using Tapar.Data.Entities;
 
 namespace TaparApi.Controllers
 {
@@ -14,15 +12,14 @@ namespace TaparApi.Controllers
     {
         public ICat2Repsitory Repository { get; set; }
         public IMapper Mapper { get; set; }
-        public IRepository<TagCat> tagCatRepository { get; set; }
-        public Cat2Controller(ICat2Repsitory repository, IMapper mapper, IRepository<TagCat> tagCatRepository)
+
+        public Cat2Controller(ICat2Repsitory repository, IMapper mapper)
         {
             Repository = repository;
             Mapper = mapper;
-            this.tagCatRepository = tagCatRepository;
         }
         [HttpGet("[action]")]
-        public async Task<IActionResult> GetListOfCat2(long id, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetListOfCat2(int id, CancellationToken cancellationToken)
         {
             var list = await Repository.TableNoTracking.Select(p => new { p.name, p.Id }).ToListAsync(cancellationToken);
             return Ok(list);
@@ -37,13 +34,9 @@ namespace TaparApi.Controllers
         [HttpGet("[action]/{id}")]
         public async Task<IActionResult> GetCat2sByCat1Id(int id, CancellationToken cancellationToken)
         {
-            if (UserIsAutheticated)
-            {
-                var list = await Repository.GetCat2sByCat1Id(id, cancellationToken);
-                return Ok(list.Select(p => new { p.name, p.popup_state, p.Id }));
-            }
-            return Unauthorized();
 
+            var list = await Repository.GetCat2sByCat1Id(id, cancellationToken);
+            return Ok(list.Select(p => new { p.name, p.Id, }));
         }
         [HttpGet("[action]/{id}")]
         public async Task<IActionResult> GetFiltersByCat2Id(int id, CancellationToken cancellationToken)
@@ -51,11 +44,14 @@ namespace TaparApi.Controllers
             var filters = Mapper.Map<FilterDto[]>(await Repository.GetCat2Filters(id, cancellationToken));
             return Ok(filters);
         }
-        [HttpGet("[action]/{cat2Id}")]
-        public async Task<IActionResult> GetTagsByCat2Id(int cat2Id,CancellationToken cancellationToken)
+
+        [HttpGet("[action]/{id}")]
+        public async Task<IActionResult> GetCat2sByCat1IdForSuperAdmin(int id, CancellationToken cancellationToken)
         {
-            var tags=await tagCatRepository.TableNoTracking.Where(p=>p.cat2Id==cat2Id).Select(q=>q.tag.title).ToListAsync(cancellationToken);
-            return Ok(tags);
+
+            var list = await Repository.GetCat2sByCat1Id(id, cancellationToken);
+            return Ok(list.Select(p => new { p.name, p.Id, selected = false }).OrderBy(p=>p.Id));
         }
+
     }
 }

@@ -13,10 +13,11 @@ namespace Tapar.Data.Entities
         }
         public string tablo { get; set; }
         public string manager { get; set; }
+        public string taparcode { get; set; }
         public string? service_description { get; set; } = null;
         public string? mob1 { get; set; } = null;
         public string? mob2 { get; set; } = null;
-        public string? phone1 { get; set; }= null;
+        public string? phone1 { get; set; } = null;
         public string? phone2 { get; set; } = null;
         public string? phone3 { get; set; } = null;
         public string? fax { get; set; } = null;
@@ -28,9 +29,9 @@ namespace Tapar.Data.Entities
         public string address { get; set; }
         public string? longitude { get; set; } = null;
         public string? latitude { get; set; } = null;
-        public string? bussiness_pic1 { get; set; }= null;
-        public string? bussiness_pic2 { get; set; }=null;
-        public string? bussiness_pic3 { get; set; }=null;
+        public string? bussiness_pic1 { get; set; } = null;
+        public string? bussiness_pic2 { get; set; } = null;
+        public string? bussiness_pic3 { get; set; } = null;
         public string? personal_pic { get; set; } = null;
         public string? visitCart_front { get; set; } = null;
         public string? visitCart_back { get; set; } = null;
@@ -66,6 +67,7 @@ namespace Tapar.Data.Entities
             builder.HasIndex(p => p.tags);
             builder.Property(p => p.tablo).HasMaxLength(500).IsRequired();
             builder.Property(p => p.manager).HasMaxLength(50).IsRequired();
+            builder.Property(p => p.taparcode).HasMaxLength(30).IsRequired();
             builder.Property(p => p.service_description).HasMaxLength(200).IsRequired(false);
             builder.Property(p => p.mob1).HasMaxLength(20).IsRequired(false);
             builder.Property(p => p.mob2).HasMaxLength(20).IsRequired(false);

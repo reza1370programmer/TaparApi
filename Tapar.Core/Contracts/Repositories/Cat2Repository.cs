@@ -18,7 +18,7 @@ public class Cat2Repository : Repository<Cat2>, ICat2Repsitory
             Select(p=>p.filter).AsSplitQuery().ToListAsync();
     }
 
-    public async Task<IEnumerable<Cat2>> GetCat2sByCat1Id(int id, CancellationToken cancellationToken)
+    public async Task<List<Cat2>> GetCat2sByCat1Id(int id, CancellationToken cancellationToken)
     {
         return await TableNoTracking.Where(c => c.cat1Id == id).ToListAsync(cancellationToken);
     }

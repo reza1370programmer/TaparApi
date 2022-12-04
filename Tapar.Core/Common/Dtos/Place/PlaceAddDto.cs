@@ -19,7 +19,6 @@ namespace Tapar.Core.Common.Dtos.Place
         public string? latitude { get; set; }
         [Required(ErrorMessage = "شماره دسته بندی سطح 3 را وارد کنید")]
         public int cat3Id { get; set; }
-        [Required(ErrorMessage = "فیلترها را انتخاب کنید")]
         public List<int>? filters { get; set; }
         public Address address { get; set; }
         public RelationWays relationWays { get; set; }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using Tapar.Core.Common.Api;
 using Tapar.Core.Common.Dtos;
 using Tapar.Core.Common.Dtos.Place;
@@ -11,14 +12,20 @@ namespace TaparApi.Controllers
 
     public class PlaceController : BaseController
     {
+        #region Properties
         public IPlaceRepository repository { get; set; }
         public IMapper mapper { get; set; }
+        #endregion
 
+        #region Constructor
         public PlaceController(IPlaceRepository repository, IMapper mapper)
         {
             this.repository = repository;
             this.mapper = mapper;
         }
+        #endregion
+
+        #region Methods
         [HttpPost("[action]")]
         public async Task<IActionResult> AddPlace([FromForm] PlaceAddDto dto, CancellationToken cancellationToken)
         {
@@ -43,17 +50,10 @@ namespace TaparApi.Controllers
 
 
         }
-        //[HttpGet("[action]")]
-        //public async Task<IActionResult> GetPlaceById([FromQuery] long id, CancellationToken cancellationToken)
-        //{
-        //    var place = await repository.GetPlaceById(id, cancellationToken);
-        //    if (place == null) return NotFound();
-        //    return Ok(place);
-        //}
         [HttpGet("[action]")]
         public async Task<IActionResult> SearchPlace([FromQuery] SearchParams searchParams, CancellationToken cancellationToken)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var placeList = mapper.Map<List<PlaceSearchDto>>(await repository.SearchPlace(searchParams, cancellationToken));
                 if (placeList == null) return NotFound();
@@ -62,15 +62,45 @@ namespace TaparApi.Controllers
             return BadRequest();
         }
         [HttpGet("[action]/{placeId}")]
-        public async Task<IActionResult> AddLikeToPlace(long placeId,CancellationToken cancellationToken)
+        public async Task<IActionResult> AddLikeToPlace(long placeId, CancellationToken cancellationToken)
         {
-            if(UserIsAutheticated)
+            if (UserIsAutheticated)
             {
                 var likecount = await repository.AddLikeForPlace(placeId, cancellationToken);
                 return Ok(likecount);
             }
             return Unauthorized();
         }
-     
+        [HttpGet("[action]/{placeId}")]
+        public async Task<IActionResult> AddViewAsync(long placeId, CancellationToken cancellationToken)
+        {
+            await repository.AddView(placeId, cancellationToken);
+            return NoContent();
+        }
+
+        #region UserPanelMethods
+        [HttpGet("[action]/{placeId}")]
+        public async Task<IActionResult> GetPlaceForEditUserPanel(long placeId, CancellationToken cancellationToken)
+        {
+            var placedto = await repository.GetPlaceForEditAdminPanel(placeId, cancellationToken);
+            return Ok(placedto);
+        }
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetPlacesByUserId(CancellationToken cancellation)
+        {
+            if (UserIsAutheticated)
+            {
+                var userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var places = mapper.Map<List<BusinessForAdminPanelDto>>(await repository.GetPlacesByUserId(Convert.ToInt64(userid), cancellation));
+                return Ok(places);
+            }
+            else
+                return Unauthorized();
+            
+        }
+        #endregion
+
+        #endregion
+
     }
 }

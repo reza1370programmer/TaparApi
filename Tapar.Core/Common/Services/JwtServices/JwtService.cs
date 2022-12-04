@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Tapar.Data.Entities;
@@ -52,7 +53,8 @@ namespace Tapar.Core.Common.Services.JwtServices
             if (typeof(T) == typeof(SuperAdmin))
             {
                 var superadmin = (SuperAdmin)Convert.ChangeType(user, typeof(SuperAdmin));
-                list.Add(new Claim(ClaimTypes.Role, "admin"));
+                list.Add(new Claim(ClaimTypes.Role, "superadmin"));
+                list.Add(new Claim(ClaimTypes.NameIdentifier, superadmin.Id.ToString()));
 
             }
             else

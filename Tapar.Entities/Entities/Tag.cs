@@ -10,7 +10,7 @@ namespace Tapar.Data.Entities
     {
         public string title { get; set; }
         public bool status { get; set; } = false;//true for user inserted tags
-        public List<TagCat> tagCats { get; set; }
+        public List<TagCat3> tagCats { get; set; }
         public List<Place_Tag> place_Tags { get; set; }
     }
     public class TagConfiguration : IEntityTypeConfiguration<Tag>

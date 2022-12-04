@@ -37,7 +37,6 @@
 
   <ItemGroup>
     <Folder Include="ClientApp\dist\" />
-    <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
 </Project>

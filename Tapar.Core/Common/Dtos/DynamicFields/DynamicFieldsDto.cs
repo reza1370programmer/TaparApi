@@ -4,7 +4,6 @@
     {
         public string title { get; set; }
         public string enTitle { get; set; }
-        public string? minLength { get; set; }
         public string? maxLength { get; set; }
         public bool isRequired { get; set; }
     }
