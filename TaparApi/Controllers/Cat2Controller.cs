@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using Tapar.Core.Common.Api;
+using Tapar.Core.Common.Dtos;
 using Tapar.Core.Common.Dtos.Filters;
 using Tapar.Core.Contracts.Interfaces;
 
@@ -50,7 +52,24 @@ namespace TaparApi.Controllers
         {
 
             var list = await Repository.GetCat2sByCat1Id(id, cancellationToken);
-            return Ok(list.Select(p => new { p.name, p.Id, selected = false }).OrderBy(p=>p.Id));
+            return Ok(list.Select(p => new { p.name, p.Id, selected = false }).OrderBy(p => p.Id));
+        }
+        [HttpPost("[action]")]
+        public async Task<IActionResult> AddCat2(AddCat2Dto addCat2Dto, CancellationToken cancellationToken)
+        {
+            var role = User.FindFirstValue(ClaimTypes.Role);
+            if (role == "superadmin" && UserIsAutheticated)
+            {
+                if (ModelState.IsValid)
+                {
+                    await Repository.AddCat2(addCat2Dto, cancellationToken);
+                    var list = await Repository.GetCat2sByCat1Id(addCat2Dto.cat1Id, cancellationToken);
+                    return Ok(list.Select(p => new { p.name, p.Id, selected = false }).OrderBy(p => p.Id));
+                }
+                return BadRequest(ModelState);
+            }
+            return Unauthorized();
+          
         }
 
     }

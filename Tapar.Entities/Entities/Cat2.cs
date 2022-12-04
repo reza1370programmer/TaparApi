@@ -7,13 +7,12 @@ namespace Tapar.Data.Entities;
 public class Cat2 : BaseEntity
 {
     public string name { get; set; }
-    public string gdesc { get; set; }
-    public int popup_state { get; set; }
-    public Cat1? cat1 { get; set; }
-    public int? cat1Id { get; set; }
+    public string? gdesc { get; set; }
+    public Cat1 cat1 { get; set; }
+    public int cat1Id { get; set; }
     public List<Cat3> cat3s { get; set; }
-    public List<SpecialTypeField> SpecialTypeFields { get; set; }
-    public List<Filters_Cat2> filters_Cat2s { get; set; }
+    public List<SpecialTypeField>? SpecialTypeFields { get; set; }
+    public List<Filters_Cat2>? filters_Cat2s { get; set; }
 }
 public class Cat2Configuration : IEntityTypeConfiguration<Cat2>
 {
@@ -21,8 +20,7 @@ public class Cat2Configuration : IEntityTypeConfiguration<Cat2>
     {
         builder.Property(p => p.name).HasMaxLength(100).IsRequired();
         builder.Property(p => p.gdesc).HasMaxLength(500).IsRequired(false);
-        builder.Property(p => p.popup_state).IsRequired();
-        builder.Property(p => p.cat1Id).IsRequired(false);
-        builder.HasOne(p => p.cat1).WithMany(p => p.cat2s).HasForeignKey(p => p.cat1Id);
+        builder.Property(p => p.cat1Id).IsRequired();
+        builder.HasOne(p => p.cat1).WithMany(p => p.cat2s).HasForeignKey(p => p.cat1Id).IsRequired();
     }
 }

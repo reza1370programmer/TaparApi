@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Tapar.Core.Common.Dtos;
 using Tapar.Core.Contracts.Interfaces;
 using Tapar.Data.Entities;
 
@@ -10,12 +11,18 @@ public class Cat2Repository : Repository<Cat2>, ICat2Repsitory
     {
     }
 
+    public async Task AddCat2(AddCat2Dto addCat2Dto, CancellationToken cancellationToken)
+    {
+        var cat2 = new Cat2() { name = addCat2Dto.name, cat1Id = addCat2Dto.cat1Id };
+        await AddAsync(cat2, cancellationToken);
+    }
+
     public async Task<IEnumerable<Filters>> GetCat2Filters(int cat2Id, CancellationToken cancellationToken)
     {
         return await TableNoTracking.SelectMany(p => p.filters_Cat2s)
             .Where(p => p.cat2Id == cat2Id).
-            Include(p=>p.filter.childFilters).
-            Select(p=>p.filter).AsSplitQuery().ToListAsync();
+            Include(p => p.filter.childFilters).
+            Select(p => p.filter).AsSplitQuery().ToListAsync();
     }
 
     public async Task<List<Cat2>> GetCat2sByCat1Id(int id, CancellationToken cancellationToken)
