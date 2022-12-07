@@ -28,6 +28,34 @@ namespace Tapar.Core.Common.Dtos
         [Required(ErrorMessage ="لطفا دسته اول را مشخص کنید")]
         public int cat1Id { get; set; }
     }
+    public class EditCat2Dto
+    {
+        [Required(ErrorMessage = "لطفا نام دسته را وارد کنید")]
+        [StringLength(100, ErrorMessage = "تعداد کاراکترها نمیتواند بیشتر از 100 باشد")]
+        public string name { get; set; }
+        [Required(ErrorMessage = "لطفا دسته اول را مشخص کنید")]
+        public int cat1Id { get; set; }
+        [Required(ErrorMessage = "لطفا دسته دوم را مشخص کنید")]
+        public int cat2Id { get; set; }
+    }
+    public class AddCat3Dto
+    {
+        [Required(ErrorMessage = "لطفا نام دسته را وارد کنید")]
+        [StringLength(100, ErrorMessage = "تعداد کاراکترها نمیتواند بیشتر از 100 باشد")]
+        public string name { get; set; }
+        [Required(ErrorMessage = "لطفا دسته دوم را مشخص کنید")]
+        public int cat2Id { get; set; }
+    }
+    public class EditCat3Dto
+    {
+        [Required(ErrorMessage = "لطفا نام دسته را وارد کنید")]
+        [StringLength(100, ErrorMessage = "تعداد کاراکترها نمیتواند بیشتر از 100 باشد")]
+        public string name { get; set; }
+        [Required(ErrorMessage = "لطفا دسته دوم را مشخص کنید")]
+        public int cat2Id { get; set; }
+        [Required(ErrorMessage = "لطفا دسته سوم را مشخص کنید")]
+        public int cat3Id { get; set; }
+    }
     public class Cat2DtoForSuperAdmin
     {
         public int id { get; set; }

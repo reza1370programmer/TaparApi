@@ -8,7 +8,7 @@ namespace Tapar.Data.Entities
     public class Cat3:BaseEntity
     {
         public string name { get; set; }
-        public string gdesc { get; set; }
+        public string? gdesc { get; set; }
         public Cat2 cat2 { get; set; }
         public int cat2Id { get; set; }
         public List<Place> places { get; set; }

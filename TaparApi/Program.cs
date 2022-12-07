@@ -56,15 +56,6 @@ builder.Services.AddSpaStaticFiles(configuration =>
     configuration.RootPath = "ClientApp/dist";
 });
 builder.Services.AddAutoMapper();
-//builder.Services.AddCors(options =>
-//{
-//    options.AddPolicy(name: "MyPolicy",
-//                policy =>
-//                {
-//                    policy.WithOrigins("https://tapar.info","http://localhost:4200")
-//                            .WithMethods("POST","GET");
-//                });
-//});
 builder.Services.AddCors();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -97,7 +88,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseHttpsRedirection();
 app.MapControllers();
-app.UseCors(builder => builder.WithOrigins("http://localhost:4200", "https://tapar.info")
+app.UseCors(builder => builder.WithOrigins("http://localhost:4200", "https://tapar.info","https://superadmin.tapar.info")
 .                WithMethods("GET", "POST")
                 .AllowAnyHeader()
                 .AllowCredentials()

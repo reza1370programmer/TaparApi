@@ -69,7 +69,24 @@ namespace TaparApi.Controllers
                 return BadRequest(ModelState);
             }
             return Unauthorized();
-          
+
+        }
+        [HttpPost("[action]")]
+        public async Task<IActionResult> EditCat2(EditCat2Dto dto, CancellationToken cancellationToken)
+        {
+            var role = User.FindFirstValue(ClaimTypes.Role);
+            if (role == "superadmin" && UserIsAutheticated)
+            {
+                if (ModelState.IsValid)
+                {
+                    var cat2 = await Repository.GetByIdAsync(cancellationToken, dto.cat2Id);
+                    cat2.name=dto.name;
+                    await Repository.UpdateAsync(cat2, cancellationToken);
+                    return RedirectToAction("GetCat2sByCat1Id", new { id = dto.cat1Id, cancellationToken });
+                }
+                return BadRequest();
+            }
+            return Unauthorized();
         }
 
     }

@@ -48,7 +48,6 @@ namespace Tapar.Data.Entities
         public User user { get; set; }
         public int cat3Id { get; set; }
         public Cat3 cat3 { get; set; }
-        public List<Place_Tag>? place_Tags { get; set; }
         public int workTimeId { get; set; }
         public WorkTime workTime { get; set; }
         public List<SubPlace> subPlaces { get; set; }
@@ -56,8 +55,6 @@ namespace Tapar.Data.Entities
         public List<ViewCount> viewCounts { get; set; }
         public List<LikeCount> likeCounts { get; set; }
         public List<Place_Filter>? place_Filters { get; set; }
-
-
     }
     public class PlaceConfiguration : IEntityTypeConfiguration<Place>
     {
