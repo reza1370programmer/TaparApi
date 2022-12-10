@@ -13,6 +13,7 @@ public class Mappings : Profile
     {
         CreateMap<CatDto,Cat3>().ReverseMap();
         CreateMap<SpecialTypeField, DynamicFieldsDto>().ReverseMap();
+        CreateMap<SpecialTypeField, DynamicFieldsAddDto>().ReverseMap();
         CreateMap<FilterDto, Data.Entities.Filters>().ReverseMap();
         CreateMap<ChildFilterDto, Data.Entities.Filters>().ReverseMap();
         CreateMap<Place, PlaceAddDto>().ReverseMap();

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using Tapar.Core.Common.Api;
 using Tapar.Core.Common.Dtos.DynamicFields;
 using Tapar.Core.Contracts.Interfaces;
@@ -27,16 +28,22 @@ namespace TaparApi.Controllers
             return Ok(result);
         }
         [HttpPost("[action]")]
-        public async Task<ActionResult> AddDynamicField(DynamicFieldsDto addDto, CancellationToken cancellationToken)
+        public async Task<ActionResult> AddDynamicField(DynamicFieldsAddDto addDto, CancellationToken cancellationToken)
         {
-            if (ModelState.IsValid)
+            var role = User.FindFirstValue(ClaimTypes.Role);
+            if (role == "superadmin" && UserIsAutheticated)
             {
-                var result = Mapper.Map<SpecialTypeField>(addDto);
-                await Repsitory.AddAsync(result, cancellationToken);
-                return Ok();
-            }
+                if (ModelState.IsValid)
+                {
+                    var result = Mapper.Map<SpecialTypeField>(addDto);
+                    await Repsitory.AddAsync(result, cancellationToken);
+                    return RedirectToAction("GetDynamicFieldsByCat2Id", new {id= addDto.cat2Id,cancellationToken});
+                }
 
-            return BadRequest();
+                return BadRequest();
+            }
+            return Unauthorized();
+
         }
     }
 }
