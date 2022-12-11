@@ -45,5 +45,42 @@ namespace TaparApi.Controllers
             return Unauthorized();
 
         }
+        [HttpPost("[action]")]
+        public async Task<IActionResult> EditDynamicField(DynamicFieldEditDto dto, CancellationToken cancellationToken)
+        {
+            var role = User.FindFirstValue(ClaimTypes.Role);
+            if (role == "superadmin" && UserIsAutheticated)
+            {
+                if (ModelState.IsValid)
+                {
+                    var dynamicField = await Repsitory.GetByIdAsync(cancellationToken, dto.id);
+                    dynamicField.title = dto.title;
+                    dynamicField.enTitle = dto.enTitle;
+                    dynamicField.maxLength = dto.maxLength;
+                    dynamicField.isRequired = dto.isRequired;
+                    await Repsitory.UpdateAsync(dynamicField, cancellationToken);
+                    return RedirectToAction("GetDynamicFieldsByCat2Id", new { id = dto.cat2id, cancellationToken });
+                }
+
+                return BadRequest();
+            }
+            return Unauthorized();
+        }
+        [HttpPost("[action]")]
+        public async Task<IActionResult> DeleteDynamicField(DynamicFieldDeleteDto dto,CancellationToken cancellationToken)
+        {
+            var role = User.FindFirstValue(ClaimTypes.Role);
+            if (role == "superadmin" && UserIsAutheticated)
+            {
+                if (ModelState.IsValid)
+                {
+                    var dynamicField = await Repsitory.GetByIdAsync(cancellationToken, dto.id);
+                    await Repsitory.DeleteAsync(dynamicField, cancellationToken);
+                    return RedirectToAction("GetDynamicFieldsByCat2Id", new { id = dto.cat2id, cancellationToken });
+                }
+                return BadRequest();
+            }
+            return Unauthorized();
+        }
     }
 }

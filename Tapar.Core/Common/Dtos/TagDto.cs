@@ -21,4 +21,11 @@ namespace Tapar.Core.Common.Dtos
         [Required(ErrorMessage = "دسته بندی سطح سوم را انتخاب کیند")]
         public int cat3Id { get; set; }
     }
+    public class DeleteTagDto
+    {
+        [Required(ErrorMessage ="لطفا تگ مورد نظر را انتخاب کنید")]
+        public long tagid { get; set; }
+        [Required(ErrorMessage = "دسته بندی سطح سوم را انتخاب کیند")]
+        public int cat3id { get; set; }
+    }
 }

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using Tapar.Core.Common.Api;
 using Tapar.Core.Common.Dtos;
+using Tapar.Core.Common.Dtos.DynamicFields;
 using Tapar.Core.Contracts.Interfaces;
 using Tapar.Data.Entities;
 
@@ -93,6 +94,24 @@ namespace TaparApi.Controllers
             return Unauthorized();
 
         }
+        [HttpPost("[action]")]
+        public async Task<IActionResult> DeleteTag(DeleteTagDto dto,CancellationToken cancellationToken)
+        {
+            var role = User.FindFirstValue(ClaimTypes.Role);
+            if (role == "superadmin" && UserIsAutheticated)
+            {
+                if (ModelState.IsValid)
+                {
+                    var cattag3 = await tagCat3Repository.TableNoTracking.SingleOrDefaultAsync(p => p.tagId == dto.tagid && p.cat3Id == dto.cat3id, cancellationToken);
+                    await tagCat3Repository.DeleteAsync(cattag3, cancellationToken);
+                    return RedirectToAction("GetTagsByCat3Id", new { cat3Id = dto.cat3id, cancellationToken });
+                }
+                return BadRequest(ModelState);
+            }
+            return Unauthorized();
+          
+        }
+     
         #endregion
 
 
