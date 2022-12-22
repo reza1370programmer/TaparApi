@@ -14,7 +14,7 @@ public class SuperAdminRepository:Repository<SuperAdmin>,ISuperAdminRepository
     public async Task<SuperAdmin?> LoginSuperAdmin(LoginSuperAdminDTO loginSuperAdminDto, CancellationToken cancellationToken)
     {
         return await TableNoTracking.SingleOrDefaultAsync(
-                c => c.password == loginSuperAdminDto.userName && c.password == loginSuperAdminDto.password,
+                c => c.userName == loginSuperAdminDto.userName && c.password == loginSuperAdminDto.password,
                 cancellationToken);
     }
 }

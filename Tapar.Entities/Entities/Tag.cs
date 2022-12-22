@@ -14,7 +14,7 @@ namespace Tapar.Data.Entities
         public void Configure(EntityTypeBuilder<Tag> builder)
         {
             builder.HasIndex(p => p.title).IsUnique();
-            builder.Property(p => p.title).HasMaxLength(20).IsRequired();
+            builder.Property(p => p.title).HasMaxLength(50).IsRequired();
         }
     }
 }

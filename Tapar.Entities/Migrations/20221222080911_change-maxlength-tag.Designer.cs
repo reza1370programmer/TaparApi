@@ -12,8 +12,8 @@ using TaparApi.Data;
 namespace Tapar.Data.Migrations
 {
     [DbContext(typeof(TaparDbContext))]
-    [Migration("20221129131903_initial")]
-    partial class initial
+    [Migration("20221222080911_change-maxlength-tag")]
+    partial class changemaxlengthtag
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -59,7 +59,7 @@ namespace Tapar.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("cat1Id")
+                    b.Property<int>("cat1Id")
                         .HasColumnType("int");
 
                     b.Property<string>("gdesc")
@@ -70,9 +70,6 @@ namespace Tapar.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
-
-                    b.Property<int>("popup_state")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -504,29 +501,6 @@ namespace Tapar.Data.Migrations
                     b.ToTable("Place_Filters");
                 });
 
-            modelBuilder.Entity("Tapar.Data.Entities.Place_Tag", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
-
-                    b.Property<long>("placeId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("tagId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("placeId");
-
-                    b.HasIndex("tagId");
-
-                    b.ToTable("Place_Tags");
-                });
-
             modelBuilder.Entity("Tapar.Data.Entities.RefreshTokens", b =>
                 {
                     b.Property<long>("Id")
@@ -576,7 +550,9 @@ namespace Tapar.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("maxLength")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(5)
+                        .HasColumnType("nvarchar(5)");
 
                     b.Property<string>("title")
                         .IsRequired()
@@ -663,15 +639,15 @@ namespace Tapar.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
-                    b.Property<bool>("status")
-                        .HasColumnType("bit");
-
                     b.Property<string>("title")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("title")
+                        .IsUnique();
 
                     b.ToTable("Tags");
                 });
@@ -819,7 +795,9 @@ namespace Tapar.Data.Migrations
                 {
                     b.HasOne("Tapar.Data.Entities.Cat1", "cat1")
                         .WithMany("cat2s")
-                        .HasForeignKey("cat1Id");
+                        .HasForeignKey("cat1Id")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("cat1");
                 });
@@ -955,25 +933,6 @@ namespace Tapar.Data.Migrations
                     b.Navigation("place");
                 });
 
-            modelBuilder.Entity("Tapar.Data.Entities.Place_Tag", b =>
-                {
-                    b.HasOne("Tapar.Data.Entities.Place", "place")
-                        .WithMany("place_Tags")
-                        .HasForeignKey("placeId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Tapar.Data.Entities.Tag", "tag")
-                        .WithMany("place_Tags")
-                        .HasForeignKey("tagId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("place");
-
-                    b.Navigation("tag");
-                });
-
             modelBuilder.Entity("Tapar.Data.Entities.RefreshTokens", b =>
                 {
                     b.HasOne("Tapar.Data.Entities.SuperAdmin", "superAdmin")
@@ -1095,8 +1054,6 @@ namespace Tapar.Data.Migrations
 
                     b.Navigation("place_Filters");
 
-                    b.Navigation("place_Tags");
-
                     b.Navigation("subPlaces");
 
                     b.Navigation("viewCounts");
@@ -1111,8 +1068,6 @@ namespace Tapar.Data.Migrations
 
             modelBuilder.Entity("Tapar.Data.Entities.Tag", b =>
                 {
-                    b.Navigation("place_Tags");
-
                     b.Navigation("tagCats");
                 });
 

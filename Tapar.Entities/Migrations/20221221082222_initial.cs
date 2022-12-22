@@ -102,8 +102,7 @@ namespace Tapar.Data.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    title = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    status = table.Column<bool>(type: "bit", nullable: false)
+                    title = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -146,8 +145,7 @@ namespace Tapar.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     gdesc = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    popup_state = table.Column<int>(type: "int", nullable: false),
-                    cat1Id = table.Column<int>(type: "int", nullable: true)
+                    cat1Id = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -156,7 +154,8 @@ namespace Tapar.Data.Migrations
                         name: "FK_Cat2s_Cat1s_cat1Id",
                         column: x => x.cat1Id,
                         principalTable: "Cat1s",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -240,7 +239,7 @@ namespace Tapar.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     title = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     enTitle = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    maxLength = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    maxLength = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: false),
                     isRequired = table.Column<bool>(type: "bit", nullable: false),
                     cat2Id = table.Column<int>(type: "int", nullable: true)
                 },
@@ -438,32 +437,6 @@ namespace Tapar.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Place_Tags",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    placeId = table.Column<long>(type: "bigint", nullable: false),
-                    tagId = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Place_Tags", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Place_Tags_Places_placeId",
-                        column: x => x.placeId,
-                        principalTable: "Places",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Place_Tags_Tags_tagId",
-                        column: x => x.tagId,
-                        principalTable: "Tags",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "SubPlaces",
                 columns: table => new
                 {
@@ -611,16 +584,6 @@ namespace Tapar.Data.Migrations
                 column: "placeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Place_Tags_placeId",
-                table: "Place_Tags",
-                column: "placeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Place_Tags_tagId",
-                table: "Place_Tags",
-                column: "tagId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Places_cat3Id",
                 table: "Places",
                 column: "cat3Id");
@@ -681,6 +644,12 @@ namespace Tapar.Data.Migrations
                 column: "tagId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Tags_title",
+                table: "Tags",
+                column: "title",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ViewCounts_placeId",
                 table: "ViewCounts",
                 column: "placeId");
@@ -714,9 +683,6 @@ namespace Tapar.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Place_Filters");
-
-            migrationBuilder.DropTable(
-                name: "Place_Tags");
 
             migrationBuilder.DropTable(
                 name: "RefreshTokens");

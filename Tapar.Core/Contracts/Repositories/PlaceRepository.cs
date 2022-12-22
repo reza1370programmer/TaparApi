@@ -122,7 +122,7 @@ namespace Tapar.Core.Contracts.Repositories
                 {
                     case 1:
                         place.visitCart_front = (await imageUploader.UploadImage(dto.visitCartPics[0]));
-                        place.visitCart_back = "visitcart.jpg";
+                        place.visitCart_back = null;
                         break;
                     case 2:
                         place.visitCart_front = (await imageUploader.UploadImage(dto.visitCartPics[0]));
@@ -132,8 +132,8 @@ namespace Tapar.Core.Contracts.Repositories
             }
             else
             {
-                place.visitCart_back = "visitcart.jpg";
-                place.visitCart_front = "visitcart.jpg";
+                place.visitCart_back = null;
+                place.visitCart_front = null;
             }
             place.tags = dto.tags?.Count() > 0 ? String.Join(',', dto.tags?.ToArray()!) : null!;
             if (dto.filters?.Count > 0)
@@ -241,7 +241,7 @@ namespace Tapar.Core.Contracts.Repositories
                 //    .Where(a => searchParams.filters.Contains(a.filterId)).Include(p => p.place)
                 //    .Select(q => q.place).Distinct();
 
-                query = query.Include(p=>p.place_Filters).Where(p => p.place_Filters.Any(q => searchParams.filters.Contains(q.filterId)));
+                query = query.Include(p => p.place_Filters).Where(p => p.place_Filters.Any(q => searchParams.filters.Contains(q.filterId)));
 
             }
 

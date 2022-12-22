@@ -10,13 +10,16 @@
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
 	  <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.4" />
-	  <PackageReference Include="shortid" Version="4.0.0" />
 	  <PackageReference Include="TanvirArjel.Extensions.Microsoft.DependencyInjection" Version="2.1.0" />
 	  
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Tapar.Entities\Tapar.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Common\Utilities\" />
   </ItemGroup>
 
 </Project>

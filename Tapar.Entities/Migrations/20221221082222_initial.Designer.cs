@@ -12,8 +12,8 @@ using TaparApi.Data;
 namespace Tapar.Data.Migrations
 {
     [DbContext(typeof(TaparDbContext))]
-    [Migration("20221207095543_changes-for-tags")]
-    partial class changesfortags
+    [Migration("20221221082222_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

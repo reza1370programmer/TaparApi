@@ -639,8 +639,8 @@ namespace Tapar.Data.Migrations
 
                     b.Property<string>("title")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
