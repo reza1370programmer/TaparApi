@@ -16,7 +16,7 @@ namespace Tapar.Core.Common.Dtos
     public class AddTagDto
     {
         [Required(ErrorMessage = "عنوان تگ را وارد کنید")]
-        [StringLength(20, ErrorMessage = "تعداد کاراکترها نمیتواند بیشتر از 20 تا باشد")]
+        [StringLength(50, ErrorMessage = "تعداد کاراکترها نمیتواند بیشتر از 50 تا باشد")]
         public string title { get; set; }
         [Required(ErrorMessage = "دسته بندی سطح سوم را انتخاب کیند")]
         public int cat3Id { get; set; }

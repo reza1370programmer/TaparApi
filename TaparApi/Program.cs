@@ -88,8 +88,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseHttpsRedirection();
 app.MapControllers();
-app.UseCors(builder => builder.WithOrigins("http://localhost:4200", "https://tapar.info","https://superadmin.tapar.info")
-.                WithMethods("GET", "POST")
+app.UseCors(builder => builder.WithOrigins("http://localhost:4200", "https://tapar.info", "https://superadmin.tapar.info")
+               .WithMethods("GET", "POST")
                 .AllowAnyHeader()
                 .AllowCredentials()
             );

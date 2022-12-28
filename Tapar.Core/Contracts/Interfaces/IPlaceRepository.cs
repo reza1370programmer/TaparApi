@@ -7,7 +7,7 @@ using Tapar.Data.Entities;
 namespace Tapar.Core.Contracts.Interfaces
 {
     [ScopedService]
-    public interface IPlaceRepository:IRepository<Place>
+    public interface IPlaceRepository : IRepository<Place>
     {
         #region General
         Task AddPlace(PlaceAddDto dto, CancellationToken cancellationToken);
@@ -18,7 +18,7 @@ namespace Tapar.Core.Contracts.Interfaces
 
         #region UserPanel
         Task<List<Place>> GetPlacesByUserId(long userid, CancellationToken cancellationToken);
-        Task<PlaceForEditAdminPanelDto> GetPlaceForEditAdminPanel(long placeid, CancellationToken cancellationToken);
+        Task<Place> GetPlaceCurrentCategory(long placeid, CancellationToken cancellationToken);
         #endregion
 
         //Task<PlaceGetDto> GetPlaceById(long id, CancellationToken cancellationToken);

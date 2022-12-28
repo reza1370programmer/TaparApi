@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Tapar.Core.Common.Api;
@@ -77,13 +78,22 @@ namespace TaparApi.Controllers
             await repository.AddView(placeId, cancellationToken);
             return NoContent();
         }
+        [HttpGet("[action]/{id}")]
+        public async Task<IActionResult> GetPlaceById(long id, CancellationToken cancellationToken)
+        {
+            var place = await repository.GetByIdAsync(cancellationToken, id);
+            return Ok(place);
+        }
 
         #region UserPanelMethods
         [HttpGet("[action]/{placeId}")]
-        public async Task<IActionResult> GetPlaceForEditUserPanel(long placeId, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetPlaceCurrentCategory(long placeId, CancellationToken cancellationToken)
         {
-            var placedto = await repository.GetPlaceForEditAdminPanel(placeId, cancellationToken);
-            return Ok(placedto);
+            var place = await repository.GetPlaceCurrentCategory(placeId, cancellationToken);
+            string cat3 = place.cat3.name;
+            string cat2 = place.cat3.cat2.name;
+            string cat1 = place.cat3.cat2.cat1.name;
+            return Ok(new { cat1, cat2, cat3 });
         }
         [HttpGet("[action]")]
         public async Task<IActionResult> GetPlacesByUserId(CancellationToken cancellation)
@@ -96,7 +106,22 @@ namespace TaparApi.Controllers
             }
             else
                 return Unauthorized();
-            
+
+        }
+        [Authorize]
+        [HttpPost("[action]")]
+        public async Task<IActionResult> EditGlobalInformation(EditGlobalInformationDto dto,CancellationToken cancellationToken)
+        {
+            if(ModelState.IsValid)
+            {
+                var place = await repository.GetByIdAsync(cancellationToken, dto.id);
+                place.tablo = dto.tablo;
+                place.manager = dto.manager;
+                place.service_description = dto.service_description;
+                await repository.UpdateAsync(place, cancellationToken);
+                return Ok();
+            }
+            return BadRequest();
         }
         #endregion
 

@@ -10,10 +10,8 @@ using Tapar.Core.Common.Services.ImageUploader;
 using Tapar.Core.Contracts.Interfaces;
 using Tapar.Data.Entities;
 using TaparApi.Data;
-using Tapar.Core.Common.Dtos.Location;
 using TaparApi.Data.Contracts.Repositories;
-using Tapar.Core.Common.Dtos.Filters;
-using Tapar.Core.Common.Dtos.DynamicFields;
+
 
 namespace Tapar.Core.Contracts.Repositories
 {
@@ -225,7 +223,6 @@ namespace Tapar.Core.Contracts.Repositories
             place.cDate = DateTime.Now;
             await AddAsync(place, cancellationToken);
         }
-
         public async Task<List<Place>> SearchPlace(SearchParams searchParams, CancellationToken cancellationToken)
         {
             IQueryable<Place> query = TableNoTracking.Include(p => p.weekDay).
@@ -257,7 +254,6 @@ namespace Tapar.Core.Contracts.Repositories
             query = query.Skip((searchParams.pageIndex - 1) * 5).Take(5);
             return await query.ToListAsync(cancellationToken);
         }
-
         public async Task<int?> AddLikeForPlace(long idplaceId, CancellationToken cancellationToken)
         {
             var userid = long.Parse(httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier)!);
@@ -276,35 +272,12 @@ namespace Tapar.Core.Contracts.Repositories
             }
             return -1;
         }
-
         public async Task AddView(long placeId, CancellationToken cancellationToken)
         {
             var place = await GetByIdAsync(cancellationToken, placeId);
             place.view_count += 1;
             await UpdateAsync(place, cancellationToken);
         }
-
-        //public async Task<PlaceGetDto?> GetPlaceById(long id, CancellationToken cancellationToken)
-        //{
-        //    PlaceGetDto getPlace = new();
-        //    var place = await TableNoTracking.
-        //        Include(p => p.weekDay).
-        //        Include(p => p.cat3).
-        //        ThenInclude(p => p.cat2).
-        //        ThenInclude(p => p.cat1).
-        //        AsSplitQuery().
-        //        SingleOrDefaultAsync(p => p.Id == id);
-        //    if (place != null)
-        //    {
-        //        getPlace = mapper.Map<PlaceGetDto>(place);
-        //        getPlace.cat1Id = place.cat3.cat2.cat1.Id;
-        //        getPlace.cat1Title = place.cat3.cat2.cat1.name;
-        //        getPlace.cat2Title = place.cat3.cat2.name;
-        //        getPlace.cat3Title = place.cat3.name;
-        //        return getPlace;
-        //    }
-        //    return null;
-        //}
         public async Task<string> GetLocationAbbriviation(int locationid, CancellationToken cancellationToken)
         {
             var location = await locationRepository.GetByIdAsync(cancellationToken, locationid);
@@ -347,30 +320,12 @@ namespace Tapar.Core.Contracts.Repositories
             return await TableNoTracking.Where(p => p.userId == userid).ToListAsync(cancellationToken);
         }
 
-        public async Task<PlaceForEditAdminPanelDto> GetPlaceForEditAdminPanel(long placeid, CancellationToken cancellationToken)
+        public async Task<Place> GetPlaceCurrentCategory(long placeid, CancellationToken cancellationToken)
         {
-            var placeDto = new PlaceForEditAdminPanelDto();
-
-            var targetPlace = await TableNoTracking
-                .Include(p => p.location)
-                .Include(p => p.weekDay)
-                .Include(p => p.place_Filters)
-                .Include(p => p.cat3)
-                .ThenInclude(p => p.cat2)
-                .ThenInclude(p => p.cat1).AsSplitQuery().SingleOrDefaultAsync(p => p.Id == placeid);
-
-            placeDto.place = targetPlace!;
-            placeDto.cat1Id = (int)(targetPlace?.cat3?.cat2?.cat1?.Id)!;
-            placeDto.cat2Id = targetPlace.cat3.cat2.Id;
-            placeDto.dynamicFields = mapper.Map<List<DynamicFieldsDto>>(await dynamicFieldsRepsitory.GetDynamicFieldsByCat2Id(placeDto.cat2Id, cancellationToken));
-            placeDto.filters = mapper.Map<List<FilterDto>>(await cat2Repsitory.GetCat2Filters(placeDto.cat2Id, cancellationToken));
-            placeDto.filterids = targetPlace.place_Filters.Select(p => p.filterId).ToList();
-            placeDto.cat2 = await cat2Repsitory.TableNoTracking.Where(p => p.cat1Id == placeDto.cat1Id).Select(p => new CatDto { id = p.Id, name = p.name }).ToListAsync(cancellationToken);
-            placeDto.cat3 = await cat3Repository.TableNoTracking.Where(p => p.cat2Id == placeDto.cat2Id).Select(p => new CatDto { id = p.Id, name = p.name }).ToListAsync(cancellationToken);
-            placeDto.ostan = await locationRepository.TableNoTracking.Where(o => o.parentId == null).Select(p => new LocationDto { id = p.Id, name = p.name }).ToListAsync(cancellationToken);
-            placeDto.shahrestan = await locationRepository.TableNoTracking.Where(p => p.parentId == targetPlace.location.parentId).Select(p => new LocationDto { id = p.Id, name = p.name }).ToListAsync(cancellationToken);
-            return placeDto;
+            var place = await TableNoTracking.Include(p => p.cat3).ThenInclude(p => p.cat2).ThenInclude(p => p.cat1).SingleOrDefaultAsync(p => p.Id == placeid,cancellationToken);
+            return place;
         }
+
         #endregion
 
         #endregion
