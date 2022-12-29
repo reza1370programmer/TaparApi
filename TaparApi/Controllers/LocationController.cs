@@ -33,13 +33,19 @@ namespace TaparApi.Controllers
             return Ok(list);
         }
         [HttpGet("[action]/{id}")]
-        public async Task<IActionResult> GetShahrestan(int id, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetShahrestanByParentId(int id, CancellationToken cancellationToken)
         {
             var list = await locationRepository.TableNoTracking
                 .Where(l => l.parentId == id && l.isActive)
                 .Select(l => new { l.Id, l.name })
                 .ToListAsync(cancellationToken);
             return Ok(list);
+        }
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetAllShahrestan(CancellationToken cancellationToken)
+        {
+            var shahrestan=await locationRepository.TableNoTracking.Where(l => l.parentId!=null).ToListAsync(cancellationToken);
+            return Ok(shahrestan);
         }
     }
 }

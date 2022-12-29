@@ -19,6 +19,7 @@ namespace Tapar.Core.Contracts.Interfaces
         #region UserPanel
         Task<List<Place>> GetPlacesByUserId(long userid, CancellationToken cancellationToken);
         Task<Place> GetPlaceCurrentCategory(long placeid, CancellationToken cancellationToken);
+        Task<GetPlaceForEditAddressDto> GetPlaceForEditAddress(long placeId, CancellationToken cancellationToken);
         #endregion
 
         //Task<PlaceGetDto> GetPlaceById(long id, CancellationToken cancellationToken);

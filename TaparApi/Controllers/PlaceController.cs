@@ -83,6 +83,7 @@ namespace TaparApi.Controllers
         {
             var place = await repository.GetByIdAsync(cancellationToken, id);
             return Ok(place);
+
         }
 
         #region UserPanelMethods
@@ -110,14 +111,34 @@ namespace TaparApi.Controllers
         }
         [Authorize]
         [HttpPost("[action]")]
-        public async Task<IActionResult> EditGlobalInformation(EditGlobalInformationDto dto,CancellationToken cancellationToken)
+        public async Task<IActionResult> EditGlobalInformation(EditGlobalInformationDto dto, CancellationToken cancellationToken)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var place = await repository.GetByIdAsync(cancellationToken, dto.id);
                 place.tablo = dto.tablo;
                 place.manager = dto.manager;
                 place.service_description = dto.service_description;
+                await repository.UpdateAsync(place, cancellationToken);
+                return Ok();
+            }
+            return BadRequest();
+        }
+        [HttpGet("[action]/{placeid}")]
+        public async Task<IActionResult> GetPlaceForEditAddress(long placeid, CancellationToken cancellationToken)
+        {
+            var data = await repository.GetPlaceForEditAddress(placeid, cancellationToken);
+            return Ok(data);
+        }
+        [Authorize]
+        [HttpPost("[action]")]
+        public async Task<IActionResult> EditAddress(EditAddressDto dto, CancellationToken cancellationToken)
+        {
+            if (ModelState.IsValid)
+            {
+                var place = await repository.GetByIdAsync(cancellationToken, dto.placeid);
+                place.address = dto.restAddress;
+                place.locationId = dto.locationId;
                 await repository.UpdateAsync(place, cancellationToken);
                 return Ok();
             }

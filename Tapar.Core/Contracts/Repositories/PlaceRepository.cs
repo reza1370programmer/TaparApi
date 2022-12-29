@@ -322,10 +322,19 @@ namespace Tapar.Core.Contracts.Repositories
 
         public async Task<Place> GetPlaceCurrentCategory(long placeid, CancellationToken cancellationToken)
         {
-            var place = await TableNoTracking.Include(p => p.cat3).ThenInclude(p => p.cat2).ThenInclude(p => p.cat1).SingleOrDefaultAsync(p => p.Id == placeid,cancellationToken);
+            var place = await TableNoTracking.Include(p => p.cat3).ThenInclude(p => p.cat2).ThenInclude(p => p.cat1).SingleOrDefaultAsync(p => p.Id == placeid, cancellationToken);
             return place;
         }
 
+        public async Task<GetPlaceForEditAddressDto> GetPlaceForEditAddress(long placeId, CancellationToken cancellationToken)
+        {
+            var place = await TableNoTracking.Include(p => p.location).SingleOrDefaultAsync(p => p.Id == placeId);
+            var childLocationId = place.locationId;
+            var parentLocationId = place.location.parentId;
+            var restAddress = place.address;
+            var data = new GetPlaceForEditAddressDto() { ChildLocationId = childLocationId, ParentLocationId = (int)parentLocationId!, RestAddress = restAddress };
+            return data;
+        }
         #endregion
 
         #endregion
