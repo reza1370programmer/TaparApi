@@ -80,10 +80,9 @@ namespace Tapar.Core.Contracts.Repositories
             place.userId = long.Parse(httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier)!);
             if (dto.businessPics == null)
             {
-                var picname = GetImageNameByCat1Id(cat1id.ToInt());
-                place.bussiness_pic1 = picname;
-                place.bussiness_pic2 = picname;
-                place.bussiness_pic3 = picname;
+                place.bussiness_pic1 = null;
+                place.bussiness_pic2 = null;
+                place.bussiness_pic3 = null;
             }
             else
             {
@@ -91,13 +90,13 @@ namespace Tapar.Core.Contracts.Repositories
                 {
                     case 1:
                         place.bussiness_pic1 = (await imageUploader.UploadImage(dto.businessPics[0]));
-                        place.bussiness_pic2 = GetImageNameByCat1Id(cat1id.ToInt());
-                        place.bussiness_pic3 = GetImageNameByCat1Id(cat1id.ToInt());
+                        place.bussiness_pic2 = null;
+                        place.bussiness_pic3 = null;
                         break;
                     case 2:
                         place.bussiness_pic1 = (await imageUploader.UploadImage(dto.businessPics[0]));
                         place.bussiness_pic2 = (await imageUploader.UploadImage(dto.businessPics[1]));
-                        place.bussiness_pic3 = GetImageNameByCat1Id(cat1id.ToInt());
+                        place.bussiness_pic3 = null;
                         break;
                     case 3:
                         place.bussiness_pic1 = (await imageUploader.UploadImage(dto.businessPics[0]));
@@ -112,7 +111,7 @@ namespace Tapar.Core.Contracts.Repositories
             }
             else
             {
-                place.personal_pic = "modirpic.jpg";
+                place.personal_pic = null;
             }
             if (dto.visitCartPics?.Count > 0)
             {
@@ -295,25 +294,6 @@ namespace Tapar.Core.Contracts.Repositories
                 {"cat1abbriviation",cat1abbriviation },
             };
         }
-        public string GetImageNameByCat1Id(int cat1id)
-        {
-            switch (cat1id)
-            {
-                case 1:
-                    return "health.jpg";
-                case 2:
-                    return "economy.jpg";
-                case 3:
-                    return "research.jpg";
-                case 4:
-                    return "government.jpg";
-                case 5:
-                    return "practice.jpg";
-
-            }
-            return "";
-        }
-
         #region UserPanel
         public async Task<List<Place>> GetPlacesByUserId(long userid, CancellationToken cancellationToken)
         {
@@ -334,6 +314,47 @@ namespace Tapar.Core.Contracts.Repositories
             var restAddress = place.address;
             var data = new GetPlaceForEditAddressDto() { ChildLocationId = childLocationId, ParentLocationId = (int)parentLocationId!, RestAddress = restAddress };
             return data;
+        }
+
+        public async Task UpdatePlacePics(PlacePicUpdateDto dto, Place place, CancellationToken cancellationToken)
+        {
+
+            if (dto.businessPic1?.Length > 0)
+            {
+                place.bussiness_pic1 = await imageUploader.UpdateImage(dto.businessPic1, place?.bussiness_pic1);
+            }
+            if (dto.businessPic2?.Length > 0)
+            {
+                place.bussiness_pic2 = await imageUploader.UpdateImage(dto.businessPic2, place?.bussiness_pic2);
+            }
+            if (dto.businessPic3?.Length > 0)
+            {
+                place.bussiness_pic3 = await imageUploader.UpdateImage(dto.businessPic3, place?.bussiness_pic3);
+            }
+            await UpdateAsync(place, cancellationToken);
+        }
+
+        public async Task UpdateModirPic(UpdateModiPicDto dto, Place place, CancellationToken cancellationToken)
+        {
+            if (dto?.modirpic?.Length > 0)
+            {
+                place.personal_pic = await imageUploader.UpdateImage(dto.modirpic, place?.personal_pic);
+                await UpdateAsync(place, cancellationToken);
+            }
+        }
+
+        public async Task UpdateVisitCartPic(UpdateVisitCartPic dto, Place place, CancellationToken cancellationToken)
+        {
+            if (dto.visitcart_front?.Length > 0)
+            {
+                place.visitCart_front = await imageUploader.UpdateImage(dto.visitcart_front, place?.visitCart_front);
+            }
+            if (dto.visitcart_back?.Length > 0)
+            {
+                place.visitCart_back = await imageUploader.UpdateImage(dto.visitcart_back, place?.visitCart_back);
+            }
+            
+            await UpdateAsync(place, cancellationToken);
         }
         #endregion
 

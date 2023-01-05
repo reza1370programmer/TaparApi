@@ -144,6 +144,74 @@ namespace TaparApi.Controllers
             }
             return BadRequest();
         }
+        [Authorize]
+        [HttpPost("[action]")]
+        public async Task<IActionResult> UpdateRelationWays(UpdateRelationWaysDto dto, CancellationToken cancellationToken)
+        {
+            if (ModelState.IsValid)
+            {
+                var place = await repository.GetByIdAsync(cancellationToken, dto.id);
+                place.phone1 = dto.phone1;
+                place.phone2 = dto.phone2;
+                place.phone3 = dto.phone3;
+                place.mob1 = dto.mob1;
+                place.mob2 = dto.mob2;
+                place.fax = dto.fax;
+                place.email = dto.email;
+                place.website = dto.website;
+                place.telegram = dto.telegram;
+                place.instagram = dto.instagram;
+                place.whatsapp = dto.whatsapp;
+                await repository.UpdateAsync(place, cancellationToken);
+                return Ok();
+            }
+            return BadRequest();
+        }
+        [Authorize]
+        [HttpPost("[action]")]
+        public async Task<IActionResult> UpdatePlacePics([FromForm] PlacePicUpdateDto dto, CancellationToken cancellationToken)
+        {
+            if (ModelState.IsValid)
+            {
+                var place = await repository.GetByIdAsync(cancellationToken, dto.placeid);
+                if (place == null)
+                { return NotFound(); }
+                await repository.UpdatePlacePics(dto, place, cancellationToken);
+                return Ok();
+            }
+            return BadRequest();
+
+        }
+        [Authorize]
+        [HttpPost("[action]")]
+        public async Task<IActionResult> UpdateModirPic([FromForm] UpdateModiPicDto dto, CancellationToken cancellationToken)
+        {
+            if (ModelState.IsValid)
+            {
+                var place = await repository.GetByIdAsync(cancellationToken, dto.placeid);
+                if (place == null)
+                { return NotFound(); }
+                await repository.UpdateModirPic(dto, place, cancellationToken);
+                return Ok();
+            }
+            return BadRequest();
+
+        }
+        [Authorize]
+        [HttpPost("[action]")]
+        public async Task<IActionResult> UpdateVisitCartPic([FromForm] UpdateVisitCartPic dto, CancellationToken cancellationToken)
+        {
+            if (ModelState.IsValid)
+            {
+                var place = await repository.GetByIdAsync(cancellationToken, dto.placeid);
+                if (place == null)
+                { return NotFound(); }
+                await repository.UpdateVisitCartPic(dto, place, cancellationToken);
+                return Ok();
+            }
+            return BadRequest();
+
+        }
         #endregion
 
         #endregion
