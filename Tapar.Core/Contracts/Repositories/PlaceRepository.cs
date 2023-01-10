@@ -295,9 +295,14 @@ namespace Tapar.Core.Contracts.Repositories
             };
         }
         #region UserPanel
-        public async Task<List<Place>> GetPlacesByUserId(long userid, CancellationToken cancellationToken)
+        public async Task<List<Place>> GetPlacesByUserId(SearchParamsForUserPanel dto, CancellationToken cancellationToken)
         {
-            return await TableNoTracking.Where(p => p.userId == userid).ToListAsync(cancellationToken);
+            var places = TableNoTracking.Where(p => p.userId == dto.userid);
+            if (dto.searchKey != null)
+                places = places.Where(p => p.tablo.Contains(dto.searchKey));
+            places =  places.Skip((dto.pageIndex - 1) * 5).Take(5);
+
+            return await places.ToListAsync(cancellationToken);
         }
 
         public async Task<Place> GetPlaceCurrentCategory(long placeid, CancellationToken cancellationToken)
@@ -353,7 +358,7 @@ namespace Tapar.Core.Contracts.Repositories
             {
                 place.visitCart_back = await imageUploader.UpdateImage(dto.visitcart_back, place?.visitCart_back);
             }
-            
+
             await UpdateAsync(place, cancellationToken);
         }
         #endregion

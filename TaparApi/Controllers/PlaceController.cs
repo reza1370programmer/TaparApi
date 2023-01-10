@@ -97,12 +97,13 @@ namespace TaparApi.Controllers
             return Ok(new { cat1, cat2, cat3 });
         }
         [HttpGet("[action]")]
-        public async Task<IActionResult> GetPlacesByUserId(CancellationToken cancellation)
+        public async Task<IActionResult> GetPlacesByUserId(CancellationToken cancellation, [FromQuery] string? searchKey, [FromQuery]   string? pageIndex)
         {
             if (UserIsAutheticated)
             {
-                var userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                var places = mapper.Map<List<BusinessForAdminPanelDto>>(await repository.GetPlacesByUserId(Convert.ToInt64(userid), cancellation));
+                var UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var dto = new SearchParamsForUserPanel() { pageIndex = Convert.ToInt32(pageIndex), searchKey = searchKey, userid = Convert.ToInt64(UserId) };
+                var places = mapper.Map<List<BusinessForAdminPanelDto>>(await repository.GetPlacesByUserId(dto, cancellation));
                 return Ok(places);
             }
             else

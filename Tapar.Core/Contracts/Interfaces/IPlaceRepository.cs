@@ -17,7 +17,7 @@ namespace Tapar.Core.Contracts.Interfaces
         #endregion
 
         #region UserPanel
-        Task<List<Place>> GetPlacesByUserId(long userid, CancellationToken cancellationToken);
+        Task<List<Place>> GetPlacesByUserId(SearchParamsForUserPanel dto, CancellationToken cancellationToken);
         Task<Place> GetPlaceCurrentCategory(long placeid, CancellationToken cancellationToken);
         Task<GetPlaceForEditAddressDto> GetPlaceForEditAddress(long placeId, CancellationToken cancellationToken);
         Task UpdatePlacePics(PlacePicUpdateDto dto,Place place, CancellationToken cancellationToken);
