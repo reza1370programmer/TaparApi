@@ -13,6 +13,8 @@ namespace Tapar.Core.Common.Dtos.Place
         [Required, MaxLength(50)]
         public string manager { get; set; }
         [MaxLength(200)]
-        public string service_description { get; set; }
+        public string? service_description { get; set; }
+     
+       
     }
 }

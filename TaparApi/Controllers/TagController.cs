@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using Tapar.Core.Common.Api;
 using Tapar.Core.Common.Dtos;
-using Tapar.Core.Common.Dtos.DynamicFields;
 using Tapar.Core.Contracts.Interfaces;
 using Tapar.Data.Entities;
 
@@ -15,14 +14,12 @@ namespace TaparApi.Controllers
     {
         #region Properties
         public IRepository<Tag> repository { get; set; }
-        public IRepository<TagCat3> tagCat3Repository { get; set; }
         #endregion
 
         #region Constructor
-        public TagController(IRepository<Tag> repository, IRepository<TagCat3> tagCat3Repository)
+        public TagController(IRepository<Tag> repository)
         {
             this.repository = repository;
-            this.tagCat3Repository = tagCat3Repository;
         }
         #endregion
 
@@ -45,20 +42,20 @@ namespace TaparApi.Controllers
                     if (checkTag)
                     {
                         var tag = await repository.TableNoTracking.SingleOrDefaultAsync(t => t.title.Trim() == dto.title.Trim());
-                        if (await tagCat3Repository.TableNoTracking.AnyAsync(t => t.tagId == tag.Id && dto.cat3Id == t.cat3Id))
+                        //if (await tagCat3Repository.TableNoTracking.AnyAsync(t => t.tagId == tag.Id && dto.cat3Id == t.cat3Id))
                         {
                             return Ok(null);
                         }
-                        await tagCat3Repository.AddAsync(new TagCat3 { tagId = tag.Id, cat3Id = dto.cat3Id }, cancellationToken);
+                        //await tagCat3Repository.AddAsync(new TagCat3 { tagId = tag.Id, cat3Id = dto.cat3Id }, cancellationToken);
                         return RedirectToAction("GetTagsByCat3Id", new { dto.cat3Id, cancellationToken });
                     }
                     else
                     {
-                        var tag = new Tag() { title = dto.title };
-                        await repository.AddAsync(tag, cancellationToken);
-                        var tagcat3 = new TagCat3() { cat3Id = dto.cat3Id, tagId = tag.Id };
-                        await tagCat3Repository.AddAsync(tagcat3, cancellationToken);
-                        return RedirectToAction("GetTagsByCat3Id", new { dto.cat3Id, cancellationToken });
+                        //var tag = new Tag() { title = dto.title };
+                        //await repository.AddAsync(tag, cancellationToken);
+                        //var tagcat3 = new TagCat3() { cat3Id = dto.cat3Id, tagId = tag.Id };
+                        //await tagCat3Repository.AddAsync(tagcat3, cancellationToken);
+                        //return RedirectToAction("GetTagsByCat3Id", new { dto.cat3Id, cancellationToken });
                     }
                 }
                 return BadRequest();
@@ -67,14 +64,7 @@ namespace TaparApi.Controllers
 
 
         }
-        [HttpGet("[action]/{cat3Id}")]
-        public async Task<IActionResult> GetTagsByCat3Id(int cat3Id, CancellationToken cancellationToken)
-        {
-            var cat3Tags = await tagCat3Repository.TableNoTracking.Where(p => p.cat3Id == cat3Id)
-                .Select(p => new { p.tag.Id, p.tag.title })
-                .ToListAsync(cancellationToken);
-            return Ok(cat3Tags);
-        }
+       
         [HttpPost("[action]")]
         public async Task<IActionResult> EditTag(TagDto dto, CancellationToken cancellationToken)
         {
@@ -94,23 +84,7 @@ namespace TaparApi.Controllers
             return Unauthorized();
 
         }
-        [HttpPost("[action]")]
-        public async Task<IActionResult> DeleteTag(DeleteTagDto dto,CancellationToken cancellationToken)
-        {
-            var role = User.FindFirstValue(ClaimTypes.Role);
-            if (role == "superadmin" && UserIsAutheticated)
-            {
-                if (ModelState.IsValid)
-                {
-                    var cattag3 = await tagCat3Repository.TableNoTracking.SingleOrDefaultAsync(p => p.tagId == dto.tagid && p.cat3Id == dto.cat3id, cancellationToken);
-                    await tagCat3Repository.DeleteAsync(cattag3, cancellationToken);
-                    return RedirectToAction("GetTagsByCat3Id", new { cat3Id = dto.cat3id, cancellationToken });
-                }
-                return BadRequest(ModelState);
-            }
-            return Unauthorized();
-          
-        }
+
      
         #endregion
 

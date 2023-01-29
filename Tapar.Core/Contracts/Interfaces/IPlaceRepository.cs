@@ -18,11 +18,13 @@ namespace Tapar.Core.Contracts.Interfaces
 
         #region UserPanel
         Task<List<Place>> GetPlacesByUserId(SearchParamsForUserPanel dto, CancellationToken cancellationToken);
-        Task<Place> GetPlaceCurrentCategory(long placeid, CancellationToken cancellationToken);
         Task<GetPlaceForEditAddressDto> GetPlaceForEditAddress(long placeId, CancellationToken cancellationToken);
         Task UpdatePlacePics(PlacePicUpdateDto dto,Place place, CancellationToken cancellationToken);
         Task UpdateModirPic(UpdateModiPicDto dto,Place place, CancellationToken cancellationToken);
         Task UpdateVisitCartPic(UpdateVisitCartPic dto,Place place, CancellationToken cancellationToken);
+        Task UpdateWorkTime(UpdateWorkTimeDto dto, CancellationToken cancellationToken);
+        Task UpdateGlobalInformation(EditGlobalInformationDto dto, CancellationToken cancellationToken);
+        Task DeleteBusiness(long id, CancellationToken cancellationToken);
         #endregion
 
         //Task<PlaceGetDto> GetPlaceById(long id, CancellationToken cancellationToken);

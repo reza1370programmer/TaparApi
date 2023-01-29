@@ -12,7 +12,7 @@ using Tapar.Data.Entities;
 
 namespace TaparApi.Controllers
 {
-    
+
     public class AccountController : BaseController
     {
         public ISuperAdminRepository SuperAdminRepository { get; set; }
@@ -34,7 +34,7 @@ namespace TaparApi.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> Login(LoginSuperAdminDTO loginUserDto, CancellationToken cancellationToken)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var superAdmin = await SuperAdminRepository.LoginSuperAdmin(loginUserDto, cancellationToken);
                 if (superAdmin == null)
@@ -61,7 +61,7 @@ namespace TaparApi.Controllers
             //     new RefreshTokens { expirationDate = newRefreshToken.expirationDate, refreshToken = newRefreshToken.refreshToken, userId = admin.Id }
             //     , cancellationToken);
             //return new { firstName = admin.firstName, lastName = admin.lastName, userName = admin.userName, refreshToken = newRefreshToken.refreshToken, token = token, userId = admin.Id.ToString(), expirationTime = 30 };
-            return Ok(new { admin.mobile,   admin.password, token, id = admin.Id });
+            return Ok(new { admin.mobile, admin.password, token, id = admin.Id });
 
         }
         [HttpGet("refresh-token")]
@@ -123,20 +123,25 @@ namespace TaparApi.Controllers
         }
 
         [HttpGet("[action]")]
-        public IActionResult CheckUserAuth()
+        public async Task<IActionResult>  CheckUserAuth(CancellationToken cancellationToken)
         {
-            return UserIsAutheticated ? Ok(true) : Unauthorized();
+            if (UserIsAutheticated)
+            {
+                var user = await UserRepository.GetByIdAsync(cancellationToken, Convert.ToInt64(User.GetUserId()));
+                return Ok(new { user.mobile, user.Id });
+            }
+            return NotFound();
         }
         [HttpGet("[action]")]
-        public async Task <IActionResult> CheckSuperAdminAuth(CancellationToken cancellationToken)
+        public async Task<IActionResult> CheckSuperAdminAuth(CancellationToken cancellationToken)
         {
             var role = User.FindFirstValue(ClaimTypes.Role);
             if (role == "superadmin" && UserIsAutheticated)
             {
-                var user = await SuperAdminRepository.GetByIdAsync(cancellationToken,User.GetUserId());
-                return Ok(new {user.fullName,userId=user.Id,user.adminType});
+                var user = await SuperAdminRepository.GetByIdAsync(cancellationToken, User.GetUserId());
+                return Ok(new { user.fullName, userId = user.Id, user.adminType });
             }
-                
+
             return Unauthorized();
         }
         [HttpGet("[action]")]

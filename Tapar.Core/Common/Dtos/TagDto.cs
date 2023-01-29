@@ -28,4 +28,11 @@ namespace Tapar.Core.Common.Dtos
         [Required(ErrorMessage = "دسته بندی سطح سوم را انتخاب کیند")]
         public int cat3id { get; set; }
     }
+    public class UpdateUserTagsDto {
+        [Required]
+        public long placeid { get; set; }
+        [Required]
+        [StringLength(1000)]
+        public string tags { get; set; }
+    }
 }

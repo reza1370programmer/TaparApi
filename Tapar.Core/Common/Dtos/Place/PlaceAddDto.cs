@@ -14,19 +14,11 @@ namespace Tapar.Core.Common.Dtos.Place
         [Required(ErrorMessage = "نام مدیر را وارد کنید")]
         [MaxLength(50, ErrorMessage = "تعداد کاراکترهای مدیر نمیتواند از 50 بیشتر باشد")]
         public string modir { get; set; }
-        public string? gValue { get; set; }
-        public string? longitude { get; set; }
-        public string? latitude { get; set; }
-        [Required(ErrorMessage = "شماره دسته بندی سطح 3 را وارد کنید")]
-        public int cat3Id { get; set; }
-        public List<int>? filters { get; set; }
         public Address address { get; set; }
         public RelationWays relationWays { get; set; }
         [Required(ErrorMessage = "آیدی زمان کاری را وارد کنید")]
         public int workingTimeId { get; set; }
         public List<WorkingDays>? workingDays { get; set; }
-        [Required(ErrorMessage = "تگ های کسب و کار را وارد کنید")]
-        public List<string> tags { get; set; }
         public List<IFormFile>? businessPics { get; set; }
         public List<IFormFile>? modirPic { get; set; }
         public List<IFormFile>? visitCartPics { get; set; }

@@ -9,5 +9,6 @@ namespace Tapar.Core.Common.Services.ImageUploader
     {
         Task<string> UploadImage(IFormFile file);
         Task<string> UpdateImage(IFormFile file,string OldImageName);
+        Task DeleteImage(string ImageName);
     }
 }

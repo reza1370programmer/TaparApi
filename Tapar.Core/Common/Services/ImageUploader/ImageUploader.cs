@@ -79,5 +79,15 @@ namespace Tapar.Core.Common.Services.ImageUploader
             }
             else return null!;
         }
+
+        public Task DeleteImage(string ImageName)
+        {
+            var filepath = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images")).Root + $@"\{ImageName}";
+            if (File.Exists(filepath))
+            {
+                File.Delete(filepath);
+            }
+            return Task.CompletedTask;
+        }
     }
 }

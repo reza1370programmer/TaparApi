@@ -1,13 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using Tapar.Core.Common.Api;
 using Tapar.Core.Common.Dtos;
 using Tapar.Core.Common.Dtos.Place;
 using Tapar.Core.Contracts.Interfaces;
-
-
 namespace TaparApi.Controllers
 {
 
@@ -81,23 +80,15 @@ namespace TaparApi.Controllers
         [HttpGet("[action]/{id}")]
         public async Task<IActionResult> GetPlaceById(long id, CancellationToken cancellationToken)
         {
-            var place = await repository.GetByIdAsync(cancellationToken, id);
+            var place = await repository.TableNoTracking.Include(p => p.weekDay!).AsSplitQuery().SingleOrDefaultAsync(p => p.Id == id, cancellationToken);
             return Ok(place);
 
         }
 
         #region UserPanelMethods
-        [HttpGet("[action]/{placeId}")]
-        public async Task<IActionResult> GetPlaceCurrentCategory(long placeId, CancellationToken cancellationToken)
-        {
-            var place = await repository.GetPlaceCurrentCategory(placeId, cancellationToken);
-            string cat3 = place.cat3.name;
-            string cat2 = place.cat3.cat2.name;
-            string cat1 = place.cat3.cat2.cat1.name;
-            return Ok(new { cat1, cat2, cat3 });
-        }
+      
         [HttpGet("[action]")]
-        public async Task<IActionResult> GetPlacesByUserId(CancellationToken cancellation, [FromQuery] string? searchKey, [FromQuery]   string? pageIndex)
+        public async Task<IActionResult> GetPlacesByUserId(CancellationToken cancellation, [FromQuery] string? searchKey, [FromQuery] string? pageIndex)
         {
             if (UserIsAutheticated)
             {
@@ -116,11 +107,7 @@ namespace TaparApi.Controllers
         {
             if (ModelState.IsValid)
             {
-                var place = await repository.GetByIdAsync(cancellationToken, dto.id);
-                place.tablo = dto.tablo;
-                place.manager = dto.manager;
-                place.service_description = dto.service_description;
-                await repository.UpdateAsync(place, cancellationToken);
+                await repository.UpdateGlobalInformation(dto, cancellationToken);
                 return Ok();
             }
             return BadRequest();
@@ -212,6 +199,38 @@ namespace TaparApi.Controllers
             }
             return BadRequest();
 
+        }
+    
+        [Authorize]
+        [HttpPost("[action]")]
+        public async Task<IActionResult> UpdateWorkTime(UpdateWorkTimeDto dto, CancellationToken cancellationToken)
+        {
+            if (!ModelState.IsValid) { return BadRequest(); }
+            try
+            {
+                await repository.UpdateWorkTime(dto, cancellationToken);
+                return Ok();
+            }
+            catch (Exception)
+            {
+                throw new Exception("مشکلی در سرور رخ داد");
+
+            }
+        }
+        [Authorize]
+        [HttpGet("[action]/{id}")]
+        public async Task<IActionResult> DeletePlace(long id, CancellationToken cancellationToken)
+        {
+            try
+            {
+                await repository.DeleteBusiness(id, cancellationToken);
+                return Ok();
+            }
+            catch (Exception)
+            {
+
+                throw new Exception("سرور پاسخگو نمی باشد");
+            }
         }
         #endregion
 
