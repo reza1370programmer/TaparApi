@@ -6,7 +6,7 @@ namespace Tapar.Core.Common.Dtos
     {
         public string? searchKey { get; set; }
         public int pageIndex { get; set; } = 1;
-        
+        public int? cityId { get; set; }
     }
     public class SearchParamsForUserPanel
     {

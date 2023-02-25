@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.AspNetCore.Http;
+using SixLabors.ImageSharp;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
 namespace Tapar.Core.Common.Services.ImageUploader
@@ -10,5 +11,6 @@ namespace Tapar.Core.Common.Services.ImageUploader
         Task<string> UploadImage(IFormFile file);
         Task<string> UpdateImage(IFormFile file,string OldImageName);
         Task DeleteImage(string ImageName);
+        string ImageResize(Image img,int MaxWidth,int MaxHeight);
     }
 }

@@ -19,7 +19,7 @@ namespace Tapar.Core.Contracts.Repositories
         #region Properties
         public IImageUploader imageUploader { get; set; }
         public IHttpContextAccessor httpContextAccessor { get; set; }
-        ILocationRepository locationRepository { get; set; }
+
         public IMapper mapper { get; set; }
         public IRepository<WeekDays> WorkTimeRepository { get; set; }
         #endregion
@@ -29,26 +29,25 @@ namespace Tapar.Core.Contracts.Repositories
          TaparDbContext dbContext,
          IImageUploader imageUploader,
          IHttpContextAccessor httpContextAccessor,
-         ILocationRepository locationRepository,
          IMapper mapper,
          IRepository<WeekDays> workTimeRepository) : base(dbContext)
         {
-            this.locationRepository = locationRepository;
             this.imageUploader = imageUploader;
             this.httpContextAccessor = httpContextAccessor;
             this.mapper = mapper;
-            WorkTimeRepository = workTimeRepository; 
+            WorkTimeRepository = workTimeRepository;
         }
         #endregion
 
         #region Methods
         public async Task AddPlace(PlaceAddDto dto, CancellationToken cancellationToken)
         {
-            
+
             Place place = new Place();
             place.tablo = dto.tablo;
             place.service_description = dto.description;
             place.manager = dto.modir;
+            place.StatusId = 1;
             place.locationId = int.Parse(dto.address.shahrestan);
             place.address = dto.address.restAddress;
             place.phone1 = dto.relationWays.phone1;
@@ -117,7 +116,7 @@ namespace Tapar.Core.Contracts.Repositories
             {
                 place.visitCart_back = null;
                 place.visitCart_front = null;
-            }      
+            }
             if (place.workTimeId == 3)
             {
                 place.weekDay = new WeekDays();
@@ -210,6 +209,10 @@ namespace Tapar.Core.Contracts.Repositories
             {
                 query = query.Where(p => p.tablo.Contains(searchParams.searchKey));
             }
+            if (searchParams.cityId > 0)
+            {
+                query = query.Where(p => p.locationId.ToString() == searchParams.cityId.ToString());
+            }
 
             query = query.Skip((searchParams.pageIndex - 1) * 5).Take(5);
             return await query.ToListAsync(cancellationToken);
@@ -238,7 +241,7 @@ namespace Tapar.Core.Contracts.Repositories
             place.view_count += 1;
             await UpdateAsync(place, cancellationToken);
         }
-    
+
         #region UserPanel
         public async Task<List<Place>> GetPlacesByUserId(SearchParamsForUserPanel dto, CancellationToken cancellationToken)
         {
@@ -482,7 +485,7 @@ namespace Tapar.Core.Contracts.Repositories
             var place = await Table.SingleOrDefaultAsync(p => p.Id == dto.id, cancellationToken);
             place.tablo = dto.tablo;
             place.manager = dto.manager;
-            place.service_description = dto.service_description;         
+            place.service_description = dto.service_description;
             await UpdateAsync(place, cancellationToken);
         }
 
@@ -504,6 +507,48 @@ namespace Tapar.Core.Contracts.Repositories
             if (place?.visitCart_back is not null)
                 await imageUploader.DeleteImage(place.visitCart_back);
             await DeleteAsync(place, cancellationToken);
+        }
+
+        public async Task<Place> DeleteImage(DeleteImageDto Dto, CancellationToken cancellationToken)
+        {
+            var place = await GetByIdAsync(cancellationToken, Dto.PlaceId);
+            if (Dto.FieldName is "PlacePic1")
+            {
+                await imageUploader.DeleteImage(Dto.ImageName);
+                place.bussiness_pic1 = null;
+                await UpdateAsync(place, cancellationToken);
+            }
+            if (Dto.FieldName is "PlacePic2")
+            {
+                await imageUploader.DeleteImage(Dto.ImageName);
+                place.bussiness_pic2 = null;
+                await UpdateAsync(place, cancellationToken);
+            }
+            if (Dto.FieldName is "PlacePic3")
+            {
+                await imageUploader.DeleteImage(Dto.ImageName);
+                place.bussiness_pic3 = null;
+                await UpdateAsync(place, cancellationToken);
+            }
+            if (Dto.FieldName is "ModirPic")
+            {
+                await imageUploader.DeleteImage(Dto.ImageName);
+                place.personal_pic = null;
+                await UpdateAsync(place, cancellationToken);
+            }
+            if (Dto.FieldName is "VisitCartFront")
+            {
+                await imageUploader.DeleteImage(Dto.ImageName);
+                place.visitCart_front = null;
+                await UpdateAsync(place, cancellationToken);
+            }
+            if (Dto.FieldName is "VisitCartBack")
+            {
+                await imageUploader.DeleteImage(Dto.ImageName);
+                place.visitCart_back = null;
+                await UpdateAsync(place, cancellationToken);
+            }
+            return place;
         }
         #endregion
 

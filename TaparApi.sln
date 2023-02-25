@@ -5,13 +5,11 @@ VisualStudioVersion = 17.1.32228.430
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaparApi", "TaparApi\TaparApi.csproj", "{16B43CCA-9951-4ACA-B5DB-EED9CD9ECCCD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UploadServer", "..\UploadServer\UploadServer.csproj", "{E3C0B859-8E9C-406B-B99B-3283A3947278}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tapar.Core", "Tapar.Core\Tapar.Core.csproj", "{2AE87AC7-B67F-438E-B8E5-97ED413A0B8D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapar.Core", "Tapar.Core\Tapar.Core.csproj", "{2AE87AC7-B67F-438E-B8E5-97ED413A0B8D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tapar.Data", "Tapar.Entities\Tapar.Data.csproj", "{C64F16BD-1F1C-4F3D-BBD9-B87B5FD6A27A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapar.Data", "Tapar.Entities\Tapar.Data.csproj", "{C64F16BD-1F1C-4F3D-BBD9-B87B5FD6A27A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapar.Common", "Tapar.Common\Tapar.Common.csproj", "{2841D6EE-42D0-44DC-BE33-C9F6113749C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tapar.Common", "Tapar.Common\Tapar.Common.csproj", "{2841D6EE-42D0-44DC-BE33-C9F6113749C4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +21,6 @@ Global
 		{16B43CCA-9951-4ACA-B5DB-EED9CD9ECCCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{16B43CCA-9951-4ACA-B5DB-EED9CD9ECCCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{16B43CCA-9951-4ACA-B5DB-EED9CD9ECCCD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E3C0B859-8E9C-406B-B99B-3283A3947278}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E3C0B859-8E9C-406B-B99B-3283A3947278}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E3C0B859-8E9C-406B-B99B-3283A3947278}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E3C0B859-8E9C-406B-B99B-3283A3947278}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2AE87AC7-B67F-438E-B8E5-97ED413A0B8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2AE87AC7-B67F-438E-B8E5-97ED413A0B8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2AE87AC7-B67F-438E-B8E5-97ED413A0B8D}.Release|Any CPU.ActiveCfg = Release|Any CPU

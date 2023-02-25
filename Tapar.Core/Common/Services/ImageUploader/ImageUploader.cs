@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.FileProviders;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
 
 namespace Tapar.Core.Common.Services.ImageUploader
 {
     public class ImageUploader : IImageUploader
     {
-        
+
 
         public async Task<string> UploadImage(IFormFile file)
         {
@@ -14,25 +16,19 @@ namespace Tapar.Core.Common.Services.ImageUploader
             {
                 if (file.Length > 0)
                 {
-                    //Getting FileName
                     var fileName = Path.GetFileName(file.FileName);
-
-                    //Assigning Unique Filename (Guid)
-                    var myUniqueFileName = Convert.ToString(Guid.NewGuid());
-
-                    //Getting file Extension
+                    var guid = Convert.ToString(Guid.NewGuid().ToString("N"));
+                    var now = DateTime.Now.TimeOfDay.Ticks;
+                    var myUniqueFileName = $"{guid}_{now}";
                     var fileExtension = Path.GetExtension(fileName);
-
-                    // concatenating  FileName + FileExtension
                     newFileName = String.Concat(myUniqueFileName, fileExtension);
-
-                    // Combines two strings into a path.
                     var filepath = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images")).Root + $@"\{newFileName}";
-
-                    using (FileStream fs = File.Create(filepath))
+                    using (var image = Image.Load(file.OpenReadStream()))
                     {
-                        await file.CopyToAsync(fs);
-                        fs.Flush();
+                        string newsize = ImageResize(image, 800, 600);
+                        string[] sizearray = newsize.Split(',');
+                        image.Mutate(x => x.Resize(Convert.ToInt32(sizearray[1]), Convert.ToInt32(sizearray[0])));
+                        image.Save(filepath);
                     }
                 }
                 else return null!;
@@ -48,29 +44,26 @@ namespace Tapar.Core.Common.Services.ImageUploader
             {
                 if (file.Length > 0)
                 {
-                    //Getting FileName
+
                     var fileName = Path.GetFileName(file.FileName);
-
-                    //Assigning Unique Filename (Guid)
-                    var myUniqueFileName = Convert.ToString(Guid.NewGuid());
-
-                    //Getting file Extension
+                    var guid = Convert.ToString(Guid.NewGuid().ToString("N"));
+                    var now = DateTime.Now.TimeOfDay.Ticks;
+                    var myUniqueFileName = $"{guid}_{now}";
                     var fileExtension = Path.GetExtension(fileName);
-
-                    // concatenating  FileName + FileExtension
                     newFileName = String.Concat(myUniqueFileName, fileExtension);
-
-                    // Combines two strings into a path.
                     var filepath = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images")).Root + $@"\{newFileName}";
-                    string oldPath= new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images")).Root + $@"\{OldImageName}";
+                    using (var image = Image.Load(file.OpenReadStream()))
+                    {
+                        string newsize = ImageResize(image, 800, 600);
+                        string[] sizearray = newsize.Split(',');
+                        image.Mutate(x => x.Resize(Convert.ToInt32(sizearray[1]), Convert.ToInt32(sizearray[0])));
+                        image.Save(filepath);
+                    }
+
+                    string oldPath = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images")).Root + $@"\{OldImageName}";
                     if (File.Exists(oldPath))
                     {
                         File.Delete(oldPath);
-                    }
-                    using (FileStream fs = File.Create(filepath))
-                    {
-                        await file.CopyToAsync(fs);
-                        fs.Flush();
                     }
                 }
                 else return null!;
@@ -79,7 +72,6 @@ namespace Tapar.Core.Common.Services.ImageUploader
             }
             else return null!;
         }
-
         public Task DeleteImage(string ImageName)
         {
             var filepath = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images")).Root + $@"\{ImageName}";
@@ -88,6 +80,22 @@ namespace Tapar.Core.Common.Services.ImageUploader
                 File.Delete(filepath);
             }
             return Task.CompletedTask;
+        }
+        public string ImageResize(Image img, int MaxWidth, int MaxHeight)
+        {
+            if (img.Width > MaxWidth || img.Height > MaxHeight)
+            {
+                double WidthRatio = (double)img.Width / (double)MaxWidth;
+                double HeightRatio = (double)img.Height / (double)MaxHeight;
+                double Ratio = Math.Max(WidthRatio, HeightRatio);
+                int NewWidth = (int)(img.Width / Ratio);
+                int NewHeigth = (int)(img.Height / Ratio);
+                return NewHeigth.ToString() + "," + NewWidth.ToString();
+
+            }
+            else
+                return img.Height.ToString() + "," + img.Width.ToString();
+
         }
     }
 }

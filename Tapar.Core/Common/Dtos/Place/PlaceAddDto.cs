@@ -29,9 +29,8 @@ namespace Tapar.Core.Common.Dtos.Place
         public string ostan { get; set; }
         [Required(ErrorMessage = "شهرستان مورد نظر خود را وارد کنید")]
         public string shahrestan { get; set; }
-        [Required(ErrorMessage = "آدرس محل کار خود را وارد کنید")]
         [MaxLength(500, ErrorMessage = "تعداد کاراکترهای آدرس نمیتواند از 500 بیشتر باشد")]
-        public string restAddress { get; set; }
+        public string? restAddress { get; set; }
     }
     public class RelationWays
     {

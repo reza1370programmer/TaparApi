@@ -16,9 +16,8 @@ namespace Tapar.Core.Common.Dtos.Place
         public long placeid { get; set; }
         [Required]
         public int locationId { get; set; }
-        [Required]
         [MaxLength(500)]
-        public string restAddress { get; set; }
+        public string? restAddress { get; set; }
     }
 
 }

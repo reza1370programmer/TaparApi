@@ -12,8 +12,8 @@ using TaparApi.Data;
 namespace Tapar.Data.Migrations
 {
     [DbContext(typeof(TaparDbContext))]
-    [Migration("20221222080911_change-maxlength-tag")]
-    partial class changemaxlengthtag
+    [Migration("20230204082953_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,87 +24,6 @@ namespace Tapar.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("Tapar.Data.Entities.Cat1", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("abbreviation")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<string>("gdesc")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<string>("name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Cat1s");
-                });
-
-            modelBuilder.Entity("Tapar.Data.Entities.Cat2", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("cat1Id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("gdesc")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<string>("name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("cat1Id");
-
-                    b.ToTable("Cat2s");
-                });
-
-            modelBuilder.Entity("Tapar.Data.Entities.Cat3", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("cat2Id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("gdesc")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<string>("name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("cat2Id");
-
-                    b.ToTable("Cat3s");
-                });
-
             modelBuilder.Entity("Tapar.Data.Entities.Comment", b =>
                 {
                     b.Property<int>("Id")
@@ -112,12 +31,6 @@ namespace Tapar.Data.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("approv_date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long>("approv_date_userId")
-                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("create_date")
                         .HasColumnType("datetime2");
@@ -140,63 +53,6 @@ namespace Tapar.Data.Migrations
                     b.HasIndex("userId");
 
                     b.ToTable("Comments");
-                });
-
-            modelBuilder.Entity("Tapar.Data.Entities.Filters", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("enTitle")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int?>("parentId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("title")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("enTitle")
-                        .IsUnique();
-
-                    b.HasIndex("parentId");
-
-                    b.HasIndex("title")
-                        .IsUnique();
-
-                    b.ToTable("Filters");
-                });
-
-            modelBuilder.Entity("Tapar.Data.Entities.Filters_Cat2", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
-
-                    b.Property<int>("cat2Id")
-                        .HasColumnType("int");
-
-                    b.Property<int>("filterId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("cat2Id");
-
-                    b.HasIndex("filterId");
-
-                    b.ToTable("Filters_Cat2s");
                 });
 
             modelBuilder.Entity("Tapar.Data.Entities.LikeCount", b =>
@@ -233,21 +89,8 @@ namespace Tapar.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("abbreviation")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
                     b.Property<bool>("isActive")
                         .HasColumnType("bit");
-
-                    b.Property<string>("latitude")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("longitude")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("name")
                         .IsRequired()
@@ -259,52 +102,22 @@ namespace Tapar.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("abbreviation")
-                        .IsUnique();
-
                     b.ToTable("Locations");
-                });
 
-            modelBuilder.Entity("Tapar.Data.Entities.MedicalStaff", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
-
-                    b.Property<string>("address")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<string>("lat")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<string>("lng")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<string>("phone1")
-                        .IsRequired()
-                        .HasMaxLength(12)
-                        .HasColumnType("nvarchar(12)");
-
-                    b.Property<string>("phone2")
-                        .HasMaxLength(12)
-                        .HasColumnType("nvarchar(12)");
-
-                    b.Property<string>("tablo")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("MedicalStaffs");
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            isActive = true,
+                            name = "آذربایجان شرقی"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            isActive = true,
+                            name = "بناب",
+                            parentId = 1
+                        });
                 });
 
             modelBuilder.Entity("Tapar.Data.Entities.Place", b =>
@@ -335,9 +148,6 @@ namespace Tapar.Data.Migrations
                     b.Property<DateTime?>("cDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("cat3Id")
-                        .HasColumnType("int");
-
                     b.Property<string>("email")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
@@ -346,15 +156,7 @@ namespace Tapar.Data.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<string>("gvalue")
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
-
                     b.Property<string>("instagram")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<string>("latitude")
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
@@ -363,10 +165,6 @@ namespace Tapar.Data.Migrations
 
                     b.Property<int>("locationId")
                         .HasColumnType("int");
-
-                    b.Property<string>("longitude")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("manager")
                         .IsRequired()
@@ -422,13 +220,7 @@ namespace Tapar.Data.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<string>("tags")
-                        .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
-
                     b.Property<string>("taparcode")
-                        .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
@@ -463,13 +255,13 @@ namespace Tapar.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("cat3Id");
-
                     b.HasIndex("locationId");
 
                     b.HasIndex("tablo");
 
-                    b.HasIndex("tags");
+                    b.HasIndex("taparcode")
+                        .IsUnique()
+                        .HasFilter("[taparcode] IS NOT NULL");
 
                     b.HasIndex("userId");
 
@@ -478,27 +270,27 @@ namespace Tapar.Data.Migrations
                     b.ToTable("Places");
                 });
 
-            modelBuilder.Entity("Tapar.Data.Entities.Place_Filter", b =>
+            modelBuilder.Entity("Tapar.Data.Entities.PlaceTag", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
-                    b.Property<int>("filterId")
-                        .HasColumnType("int");
+                    b.Property<long>("PlaceId")
+                        .HasColumnType("bigint");
 
-                    b.Property<long>("placeId")
+                    b.Property<long>("TagId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("filterId");
+                    b.HasIndex("PlaceId");
 
-                    b.HasIndex("placeId");
+                    b.HasIndex("TagId");
 
-                    b.ToTable("Place_Filters");
+                    b.ToTable("PlaceTags");
                 });
 
             modelBuilder.Entity("Tapar.Data.Entities.RefreshTokens", b =>
@@ -528,76 +320,6 @@ namespace Tapar.Data.Migrations
                     b.HasIndex("userId");
 
                     b.ToTable("RefreshTokens");
-                });
-
-            modelBuilder.Entity("Tapar.Data.Entities.SpecialTypeField", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int?>("cat2Id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("enTitle")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<bool>("isRequired")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("maxLength")
-                        .IsRequired()
-                        .HasMaxLength(5)
-                        .HasColumnType("nvarchar(5)");
-
-                    b.Property<string>("title")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("cat2Id");
-
-                    b.ToTable("SpecialTypeFields");
-                });
-
-            modelBuilder.Entity("Tapar.Data.Entities.SubPlace", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
-
-                    b.Property<string>("description")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<string>("internalPhone")
-                        .HasMaxLength(11)
-                        .HasColumnType("nvarchar(11)");
-
-                    b.Property<string>("personalPic")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long?>("placeId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("semat")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("placeId");
-
-                    b.ToTable("SubPlaces");
                 });
 
             modelBuilder.Entity("Tapar.Data.Entities.SuperAdmin", b =>
@@ -652,29 +374,6 @@ namespace Tapar.Data.Migrations
                     b.ToTable("Tags");
                 });
 
-            modelBuilder.Entity("Tapar.Data.Entities.TagCat3", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
-
-                    b.Property<int>("cat3Id")
-                        .HasColumnType("int");
-
-                    b.Property<long>("tagId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("cat3Id");
-
-                    b.HasIndex("tagId");
-
-                    b.ToTable("TagCat3s");
-                });
-
             modelBuilder.Entity("Tapar.Data.Entities.User", b =>
                 {
                     b.Property<long>("Id")
@@ -683,53 +382,23 @@ namespace Tapar.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
-                    b.Property<string>("email")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<string>("FullName")
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
-                    b.Property<string>("mobile")
+                    b.Property<string>("Mobile")
                         .IsRequired()
                         .HasMaxLength(11)
                         .HasColumnType("nvarchar(11)");
 
-                    b.Property<string>("password")
+                    b.Property<string>("Password")
+                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("Tapar.Data.Entities.ViewCount", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
-
-                    b.Property<string>("clientDetail")
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
-
-                    b.Property<long>("placeId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("userId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime?>("viewDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("placeId");
-
-                    b.HasIndex("userId");
-
-                    b.ToTable("ViewCounts");
                 });
 
             modelBuilder.Entity("Tapar.Data.Entities.WeekDays", b =>
@@ -789,28 +458,23 @@ namespace Tapar.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("WorkTimes");
-                });
 
-            modelBuilder.Entity("Tapar.Data.Entities.Cat2", b =>
-                {
-                    b.HasOne("Tapar.Data.Entities.Cat1", "cat1")
-                        .WithMany("cat2s")
-                        .HasForeignKey("cat1Id")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("cat1");
-                });
-
-            modelBuilder.Entity("Tapar.Data.Entities.Cat3", b =>
-                {
-                    b.HasOne("Tapar.Data.Entities.Cat2", "cat2")
-                        .WithMany("cat3s")
-                        .HasForeignKey("cat2Id")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("cat2");
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            title = "شبانه روزی"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            title = "اداری"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            title = "خاص"
+                        });
                 });
 
             modelBuilder.Entity("Tapar.Data.Entities.Comment", b =>
@@ -830,34 +494,6 @@ namespace Tapar.Data.Migrations
                     b.Navigation("place");
 
                     b.Navigation("user");
-                });
-
-            modelBuilder.Entity("Tapar.Data.Entities.Filters", b =>
-                {
-                    b.HasOne("Tapar.Data.Entities.Filters", "parent")
-                        .WithMany("childFilters")
-                        .HasForeignKey("parentId");
-
-                    b.Navigation("parent");
-                });
-
-            modelBuilder.Entity("Tapar.Data.Entities.Filters_Cat2", b =>
-                {
-                    b.HasOne("Tapar.Data.Entities.Cat2", "cat2")
-                        .WithMany("filters_Cat2s")
-                        .HasForeignKey("cat2Id")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Tapar.Data.Entities.Filters", "filter")
-                        .WithMany("filters_Cat2s")
-                        .HasForeignKey("filterId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("cat2");
-
-                    b.Navigation("filter");
                 });
 
             modelBuilder.Entity("Tapar.Data.Entities.LikeCount", b =>
@@ -881,12 +517,6 @@ namespace Tapar.Data.Migrations
 
             modelBuilder.Entity("Tapar.Data.Entities.Place", b =>
                 {
-                    b.HasOne("Tapar.Data.Entities.Cat3", "cat3")
-                        .WithMany("places")
-                        .HasForeignKey("cat3Id")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("Tapar.Data.Entities.Location", "location")
                         .WithMany("places")
                         .HasForeignKey("locationId")
@@ -905,8 +535,6 @@ namespace Tapar.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("cat3");
-
                     b.Navigation("location");
 
                     b.Navigation("user");
@@ -914,23 +542,23 @@ namespace Tapar.Data.Migrations
                     b.Navigation("workTime");
                 });
 
-            modelBuilder.Entity("Tapar.Data.Entities.Place_Filter", b =>
+            modelBuilder.Entity("Tapar.Data.Entities.PlaceTag", b =>
                 {
-                    b.HasOne("Tapar.Data.Entities.Filters", "filter")
-                        .WithMany("Place_Filters")
-                        .HasForeignKey("filterId")
+                    b.HasOne("Tapar.Data.Entities.Place", "Place")
+                        .WithMany("PlaceTags")
+                        .HasForeignKey("PlaceId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Tapar.Data.Entities.Place", "place")
-                        .WithMany("place_Filters")
-                        .HasForeignKey("placeId")
+                    b.HasOne("Tapar.Data.Entities.Tag", "Tag")
+                        .WithMany("PlaceTags")
+                        .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("filter");
+                    b.Navigation("Place");
 
-                    b.Navigation("place");
+                    b.Navigation("Tag");
                 });
 
             modelBuilder.Entity("Tapar.Data.Entities.RefreshTokens", b =>
@@ -948,60 +576,6 @@ namespace Tapar.Data.Migrations
                     b.Navigation("user");
                 });
 
-            modelBuilder.Entity("Tapar.Data.Entities.SpecialTypeField", b =>
-                {
-                    b.HasOne("Tapar.Data.Entities.Cat2", "cat2")
-                        .WithMany("SpecialTypeFields")
-                        .HasForeignKey("cat2Id");
-
-                    b.Navigation("cat2");
-                });
-
-            modelBuilder.Entity("Tapar.Data.Entities.SubPlace", b =>
-                {
-                    b.HasOne("Tapar.Data.Entities.Place", "place")
-                        .WithMany("subPlaces")
-                        .HasForeignKey("placeId");
-
-                    b.Navigation("place");
-                });
-
-            modelBuilder.Entity("Tapar.Data.Entities.TagCat3", b =>
-                {
-                    b.HasOne("Tapar.Data.Entities.Cat3", "cat3")
-                        .WithMany("tagCat3s")
-                        .HasForeignKey("cat3Id")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Tapar.Data.Entities.Tag", "tag")
-                        .WithMany("tagCats")
-                        .HasForeignKey("tagId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("cat3");
-
-                    b.Navigation("tag");
-                });
-
-            modelBuilder.Entity("Tapar.Data.Entities.ViewCount", b =>
-                {
-                    b.HasOne("Tapar.Data.Entities.Place", "place")
-                        .WithMany("viewCounts")
-                        .HasForeignKey("placeId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Tapar.Data.Entities.User", "User")
-                        .WithMany("ViewCounts")
-                        .HasForeignKey("userId");
-
-                    b.Navigation("User");
-
-                    b.Navigation("place");
-                });
-
             modelBuilder.Entity("Tapar.Data.Entities.WeekDays", b =>
                 {
                     b.HasOne("Tapar.Data.Entities.Place", "place")
@@ -1011,36 +585,6 @@ namespace Tapar.Data.Migrations
                     b.Navigation("place");
                 });
 
-            modelBuilder.Entity("Tapar.Data.Entities.Cat1", b =>
-                {
-                    b.Navigation("cat2s");
-                });
-
-            modelBuilder.Entity("Tapar.Data.Entities.Cat2", b =>
-                {
-                    b.Navigation("SpecialTypeFields");
-
-                    b.Navigation("cat3s");
-
-                    b.Navigation("filters_Cat2s");
-                });
-
-            modelBuilder.Entity("Tapar.Data.Entities.Cat3", b =>
-                {
-                    b.Navigation("places");
-
-                    b.Navigation("tagCat3s");
-                });
-
-            modelBuilder.Entity("Tapar.Data.Entities.Filters", b =>
-                {
-                    b.Navigation("Place_Filters");
-
-                    b.Navigation("childFilters");
-
-                    b.Navigation("filters_Cat2s");
-                });
-
             modelBuilder.Entity("Tapar.Data.Entities.Location", b =>
                 {
                     b.Navigation("places");
@@ -1048,15 +592,11 @@ namespace Tapar.Data.Migrations
 
             modelBuilder.Entity("Tapar.Data.Entities.Place", b =>
                 {
+                    b.Navigation("PlaceTags");
+
                     b.Navigation("comments");
 
                     b.Navigation("likeCounts");
-
-                    b.Navigation("place_Filters");
-
-                    b.Navigation("subPlaces");
-
-                    b.Navigation("viewCounts");
 
                     b.Navigation("weekDay");
                 });
@@ -1068,7 +608,7 @@ namespace Tapar.Data.Migrations
 
             modelBuilder.Entity("Tapar.Data.Entities.Tag", b =>
                 {
-                    b.Navigation("tagCats");
+                    b.Navigation("PlaceTags");
                 });
 
             modelBuilder.Entity("Tapar.Data.Entities.User", b =>
@@ -1076,8 +616,6 @@ namespace Tapar.Data.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("LikeCounts");
-
-                    b.Navigation("ViewCounts");
 
                     b.Navigation("places");
 

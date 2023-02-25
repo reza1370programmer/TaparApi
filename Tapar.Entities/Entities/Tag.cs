@@ -7,6 +7,7 @@ namespace Tapar.Data.Entities
     public class Tag:BaseEntity<long>
     {
         public string title { get; set; }
+        public List<PlaceTag> PlaceTags { get; set; }
     }
     public class TagConfiguration : IEntityTypeConfiguration<Tag>
     {

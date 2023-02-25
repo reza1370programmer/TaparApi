@@ -84,9 +84,16 @@ namespace TaparApi.Controllers
             return Ok(place);
 
         }
-
+        [HttpGet("[action]/{number}")]
+        public async Task<IActionResult> CheckPhoneNumber(string number, CancellationToken cancellationToken)
+        {
+            var place = await repository.TableNoTracking
+                .Where(p => p.phone1 == number || p.phone2 == number || p.phone3 == number || p.mob1 == number || p.mob2 == number).FirstOrDefaultAsync(cancellationToken);
+            if (place is null) { return Ok(null); }
+            return Conflict(place.tablo);
+        }
         #region UserPanelMethods
-      
+
         [HttpGet("[action]")]
         public async Task<IActionResult> GetPlacesByUserId(CancellationToken cancellation, [FromQuery] string? searchKey, [FromQuery] string? pageIndex)
         {
@@ -200,7 +207,7 @@ namespace TaparApi.Controllers
             return BadRequest();
 
         }
-    
+
         [Authorize]
         [HttpPost("[action]")]
         public async Task<IActionResult> UpdateWorkTime(UpdateWorkTimeDto dto, CancellationToken cancellationToken)
@@ -230,6 +237,21 @@ namespace TaparApi.Controllers
             {
 
                 throw new Exception("سرور پاسخگو نمی باشد");
+            }
+        }
+        [Authorize]
+        [HttpPost("[action]")]
+        public async Task<IActionResult> DeleteImage(DeleteImageDto Dto,CancellationToken cancellationToken)
+        {
+            if(!ModelState.IsValid) { return BadRequest(); }
+            try
+            {
+                var place= await repository.DeleteImage(Dto,cancellationToken);
+                return Ok(place);
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
             }
         }
         #endregion

@@ -12,6 +12,6 @@ public class UserRepository : Repository<User>, IUserRepository
 
     public async Task<User?> LoginUser(LoginUserDto loginUserDto, CancellationToken cancellationToken)
     {
-        return await TableNoTracking.SingleOrDefaultAsync(u => u.password == loginUserDto.password && u.mobile == loginUserDto.mobile, cancellationToken);
+        return await TableNoTracking.SingleOrDefaultAsync(u => u.Password == loginUserDto.password && u.Mobile == loginUserDto.mobile, cancellationToken);
     }
 }

@@ -25,6 +25,7 @@ namespace Tapar.Core.Contracts.Interfaces
         Task UpdateWorkTime(UpdateWorkTimeDto dto, CancellationToken cancellationToken);
         Task UpdateGlobalInformation(EditGlobalInformationDto dto, CancellationToken cancellationToken);
         Task DeleteBusiness(long id, CancellationToken cancellationToken);
+        Task<Place> DeleteImage(DeleteImageDto Dto, CancellationToken cancellationToken);
         #endregion
 
         //Task<PlaceGetDto> GetPlaceById(long id, CancellationToken cancellationToken);
