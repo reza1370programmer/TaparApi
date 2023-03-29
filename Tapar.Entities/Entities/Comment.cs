@@ -12,6 +12,7 @@ public class Comment : BaseEntity<int>
     public User user { get; set; }
     public long placeId { get; set; }
     public Place place { get; set; }
+    public bool status { get; set; } = false;
 }
 public class CommentConfiguration : IEntityTypeConfiguration<Comment>
 {

@@ -6,6 +6,7 @@ using Serilog;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 using Tapar.core.Extensions;
 using Tapar.Core.Common;
+using Tapar.Core.Common.Extensions;
 using Tapar.Core.Common.Middlewares;
 using Tapar.Core.Contracts.Interfaces;
 
@@ -49,6 +50,7 @@ builder.Services.AddDbContext(builder.Configuration);
 builder.Services.AddServicesOfAllTypes(typeof(IPlaceRepository).Assembly);
 builder.Services.AddScoped<ITotpGenerator, TotpGenerator>();
 builder.Services.AddScoped<ITotpValidator, TotpValidator>();
+builder.Services.AddElasticSearch(builder.Configuration);
 builder.Services.AddJwtAuthentication(siteSettings.JwtSettings);
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSpaStaticFiles(configuration =>

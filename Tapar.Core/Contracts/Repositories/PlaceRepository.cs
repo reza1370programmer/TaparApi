@@ -19,7 +19,7 @@ namespace Tapar.Core.Contracts.Repositories
         #region Properties
         public IImageUploader imageUploader { get; set; }
         public IHttpContextAccessor httpContextAccessor { get; set; }
-
+        public IESRepository ESRepository { get; set; }
         public IMapper mapper { get; set; }
         public IRepository<WeekDays> WorkTimeRepository { get; set; }
         #endregion
@@ -30,12 +30,14 @@ namespace Tapar.Core.Contracts.Repositories
          IImageUploader imageUploader,
          IHttpContextAccessor httpContextAccessor,
          IMapper mapper,
-         IRepository<WeekDays> workTimeRepository) : base(dbContext)
+         IRepository<WeekDays> workTimeRepository,
+         IESRepository eSRepository) : base(dbContext)
         {
             this.imageUploader = imageUploader;
             this.httpContextAccessor = httpContextAccessor;
             this.mapper = mapper;
             WorkTimeRepository = workTimeRepository;
+            ESRepository = eSRepository;
         }
         #endregion
 
@@ -199,6 +201,7 @@ namespace Tapar.Core.Contracts.Repositories
             }
             place.cDate = DateTime.Now;
             await AddAsync(place, cancellationToken);
+            await ESRepository.AddPlaceIndex(place);
         }
         public async Task<List<Place>> SearchPlace(SearchParams searchParams, CancellationToken cancellationToken)
         {
