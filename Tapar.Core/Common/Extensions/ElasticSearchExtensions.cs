@@ -2,20 +2,26 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Nest;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Text;
 using Tapar.Data.ES_Entities;
 
 namespace Tapar.Core.Common.Extensions
 {
     public static class ElasticSearchExtensions
     {
+
         public static void AddElasticSearch(this IServiceCollection services, IConfiguration configuration)
         {
+            List<string> list = new();
             var url = configuration["ELKConfiguration:Uri"];
             var defaultIndex = configuration["ELKConfiguration:index"];
-            var settings = new ConnectionSettings(new Uri(url)).PrettyJson().DefaultIndex(defaultIndex);
+            var settings = new ConnectionSettings(new Uri(url)).PrettyJson().DefaultIndex(defaultIndex).DisableDirectStreaming();
             var client = new ElasticClient(settings);
             services.AddSingleton<IElasticClient>(client);
-            CreateIndex(client, defaultIndex);
+            if (!client.Indices.Exists(defaultIndex).Exists)
+                CreateIndex(client, defaultIndex);
         }
         public static void CreateIndex(IElasticClient client, string indexName)
         {

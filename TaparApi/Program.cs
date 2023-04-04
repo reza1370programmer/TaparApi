@@ -9,6 +9,7 @@ using Tapar.Core.Common;
 using Tapar.Core.Common.Extensions;
 using Tapar.Core.Common.Middlewares;
 using Tapar.Core.Contracts.Interfaces;
+using Tapar.Core.Contracts.Repositories;
 
 
 //var webApplicationOptions =

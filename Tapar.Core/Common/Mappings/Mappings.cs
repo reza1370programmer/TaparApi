@@ -16,5 +16,6 @@ public class Mappings : Profile
         CreateMap<WeekDays, WeekDaysDto>().ReverseMap();
         CreateMap<PlaceIndex,Place>().ReverseMap();
         CreateMap<Comment, CommnetDtoForEs>().ReverseMap();
+        CreateMap<WeekDays, WeekDaysDtoForEs>().ReverseMap();
     }
 }
