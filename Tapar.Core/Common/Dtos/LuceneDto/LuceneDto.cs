@@ -28,7 +28,7 @@
         public string? special_message { get; set; } = null;
         public int like_count { get; set; } = 0;
         public int view_count { get; set; } = 0;
-        public bool on_off { get; set; } = true;
+        public string? on_off { get; set; }
         public int locationId { get; set; }
         public int StatusId { get; set; }
         public int saturday { get; set; }

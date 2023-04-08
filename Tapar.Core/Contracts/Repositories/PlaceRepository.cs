@@ -18,8 +18,8 @@ namespace Tapar.Core.Contracts.Repositories
     {
         #region Properties
         public IImageUploader imageUploader { get; set; }
+        public ILuceneSearch Lucene { get; set; }
         public IHttpContextAccessor httpContextAccessor { get; set; }
-        public IESRepository ESRepository { get; set; }
         public IMapper mapper { get; set; }
         public IRepository<WeekDays> WorkTimeRepository { get; set; }
         #endregion
@@ -30,14 +30,15 @@ namespace Tapar.Core.Contracts.Repositories
          IImageUploader imageUploader,
          IHttpContextAccessor httpContextAccessor,
          IMapper mapper,
-         IRepository<WeekDays> workTimeRepository,
-         IESRepository eSRepository) : base(dbContext)
+         IRepository<WeekDays> workTimeRepository
+,
+         ILuceneSearch lucene) : base(dbContext)
         {
             this.imageUploader = imageUploader;
             this.httpContextAccessor = httpContextAccessor;
             this.mapper = mapper;
             WorkTimeRepository = workTimeRepository;
-            ESRepository = eSRepository;
+            Lucene = lucene;
         }
         #endregion
 
@@ -64,61 +65,13 @@ namespace Tapar.Core.Contracts.Repositories
             place.instagram = dto.relationWays.instagram;
             place.whatsapp = dto.relationWays.whatsapp;
             place.workTimeId = dto.workingTimeId;
+            place.bussiness_pic1 = dto.businessPic1;
+            place.bussiness_pic2 = dto.businessPic2;
+            place.bussiness_pic3 = dto.businessPic3;
+            place.personal_pic = dto.modirPic;
+            place.visitCart_front = dto.visitCartFront;
+            place.visitCart_back = dto.visitCartBack;
             place.userId = long.Parse(httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-            if (dto.businessPics == null)
-            {
-                place.bussiness_pic1 = null;
-                place.bussiness_pic2 = null;
-                place.bussiness_pic3 = null;
-            }
-            else
-            {
-                switch (dto.businessPics?.Count)
-                {
-                    case 1:
-                        place.bussiness_pic1 = (await imageUploader.UploadImage(dto.businessPics[0]));
-                        place.bussiness_pic2 = null;
-                        place.bussiness_pic3 = null;
-                        break;
-                    case 2:
-                        place.bussiness_pic1 = (await imageUploader.UploadImage(dto.businessPics[0]));
-                        place.bussiness_pic2 = (await imageUploader.UploadImage(dto.businessPics[1]));
-                        place.bussiness_pic3 = null;
-                        break;
-                    case 3:
-                        place.bussiness_pic1 = (await imageUploader.UploadImage(dto.businessPics[0]));
-                        place.bussiness_pic2 = (await imageUploader.UploadImage(dto.businessPics[1]));
-                        place.bussiness_pic3 = (await imageUploader.UploadImage(dto.businessPics[2]));
-                        break;
-                }
-            }
-            if (dto.modirPic?.Count > 0)
-            {
-                place.personal_pic = (await imageUploader.UploadImage(dto.modirPic[0]));
-            }
-            else
-            {
-                place.personal_pic = null;
-            }
-            if (dto.visitCartPics?.Count > 0)
-            {
-                switch (dto.visitCartPics?.Count)
-                {
-                    case 1:
-                        place.visitCart_front = (await imageUploader.UploadImage(dto.visitCartPics[0]));
-                        place.visitCart_back = null;
-                        break;
-                    case 2:
-                        place.visitCart_front = (await imageUploader.UploadImage(dto.visitCartPics[0]));
-                        place.visitCart_back = (await imageUploader.UploadImage(dto.visitCartPics[1]));
-                        break;
-                }
-            }
-            else
-            {
-                place.visitCart_back = null;
-                place.visitCart_front = null;
-            }
             if (place.workTimeId == 3)
             {
                 place.weekDay = new WeekDays();
@@ -201,7 +154,7 @@ namespace Tapar.Core.Contracts.Repositories
             }
             place.cDate = DateTime.Now;
             await AddAsync(place, cancellationToken);
-            await ESRepository.AddPlaceIndex(place);
+            Lucene.AddDocumentToLucene(place);
         }
         public async Task<List<Place>> SearchPlace(SearchParams searchParams, CancellationToken cancellationToken)
         {

@@ -8,7 +8,6 @@ using Tapar.Data.ES_Entities;
 
 namespace Tapar.Core.Contracts.Interfaces
 {
-    [ScopedService]
     public interface IESRepository
     {
         Task AddPlaceIndex(Place place);

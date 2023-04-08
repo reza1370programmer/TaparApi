@@ -1,6 +1,8 @@
 ﻿
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Tapar.Core.Common.Api;
+using Tapar.Core.Common.Dtos;
 using Tapar.Core.Contracts.Interfaces;
 
 namespace TaparApi.Controllers
@@ -9,13 +11,10 @@ namespace TaparApi.Controllers
     public class SearchController : BaseController
     {
         //public IESRepository Repository { get; set; }
-        //public IPlaceRepository PlaceRepo { get; set; }//for copy data from sql to elastic
-        //public IMapper Mapper { get; set; }
         public ILuceneSearch LuceneRepository { get; set; }
+
         public SearchController(ILuceneSearch luceneRepository)
         {
-            //Repository = repository;
-            //Mapper = mapper;
             LuceneRepository = luceneRepository;
         }
 
@@ -39,18 +38,20 @@ namespace TaparApi.Controllers
         //    return Ok();
         //}
         //[HttpGet("[action]")]
-        //public async Task<IActionResult> CopyDataToLucene()
+        //public IActionResult CopyDataToLucene()
         //{
-        //    LuceneRepository.CopyDataToLucene();
+        //    var service = serviceProvider.GetService<IPlaceRepository>();
+        //    var places = service.TableNoTracking.Include(p => p.weekDay).ToList();
+        //    LuceneRepository.CopyDataToLucene(places);
         //    return Ok();
         //}
         [HttpGet("[action]")]
-        public async Task<IActionResult> SearchPlace([FromQuery] string searchParams, CancellationToken cancellationToken)
+        public async Task<IActionResult> SearchPlace([FromQuery] SearchParams searchParams, CancellationToken cancellationToken)
         {
 
             if (ModelState.IsValid)
             {
-                var data =  LuceneRepository.Search(searchParams);
+                var data = LuceneRepository.Search(searchParams);
                 return Ok(data);
             }
             return BadRequest();

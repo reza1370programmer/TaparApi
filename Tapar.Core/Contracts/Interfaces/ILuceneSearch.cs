@@ -1,16 +1,15 @@
-﻿
-
-
-using TanvirArjel.Extensions.Microsoft.DependencyInjection;
+﻿using TanvirArjel.Extensions.Microsoft.DependencyInjection;
+using Tapar.Core.Common.Dtos;
 using Tapar.Core.Common.Dtos.LuceneDto;
+using Tapar.Data.Entities;
 
 namespace Tapar.Core.Contracts.Interfaces
 {
     [ScopedService]
     public interface ILuceneSearch
     {
-        public void AddPlacesToIndex();
-        public IEnumerable<LuceneDto> Search(string searchTerm);
-        //public void CopyDataToLucene();
+        public IEnumerable<LuceneDto> Search(SearchParams searchParams);
+        public void CopyDataToLucene(List<Place> places);
+        public void AddDocumentToLucene(Place place);
     }
 }
