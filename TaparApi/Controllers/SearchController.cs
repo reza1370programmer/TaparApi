@@ -11,11 +11,13 @@ namespace TaparApi.Controllers
     public class SearchController : BaseController
     {
         //public IESRepository Repository { get; set; }
+        public  IPlaceRepository placeRepository { get; set; }
         public ILuceneSearch LuceneRepository { get; set; }
 
-        public SearchController(ILuceneSearch luceneRepository)
+        public SearchController(ILuceneSearch luceneRepository, IPlaceRepository placeRepository)
         {
             LuceneRepository = luceneRepository;
+            this.placeRepository = placeRepository;
         }
 
         //[HttpGet("[action]")]
@@ -37,14 +39,14 @@ namespace TaparApi.Controllers
         //    Repository.CopyDataToElastic(documents);
         //    return Ok();
         //}
-        //[HttpGet("[action]")]
-        //public IActionResult CopyDataToLucene()
-        //{
-        //    var service = serviceProvider.GetService<IPlaceRepository>();
-        //    var places = service.TableNoTracking.Include(p => p.weekDay).ToList();
-        //    LuceneRepository.CopyDataToLucene(places);
-        //    return Ok();
-        //}
+        [HttpGet("[action]")]
+        public IActionResult CopyDataToLucene()
+        {
+            
+            var places = placeRepository.TableNoTracking.Include(p => p.weekDay).ToList();
+            LuceneRepository.CopyDataToLucene(places);
+            return Ok();
+        }
         [HttpGet("[action]")]
         public async Task<IActionResult> SearchPlace([FromQuery] SearchParams searchParams, CancellationToken cancellationToken)
         {

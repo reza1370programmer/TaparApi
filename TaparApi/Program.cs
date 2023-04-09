@@ -6,32 +6,12 @@ using Serilog;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 using Tapar.core.Extensions;
 using Tapar.Core.Common;
-using Tapar.Core.Common.Extensions;
 using Tapar.Core.Common.Middlewares;
 using Tapar.Core.Contracts.Interfaces;
-using Tapar.Core.Contracts.Repositories;
 
-
-//var webApplicationOptions =
-//    new WebApplicationOptions
-//    {
-//        EnvironmentName = Environments.Development,
-//        //EnvironmentName = Environments.Production,
-//    };
-
-//var webApplicationOptions =
-//    new WebApplicationOptions
-//    {
-//        EnvironmentName =
-//            System.Diagnostics.Debugger.IsAttached ?
-//                Environments.Development : Environments.Production,
-//    };
 
 var builder = WebApplication.CreateBuilder(args);
-//var builder = WebApplication.CreateBuilder(webApplicationOptions);
-
 var siteSettings = builder.Configuration.GetSection(nameof(SiteSettings)).Get<SiteSettings>();
-// Add services to the container.
 
 #region SerilogConfiguration
 

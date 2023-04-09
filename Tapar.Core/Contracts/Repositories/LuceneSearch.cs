@@ -32,8 +32,8 @@ namespace Tapar.Core.Contracts.Repositories
             {
                 var config = new IndexWriterConfig(version, _analyzer);
                 IndexWriter _writer = new IndexWriter(_directory, config);
-               
-                    var document = new Document
+
+                var document = new Document
                 {
                     new Int64Field("Id", place.Id, Field.Store.YES),
                     new TextField("tablo", place.tablo, Field.Store.YES),
@@ -75,8 +75,8 @@ namespace Tapar.Core.Contracts.Repositories
                     new Int32Field("workTimeId", place.workTimeId, Field.Store.YES),
 
                 };
-                    _writer.AddDocument(document);
-                
+                _writer.AddDocument(document);
+
                 _writer.Commit();
                 _writer.Dispose();
             }
@@ -172,9 +172,56 @@ namespace Tapar.Core.Contracts.Repositories
                 query3.Add(query2, Occur.SHOULD);
 
             query3.Add(query, Occur.MUST);
-            
-            var hits = indexSearcher.Search(query3, 20,Sort.RELEVANCE).ScoreDocs;
+
+            var hits = indexSearcher.Search(query3, 20, Sort.RELEVANCE).ScoreDocs.Skip((searchParams.pageIndex-1)*5).Take(5);
+            //TopDocs td = indexSearcher.Search(query3, (searchParams.pageIndex + 1) * 10, Sort.RELEVANCE);
             var places = new List<LuceneDto>();
+            //for (int i = searchParams.pageIndex * 10; i < (searchParams.pageIndex + 1) * 10 && i < td.ScoreDocs.Length; i++)
+            //{
+            //    Document document = directoryReader.Document(td.ScoreDocs[i].Doc);
+            //    places.Add(new LuceneDto
+            //    {
+            //        tablo = document.Get("tablo"),
+            //        service_description = document.Get("service_description"),
+            //        Id = Int64.Parse(document.Get("Id")),
+            //        address = document.Get("address"),
+            //        bussiness_pic1 = document.Get("bussiness_pic1"),
+            //        bussiness_pic2 = document.Get("bussiness_pic2"),
+            //        bussiness_pic3 = document.Get("bussiness_pic3"),
+            //        email = document.Get("email"),
+            //        fax = document.Get("fax"),
+            //        instagram = document.Get("instagram"),
+            //        telegram = document.Get("telegram"),
+            //        whatsapp = document.Get("whatsapp"),
+            //        website = document.Get("website"),
+            //        mob1 = document.Get("mob1"),
+            //        mob2 = document.Get("mob2"),
+            //        phone1 = document.Get("phone1"),
+            //        phone2 = document.Get("phone2"),
+            //        phone3 = document.Get("phone3"),
+            //        personal_pic = document.Get("personal_pic"),
+            //        visitCart_front = document.Get("visitCart_front"),
+            //        visitCart_back = document.Get("visitCart_back"),
+            //        manager = document.Get("manager"),
+            //        like_count = int.Parse(document.Get("like_count")),
+            //        view_count = int.Parse(document.Get("view_count")),
+            //        locationId = int.Parse(document.Get("locationId")),
+            //        userId = Int64.Parse(document.Get("userId")),
+            //        StatusId = int.Parse(document.Get("statusId")),
+            //        on_off = document.Get("on_off"),
+            //        special_message = document.Get("special_message"),
+            //        taparcode = document.Get("taparcode"),
+            //        workTimeId = int.Parse(document.Get("workTimeId")),
+            //        saturday = int.Parse(document.Get("saturday")),
+            //        sunday = int.Parse(document.Get("sunday")),
+            //        monday = int.Parse(document.Get("monday")),
+            //        tuesday = int.Parse(document.Get("tuesday")),
+            //        wednesday = int.Parse(document.Get("wednesday")),
+            //        thursday = int.Parse(document.Get("thursday")),
+            //        friday = int.Parse(document.Get("friday"))
+
+            //    });
+            //}
             foreach (var hit in hits)
             {
                 var document = indexSearcher.Doc(hit.Doc);
