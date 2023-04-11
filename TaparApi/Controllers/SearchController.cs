@@ -11,7 +11,7 @@ namespace TaparApi.Controllers
     public class SearchController : BaseController
     {
         //public IESRepository Repository { get; set; }
-        public  IPlaceRepository placeRepository { get; set; }
+        public IPlaceRepository placeRepository { get; set; }
         public ILuceneSearch LuceneRepository { get; set; }
 
         public SearchController(ILuceneSearch luceneRepository, IPlaceRepository placeRepository)
@@ -42,7 +42,7 @@ namespace TaparApi.Controllers
         [HttpGet("[action]")]
         public IActionResult CopyDataToLucene()
         {
-            
+
             var places = placeRepository.TableNoTracking.Include(p => p.weekDay).ToList();
             LuceneRepository.CopyDataToLucene(places);
             return Ok();

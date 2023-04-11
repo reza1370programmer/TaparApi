@@ -6,7 +6,7 @@ using Tapar.Data.Common;
 
 namespace Tapar.Data.Entities
 {
-    public class PlaceTag:BaseEntity<long>
+    public class PlaceTag : BaseEntity<long>
     {
         public long PlaceId { get; set; }
         public long TagId { get; set; }
@@ -18,7 +18,7 @@ namespace Tapar.Data.Entities
         public void Configure(EntityTypeBuilder<PlaceTag> builder)
         {
             builder.Property(p => p.PlaceId).IsRequired();
-            builder.Property(p=>p.TagId).IsRequired();
+            builder.Property(p => p.TagId).IsRequired();
             builder.HasOne(p => p.Tag).WithMany(p => p.PlaceTags).HasForeignKey(p => p.TagId).IsRequired();
             builder.HasOne(p => p.Place).WithMany(p => p.PlaceTags).HasForeignKey(p => p.PlaceId).IsRequired();
         }

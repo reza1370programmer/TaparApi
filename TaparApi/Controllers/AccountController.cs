@@ -123,7 +123,7 @@ namespace TaparApi.Controllers
         }
 
         [HttpGet("[action]")]
-        public async Task<IActionResult>  CheckUserAuth(CancellationToken cancellationToken)
+        public async Task<IActionResult> CheckUserAuth(CancellationToken cancellationToken)
         {
             if (UserIsAutheticated)
             {

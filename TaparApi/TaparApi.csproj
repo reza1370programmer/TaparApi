@@ -36,7 +36,6 @@
 
   <ItemGroup>
     <Folder Include="ClientApp\dist\" />
-    <Folder Include="wwwroot\LuceneData\" />
   </ItemGroup>
 
 </Project>

@@ -8,8 +8,8 @@ namespace Tapar.Core.Common.Services.ImageUploader
     public interface IImageUploader
     {
         Task<string> UploadImage(IFormFile file);
-        Task<string> UpdateImage(IFormFile file,string OldImageName);
+        Task<string> UpdateImage(IFormFile file, string OldImageName);
         Task DeleteImage(string ImageName);
-        string ImageResize(Image img,int MaxWidth,int MaxHeight);
+        string ImageResize(Image img, int MaxWidth, int MaxHeight);
     }
 }

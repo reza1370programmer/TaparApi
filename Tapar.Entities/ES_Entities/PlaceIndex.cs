@@ -8,7 +8,7 @@ namespace Tapar.Data.ES_Entities
     public class PlaceIndex
     {
         [Keyword]
-        public  long Id { get; set; }
+        public long Id { get; set; }
         public string tablo { get; set; }
         public string manager { get; set; }
         [Keyword]

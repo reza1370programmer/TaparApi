@@ -1,7 +1,6 @@
 ﻿
 
 using System.ComponentModel.DataAnnotations;
-using Tapar.Data.Entities;
 
 namespace Tapar.Core.Common.Dtos
 {
@@ -13,5 +12,5 @@ namespace Tapar.Core.Common.Dtos
         [StringLength(500)]
         public string Text { get; set; }
     }
- 
+
 }

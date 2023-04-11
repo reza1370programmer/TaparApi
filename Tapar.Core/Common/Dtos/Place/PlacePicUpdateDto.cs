@@ -7,8 +7,8 @@ namespace Tapar.Core.Common.Dtos.Place
     {
         [Required]
         public long placeid { get; set; }
-        public IFormFile? businessPic1 { get; set; } 
-        public IFormFile? businessPic2 { get; set; } 
+        public IFormFile? businessPic1 { get; set; }
+        public IFormFile? businessPic2 { get; set; }
         public IFormFile? businessPic3 { get; set; }
     }
 }

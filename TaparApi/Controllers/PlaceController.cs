@@ -241,15 +241,15 @@ namespace TaparApi.Controllers
         }
         [Authorize]
         [HttpPost("[action]")]
-        public async Task<IActionResult> DeleteImage(DeleteImageDto Dto,CancellationToken cancellationToken)
+        public async Task<IActionResult> DeleteImage(DeleteImageDto Dto, CancellationToken cancellationToken)
         {
-            if(!ModelState.IsValid) { return BadRequest(); }
+            if (!ModelState.IsValid) { return BadRequest(); }
             try
             {
-                var place= await repository.DeleteImage(Dto,cancellationToken);
+                var place = await repository.DeleteImage(Dto, cancellationToken);
                 return Ok(place);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message, ex);
             }

@@ -1,18 +1,14 @@
-﻿
-
-using Lucene.Net.Analysis.Standard;
+﻿using Lucene.Net.Analysis.Standard;
+using Lucene.Net.Analysis.Util;
 using Lucene.Net.Documents;
 using Lucene.Net.Index;
-using Lucene.Net.QueryParsers.Classic;
 using Lucene.Net.Search;
 using Lucene.Net.Store;
 using Lucene.Net.Util;
-using SixLabors.ImageSharp.Processing;
 using Tapar.Core.Common.Dtos;
 using Tapar.Core.Common.Dtos.LuceneDto;
 using Tapar.Core.Contracts.Interfaces;
 using Tapar.Data.Entities;
-using static Lucene.Net.Analysis.Synonym.SynonymMap;
 
 namespace Tapar.Core.Contracts.Repositories
 {
@@ -22,7 +18,14 @@ namespace Tapar.Core.Contracts.Repositories
         private readonly StandardAnalyzer _analyzer;
         public LuceneSearch()
         {
-            _analyzer = new StandardAnalyzer(version);
+            CharArraySet stopSet = CharArraySet.Copy(LuceneVersion.LUCENE_48, StandardAnalyzer.STOP_WORDS_SET);
+            stopSet.Add("و");
+            stopSet.Add("که");
+            stopSet.Add("از");
+            stopSet.Add("برای");
+            stopSet.Add("است");
+            stopSet.Add("هست");
+            _analyzer = new StandardAnalyzer(version, stopSet);
 
         }
 
@@ -37,9 +40,9 @@ namespace Tapar.Core.Contracts.Repositories
                 {
                     new Int64Field("Id", place.Id, Field.Store.YES),
                     new TextField("tablo", place.tablo, Field.Store.YES),
-                    new TextField("manager",place.manager, Field.Store.YES),
+                    new StringField("manager",place.manager, Field.Store.YES),
                     new StringField("taparcode", place.taparcode ?? "null", Field.Store.YES),
-                    new StringField("service_description", place.service_description ?? "null", Field.Store.YES),
+                    new TextField("service_description", place.service_description ?? "null", Field.Store.YES),
                     new StringField("mob1", place.mob1 ?? "null", Field.Store.YES),
                     new StringField("mob2", place.mob2 ?? "null", Field.Store.YES),
                     new StringField("phone1", place.phone1 ?? "null", Field.Store.YES),
@@ -80,6 +83,7 @@ namespace Tapar.Core.Contracts.Repositories
                 _writer.Commit();
                 _writer.Dispose();
             }
+
         }
 
 
@@ -88,10 +92,12 @@ namespace Tapar.Core.Contracts.Repositories
             using (var _directory = FSDirectory.Open(new DirectoryInfo(Path.Combine(System.IO.Directory.GetCurrentDirectory(), "wwwroot", "LuceneData"))))
             {
                 var config = new IndexWriterConfig(version, _analyzer);
-                IndexWriter _writer = new IndexWriter(_directory, config);
-                foreach (var place in places)
+                using (IndexWriter _writer = new IndexWriter(_directory, config))
                 {
-                    var document = new Document
+                    _writer.DeleteAll();
+                    foreach (var place in places)
+                    {
+                        var document = new Document
                 {
                     new Int64Field("Id", place.Id, Field.Store.YES),
                     new TextField("tablo", place.tablo, Field.Store.YES),
@@ -133,10 +139,12 @@ namespace Tapar.Core.Contracts.Repositories
                     new Int32Field("workTimeId", place.workTimeId, Field.Store.YES),
 
                 };
-                    _writer.AddDocument(document);
+                        _writer.AddDocument(document);
+                    }
+                    _writer.Commit();
+                    _writer.Dispose();
                 }
-                _writer.Commit();
-                _writer.Dispose();
+                _directory.Dispose();
             }
 
         }
@@ -147,11 +155,12 @@ namespace Tapar.Core.Contracts.Repositories
             var directoryReader = DirectoryReader.Open(_directory);
             var indexSearcher = new IndexSearcher(directoryReader);
             var query = new BooleanQuery();
-            var query2 = new BooleanQuery();
-            var query3 = new BooleanQuery();
+            //var query2 = new BooleanQuery();
+            //var query3 = new BooleanQuery();
 
             if (searchParams.searchKey != null)
             {
+                searchParams.searchKey.Trim().Replace("  ", " ").Replace("*", "");
                 var parts = searchParams.searchKey?.Split(' ');
                 foreach (var part in parts)
                 {
@@ -160,20 +169,20 @@ namespace Tapar.Core.Contracts.Repositories
                     query.Add(new FuzzyQuery(new Term("service_description", part), 1), Occur.SHOULD);
                 }
             }
-            if (searchParams.cityId > 0)
-            {
-                BytesRef bytes = new BytesRef(NumericUtils.BUF_SIZE_INT32);
-                NumericUtils.Int32ToPrefixCoded((int)searchParams.cityId, 0, bytes);
-                Term term = new Term("locationId", bytes);
-                query2.Add(new TermQuery(term), Occur.MUST);
-                query3.Add(query2, Occur.MUST);
-            }
-            else
-                query3.Add(query2, Occur.SHOULD);
+            //if (searchParams.cityId > 0)
+            //{
+            //    BytesRef bytes = new BytesRef(NumericUtils.BUF_SIZE_INT32);
+            //    NumericUtils.Int32ToPrefixCoded((int)searchParams.cityId, 0, bytes);
+            //    Term term = new Term("locationId", bytes);
+            //    query2.Add(new TermQuery(term), Occur.MUST);
+            //    query3.Add(query2, Occur.MUST);
+            //}
+            //else
+            //    query3.Add(query2, Occur.SHOULD);
 
-            query3.Add(query, Occur.MUST);
+            //query3.Add(query, Occur.MUST);
 
-            var hits = indexSearcher.Search(query3, 20, Sort.RELEVANCE).ScoreDocs.Skip((searchParams.pageIndex-1)*5).Take(5);
+            var hits = indexSearcher.Search(query, 20, Sort.RELEVANCE).ScoreDocs.Skip((searchParams.pageIndex - 1) * 5).Take(5);
             //TopDocs td = indexSearcher.Search(query3, (searchParams.pageIndex + 1) * 10, Sort.RELEVANCE);
             var places = new List<LuceneDto>();
             //for (int i = searchParams.pageIndex * 10; i < (searchParams.pageIndex + 1) * 10 && i < td.ScoreDocs.Length; i++)

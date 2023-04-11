@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.FileProviders;
 namespace UploadApi.Services.ImageUpload
 {
-    public class ImageUpload:IImageUpload
+    public class ImageUpload : IImageUpload
     {
         public string UploadImage(IFormFile file)
         {

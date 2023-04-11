@@ -16,12 +16,12 @@ namespace TaparApi.Data
         {
 
             base.OnModelCreating(modelBuilder); //in khat behtar hast aval az hame farakhani beshe
-            var entitiesAssembly =typeof(IEntity).Assembly; //peyda kardane dll marbut be laye Entities(be jaye IEntity mitavanim har class dge az laye Entities estefade konim)
+            var entitiesAssembly = typeof(IEntity).Assembly; //peyda kardane dll marbut be laye Entities(be jaye IEntity mitavanim har class dge az laye Entities estefade konim)
             modelBuilder.RegisterAllEntities<IEntity>(entitiesAssembly); //dynamic kardane modelhaye proje(dge lazem nist bara har model dbset<> tarif konim)
             modelBuilder.RegisterEntityTypeConfiguration(entitiesAssembly);
             modelBuilder.AddRestrictDeleteBehaviorConvention(); //agar amalyate delete ru database emal beshe in taabe baaes mishe avval child haye parent delete beshan baad parent delete beshe ejaze nemidahad ke aval parent delete beshe
             modelBuilder.AddPluralizingTableNameConvention();
-            
+
         }
         public override int SaveChanges()
         {

@@ -6,7 +6,7 @@ using Tapar.Data.Entities;
 
 namespace Tapar.Core.Contracts.Interfaces;
 [ScopedService]
-public interface ISuperAdminRepository:IRepository<SuperAdmin>
+public interface ISuperAdminRepository : IRepository<SuperAdmin>
 {
     Task<SuperAdmin?> LoginSuperAdmin(LoginSuperAdminDTO loginSuperAdminDto, CancellationToken cancellationToken);
 }

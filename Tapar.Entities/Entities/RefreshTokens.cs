@@ -4,11 +4,11 @@ using Tapar.Data.Common;
 
 namespace Tapar.Data.Entities
 {
-    public class RefreshTokens:BaseEntity<long>
+    public class RefreshTokens : BaseEntity<long>
     {
         public DateTime? expirationDate { get; set; }
         public string? refreshToken { get; set; }
-        public long? userId { get; set; }     
+        public long? userId { get; set; }
         public int? superAdminId { get; set; }
         public User user { get; set; }
         public SuperAdmin superAdmin { get; set; }

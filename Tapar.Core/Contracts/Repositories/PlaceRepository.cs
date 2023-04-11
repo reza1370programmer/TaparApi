@@ -45,7 +45,6 @@ namespace Tapar.Core.Contracts.Repositories
         #region Methods
         public async Task AddPlace(PlaceAddDto dto, CancellationToken cancellationToken)
         {
-
             Place place = new Place();
             place.tablo = dto.tablo;
             place.service_description = dto.description;
@@ -65,12 +64,34 @@ namespace Tapar.Core.Contracts.Repositories
             place.instagram = dto.relationWays.instagram;
             place.whatsapp = dto.relationWays.whatsapp;
             place.workTimeId = dto.workingTimeId;
-            place.bussiness_pic1 = dto.businessPic1;
-            place.bussiness_pic2 = dto.businessPic2;
-            place.bussiness_pic3 = dto.businessPic3;
-            place.personal_pic = dto.modirPic;
-            place.visitCart_front = dto.visitCartFront;
-            place.visitCart_back = dto.visitCartBack;
+            switch (dto.businessPics?.Count)
+            {
+                case 1:
+                    place.bussiness_pic1 = await imageUploader.UploadImage(dto.businessPics[0]);
+                    break;
+                case 2:
+                    place.bussiness_pic1 = await imageUploader.UploadImage(dto.businessPics[0]);
+                    place.bussiness_pic2 = await imageUploader.UploadImage(dto.businessPics[1]);
+                    break;
+                case 3:
+                    place.bussiness_pic1 = await imageUploader.UploadImage(dto.businessPics[0]);
+                    place.bussiness_pic2 = await imageUploader.UploadImage(dto.businessPics[1]);
+                    place.bussiness_pic3 = await imageUploader.UploadImage(dto.businessPics[2]);
+                    break;
+            }
+
+            if (dto.modirPic?.Length > 0)
+                place.personal_pic = await imageUploader.UploadImage(dto.modirPic);
+            switch (dto.visitCartPics?.Count)
+            {
+                case 1:
+                    place.visitCart_front = await imageUploader.UploadImage(dto.visitCartPics[0]);
+                    break;
+                case 2:
+                    place.visitCart_front = await imageUploader.UploadImage(dto.visitCartPics[0]);
+                    place.visitCart_back = await imageUploader.UploadImage(dto.visitCartPics[1]);
+                    break;
+            }
             place.userId = long.Parse(httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier)!);
             if (place.workTimeId == 3)
             {

@@ -2,9 +2,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Nest;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
 using Tapar.Data.ES_Entities;
 
 namespace Tapar.Core.Common.Extensions

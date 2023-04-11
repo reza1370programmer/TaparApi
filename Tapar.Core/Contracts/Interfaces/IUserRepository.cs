@@ -5,7 +5,7 @@ using Tapar.Data.Entities;
 
 namespace Tapar.Core.Contracts.Interfaces;
 [ScopedService]
-public interface IUserRepository:IRepository<User>
+public interface IUserRepository : IRepository<User>
 {
     Task<User?> LoginUser(LoginUserDto loginUserDto, CancellationToken cancellationToken);
 }

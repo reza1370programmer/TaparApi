@@ -5,7 +5,7 @@ using Tapar.Data.Entities;
 
 namespace TaparApi.Data.Contracts.Repositories;
 
-public class SuperAdminRepository:Repository<SuperAdmin>,ISuperAdminRepository
+public class SuperAdminRepository : Repository<SuperAdmin>, ISuperAdminRepository
 {
     public SuperAdminRepository(TaparDbContext dbContext) : base(dbContext)
     {

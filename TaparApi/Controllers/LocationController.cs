@@ -44,7 +44,7 @@ namespace TaparApi.Controllers
         [HttpGet("[action]")]
         public async Task<IActionResult> GetAllShahrestan(CancellationToken cancellationToken)
         {
-            var shahrestan=await locationRepository.TableNoTracking.Where(l => l.parentId!=null).ToListAsync(cancellationToken);
+            var shahrestan = await locationRepository.TableNoTracking.Where(l => l.parentId != null).ToListAsync(cancellationToken);
             return Ok(shahrestan);
         }
     }

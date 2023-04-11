@@ -1,6 +1,5 @@
-﻿using System.Linq.Expressions;
-
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
 namespace Tapar.Core.Contracts.Interfaces

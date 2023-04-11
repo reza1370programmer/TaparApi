@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 
 namespace Tapar.Core.Common.Dtos.Place
@@ -18,12 +19,9 @@ namespace Tapar.Core.Common.Dtos.Place
         [Required(ErrorMessage = "آیدی زمان کاری را وارد کنید")]
         public int workingTimeId { get; set; }
         public List<WorkingDays>? workingDays { get; set; }
-        public string? businessPic1 { get; set; }
-        public string? businessPic2 { get; set; }
-        public string? businessPic3 { get; set; }
-        public string? modirPic { get; set; }
-        public string? visitCartFront { get; set; }
-        public string? visitCartBack { get; set; }
+        public List<IFormFile>? businessPics { get; set; }
+        public IFormFile? modirPic { get; set; }
+        public List<IFormFile>? visitCartPics { get; set; }
     }
     public class Address
     {

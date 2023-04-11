@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using FluentFTP;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.FileProviders;
 using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Jpeg;
 using SixLabors.ImageSharp.Processing;
 
 namespace Tapar.Core.Common.Services.ImageUploader
@@ -25,10 +27,25 @@ namespace Tapar.Core.Common.Services.ImageUploader
                     var filepath = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images")).Root + $@"\{newFileName}";
                     using (var image = Image.Load(file.OpenReadStream()))
                     {
-                        string newsize = ImageResize(image, 800, 600);
-                        string[] sizearray = newsize.Split(',');
-                        image.Mutate(x => x.Resize(Convert.ToInt32(sizearray[1]), Convert.ToInt32(sizearray[0])));
-                        image.Save(filepath);
+
+                        using (MemoryStream memoryStream = new MemoryStream())
+                        {
+                            var encoder = new JpegEncoder()
+                            {
+                                Quality = 30 //Use variable to set between 5-30 based on your requirements
+                            };
+                            string newsize = ImageResize(image, 800, 600);
+                            string[] sizearray = newsize.Split(',');
+                            image.Mutate(x => x.Resize(Convert.ToInt32(sizearray[1]), Convert.ToInt32(sizearray[0])));
+                            image.Save(memoryStream, encoder);
+                            //memoryStream.Position = 0;
+                            memoryStream.Seek(0, SeekOrigin.Begin);
+                            var client = new AsyncFtpClient("185.49.85.16", "dltapari", "YTWGHrfu87ghjy90r");
+                            await client.AutoConnect();
+                            await client.UploadStream(memoryStream, $"/www/images/{newFileName}");
+                            await memoryStream.DisposeAsync();
+                            await client.Disconnect();
+                        }
                     }
                 }
                 else return null!;
