@@ -11,8 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tapar.Data", "Tapar.Entitie
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tapar.Common", "Tapar.Common\Tapar.Common.csproj", "{2841D6EE-42D0-44DC-BE33-C9F6113749C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UploadApi", "UploadApi\UploadApi.csproj", "{280251E3-1E94-4683-B99A-F698498D975A}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,10 +33,6 @@ Global
 		{2841D6EE-42D0-44DC-BE33-C9F6113749C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2841D6EE-42D0-44DC-BE33-C9F6113749C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2841D6EE-42D0-44DC-BE33-C9F6113749C4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{280251E3-1E94-4683-B99A-F698498D975A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{280251E3-1E94-4683-B99A-F698498D975A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{280251E3-1E94-4683-B99A-F698498D975A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{280251E3-1E94-4683-B99A-F698498D975A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

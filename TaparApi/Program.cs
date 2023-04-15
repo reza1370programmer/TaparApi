@@ -29,8 +29,8 @@ builder.Services.Configure<SiteSettings>(builder.Configuration.GetSection(nameof
 builder.Services.AddDbContext(builder.Configuration);
 //using package TanvirArjel.Extensions.Microsoft.DependencyInjection for inserting services dynamically
 builder.Services.AddServicesOfAllTypes(typeof(IPlaceRepository).Assembly);
-builder.Services.AddScoped<ITotpGenerator, TotpGenerator>();
-builder.Services.AddScoped<ITotpValidator, TotpValidator>();
+//builder.Services.AddScoped<ITotpGenerator, TotpGenerator>();
+//builder.Services.AddScoped<ITotpValidator, TotpValidator>();
 //builder.Services.AddElasticSearch(builder.Configuration);
 builder.Services.AddJwtAuthentication(siteSettings.JwtSettings);
 builder.Services.AddHttpContextAccessor();
@@ -50,12 +50,11 @@ app.UseMiddleware<ExceptionMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {
-
+    app.UseSwagger();
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Server v1"));
     app.UseDeveloperExceptionPage();
-
 }
-app.UseSwagger();
-app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Server v1"));
+
 app.UseStaticFiles();
 if (app.Environment.IsProduction())
 {

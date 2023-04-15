@@ -12,8 +12,8 @@ using TaparApi.Data;
 namespace Tapar.Data.Migrations
 {
     [DbContext(typeof(TaparDbContext))]
-    [Migration("20230226083355_add-status-to-comments")]
-    partial class addstatustocomments
+    [Migration("20230415101810_fulltext-capabiliy")]
+    partial class fulltextcapabiliy
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

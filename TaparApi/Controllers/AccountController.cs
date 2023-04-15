@@ -1,5 +1,4 @@
-﻿using AspNetCore.Totp.Interface;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using Tapar.Core.Common.Api;
@@ -19,17 +18,15 @@ namespace TaparApi.Controllers
         public IUserRepository UserRepository { get; set; }
         public IJwtService JwtService { get; set; }
         public IRepository<RefreshTokens> refreshTokenRepository { get; set; }
-        public ITotpGenerator totpGenerator { get; set; }
-        public ITotpValidator totpValidator { get; set; }
+        //public ITotpGenerator totpGenerator { get; set; }
+        //public ITotpValidator totpValidator { get; set; }
 
-        public AccountController(IJwtService jwtService, ISuperAdminRepository superAdminRepository, IUserRepository userRepository, IRepository<RefreshTokens> refreshTokenRepository, ITotpGenerator totpGenerator, ITotpValidator totpValidator)
+        public AccountController(IJwtService jwtService, ISuperAdminRepository superAdminRepository, IUserRepository userRepository, IRepository<RefreshTokens> refreshTokenRepository)
         {
             JwtService = jwtService;
             SuperAdminRepository = superAdminRepository;
             UserRepository = userRepository;
             this.refreshTokenRepository = refreshTokenRepository;
-            this.totpGenerator = totpGenerator;
-            this.totpValidator = totpValidator;
         }
         [HttpPost("[action]")]
         public async Task<IActionResult> Login(LoginSuperAdminDTO loginUserDto, CancellationToken cancellationToken)
@@ -155,20 +152,20 @@ namespace TaparApi.Controllers
             }
             return NotFound();
         }
-        [HttpGet("[action]")]
-        public IActionResult GenerateTotp()
-        {
-            string secret_key = "e6c99c18e8e8567b54ae0c39bc0ad719";
-            int totpCode = this.totpGenerator.Generate(secret_key);
-            return Ok(totpCode);
-        }
-        [HttpGet("[action]/{code:int}")]
-        public IActionResult ValidateTotp(int code)
-        {
-            string secret_key = "e6c99c18e8e8567b54ae0c39bc0ad719";
-            var result = totpValidator.Validate(secret_key, code);
-            return Ok(result);
-        }
+        //[HttpGet("[action]")]
+        //public IActionResult GenerateTotp()
+        //{
+        //    string secret_key = "e6c99c18e8e8567b54ae0c39bc0ad719";
+        //    int totpCode = this.totpGenerator.Generate(secret_key);
+        //    return Ok(totpCode);
+        //}
+        //[HttpGet("[action]/{code:int}")]
+        //public IActionResult ValidateTotp(int code)
+        //{
+        //    string secret_key = "e6c99c18e8e8567b54ae0c39bc0ad719";
+        //    var result = totpValidator.Validate(secret_key, code);
+        //    return Ok(result);
+        //}
 
     }
 }

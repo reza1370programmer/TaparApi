@@ -208,6 +208,7 @@ namespace Tapar.Core.Contracts.Repositories
                 });
                 place.like_count = place.likeCounts.Count();
                 await UpdateAsync(place, cancellationToken);
+                Lucene.AddLikeToPlace(place);
                 return place.like_count;
             }
             return -1;

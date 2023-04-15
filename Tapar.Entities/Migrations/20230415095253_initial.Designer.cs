@@ -12,8 +12,8 @@ using TaparApi.Data;
 namespace Tapar.Data.Migrations
 {
     [DbContext(typeof(TaparDbContext))]
-    [Migration("20230208102129_make-address-nullable")]
-    partial class makeaddressnullable
+    [Migration("20230415095253_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,6 +23,46 @@ namespace Tapar.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("Tapar.Data.Entities.Acception_Status", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Acception_Statuses");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Title = "Waiting"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Title = "Approved"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Title = "Rejected"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Title = "Inspecting"
+                        });
+                });
 
             modelBuilder.Entity("Tapar.Data.Entities.Comment", b =>
                 {
@@ -37,6 +77,9 @@ namespace Tapar.Data.Migrations
 
                     b.Property<long>("placeId")
                         .HasColumnType("bigint");
+
+                    b.Property<bool>("status")
+                        .HasColumnType("bit");
 
                     b.Property<string>("text")
                         .IsRequired()
@@ -128,6 +171,13 @@ namespace Tapar.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
+                    b.Property<string>("RejectedDescription")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("StatusId")
+                        .HasColumnType("int");
+
                     b.Property<string>("address")
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
@@ -211,9 +261,6 @@ namespace Tapar.Data.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<int>("status")
-                        .HasColumnType("int");
-
                     b.Property<string>("tablo")
                         .IsRequired()
                         .HasMaxLength(500)
@@ -254,6 +301,8 @@ namespace Tapar.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("StatusId");
+
                     b.HasIndex("locationId");
 
                     b.HasIndex("tablo");
@@ -267,6 +316,41 @@ namespace Tapar.Data.Migrations
                     b.HasIndex("workTimeId");
 
                     b.ToTable("Places");
+                });
+
+            modelBuilder.Entity("Tapar.Data.Entities.Place_Report", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Other_Description")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<long>("PlaceId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("ReportOptionId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PlaceId");
+
+                    b.HasIndex("ReportOptionId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Place_Reports");
                 });
 
             modelBuilder.Entity("Tapar.Data.Entities.PlaceTag", b =>
@@ -319,6 +403,51 @@ namespace Tapar.Data.Migrations
                     b.HasIndex("userId");
 
                     b.ToTable("RefreshTokens");
+                });
+
+            modelBuilder.Entity("Tapar.Data.Entities.Report_Option", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Report_Options");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Title = "غلط املایی وجود دارد"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Title = "آدرس اشتباه است"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Title = "تلفن اشتباه است"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Title = "موبایل اشتباه است"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Title = "این کسب و کار وجود ندارد"
+                        });
                 });
 
             modelBuilder.Entity("Tapar.Data.Entities.SuperAdmin", b =>
@@ -516,6 +645,12 @@ namespace Tapar.Data.Migrations
 
             modelBuilder.Entity("Tapar.Data.Entities.Place", b =>
                 {
+                    b.HasOne("Tapar.Data.Entities.Acception_Status", "Status")
+                        .WithMany("Places")
+                        .HasForeignKey("StatusId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("Tapar.Data.Entities.Location", "location")
                         .WithMany("places")
                         .HasForeignKey("locationId")
@@ -534,11 +669,40 @@ namespace Tapar.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.Navigation("Status");
+
                     b.Navigation("location");
 
                     b.Navigation("user");
 
                     b.Navigation("workTime");
+                });
+
+            modelBuilder.Entity("Tapar.Data.Entities.Place_Report", b =>
+                {
+                    b.HasOne("Tapar.Data.Entities.Place", "Place")
+                        .WithMany("PlaceReport")
+                        .HasForeignKey("PlaceId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Tapar.Data.Entities.Report_Option", "Report_Option")
+                        .WithMany("Place_Reports")
+                        .HasForeignKey("ReportOptionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Tapar.Data.Entities.User", "User")
+                        .WithMany("PlaceReport")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Place");
+
+                    b.Navigation("Report_Option");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Tapar.Data.Entities.PlaceTag", b =>
@@ -584,6 +748,11 @@ namespace Tapar.Data.Migrations
                     b.Navigation("place");
                 });
 
+            modelBuilder.Entity("Tapar.Data.Entities.Acception_Status", b =>
+                {
+                    b.Navigation("Places");
+                });
+
             modelBuilder.Entity("Tapar.Data.Entities.Location", b =>
                 {
                     b.Navigation("places");
@@ -591,6 +760,8 @@ namespace Tapar.Data.Migrations
 
             modelBuilder.Entity("Tapar.Data.Entities.Place", b =>
                 {
+                    b.Navigation("PlaceReport");
+
                     b.Navigation("PlaceTags");
 
                     b.Navigation("comments");
@@ -598,6 +769,11 @@ namespace Tapar.Data.Migrations
                     b.Navigation("likeCounts");
 
                     b.Navigation("weekDay");
+                });
+
+            modelBuilder.Entity("Tapar.Data.Entities.Report_Option", b =>
+                {
+                    b.Navigation("Place_Reports");
                 });
 
             modelBuilder.Entity("Tapar.Data.Entities.SuperAdmin", b =>
@@ -615,6 +791,8 @@ namespace Tapar.Data.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("LikeCounts");
+
+                    b.Navigation("PlaceReport");
 
                     b.Navigation("places");
 

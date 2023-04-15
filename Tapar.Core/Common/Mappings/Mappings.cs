@@ -2,7 +2,6 @@
 using Tapar.Core.Common.Dtos;
 using Tapar.Core.Common.Dtos.Place;
 using Tapar.Data.Entities;
-using Tapar.Data.ES_Entities;
 
 namespace Tapar.Core.Common.Mappings;
 
@@ -14,8 +13,8 @@ public class Mappings : Profile
         CreateMap<Place, BusinessForAdminPanelDto>().ForMember(x => x.cdate, y => y.MapFrom(g => g.cDate.Value.ToString("yyyy-MM-ddHHmmss")));
         CreateMap<Place, PlaceSearchDto>().ReverseMap();
         CreateMap<WeekDays, WeekDaysDto>().ReverseMap();
-        CreateMap<PlaceIndex, Place>().ReverseMap();
-        CreateMap<Comment, CommnetDtoForEs>().ReverseMap();
-        CreateMap<WeekDays, WeekDaysDtoForEs>().ReverseMap();
+        //CreateMap<PlaceIndex, Place>().ReverseMap();
+        //CreateMap<Comment, CommnetDtoForEs>().ReverseMap();
+        //CreateMap<WeekDays, WeekDaysDtoForEs>().ReverseMap();
     }
 }

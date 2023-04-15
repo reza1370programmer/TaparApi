@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -8,6 +9,19 @@ namespace Tapar.Data.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Acception_Statuses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Acception_Statuses", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Locations",
                 columns: table => new
@@ -21,6 +35,19 @@ namespace Tapar.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Locations", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Report_Options",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Report_Options", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -116,6 +143,7 @@ namespace Tapar.Data.Migrations
                     manager = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     taparcode = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
                     service_description = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    RejectedDescription = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     mob1 = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
                     mob2 = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
                     phone1 = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
@@ -127,7 +155,7 @@ namespace Tapar.Data.Migrations
                     telegram = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
                     instagram = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
                     whatsapp = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
-                    address = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    address = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     bussiness_pic1 = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     bussiness_pic2 = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     bussiness_pic3 = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
@@ -139,16 +167,22 @@ namespace Tapar.Data.Migrations
                     view_count = table.Column<int>(type: "int", nullable: true),
                     on_off = table.Column<bool>(type: "bit", nullable: false),
                     locationId = table.Column<int>(type: "int", nullable: false),
+                    StatusId = table.Column<int>(type: "int", nullable: false),
                     userId = table.Column<long>(type: "bigint", nullable: false),
                     workTimeId = table.Column<int>(type: "int", nullable: false),
                     cDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     modifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    modifiedUserId = table.Column<long>(type: "bigint", nullable: true),
-                    status = table.Column<int>(type: "int", nullable: false)
+                    modifiedUserId = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Places", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Places_Acception_Statuses_StatusId",
+                        column: x => x.StatusId,
+                        principalTable: "Acception_Statuses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Places_Locations_locationId",
                         column: x => x.locationId,
@@ -178,7 +212,8 @@ namespace Tapar.Data.Migrations
                     text = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     create_date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     userId = table.Column<long>(type: "bigint", nullable: false),
-                    placeId = table.Column<long>(type: "bigint", nullable: false)
+                    placeId = table.Column<long>(type: "bigint", nullable: false),
+                    status = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -219,6 +254,41 @@ namespace Tapar.Data.Migrations
                     table.ForeignKey(
                         name: "FK_LikeCounts_Users_userId",
                         column: x => x.userId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Place_Reports",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Status = table.Column<bool>(type: "bit", nullable: false),
+                    Other_Description = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    PlaceId = table.Column<long>(type: "bigint", nullable: false),
+                    UserId = table.Column<long>(type: "bigint", nullable: false),
+                    ReportOptionId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Place_Reports", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Place_Reports_Places_PlaceId",
+                        column: x => x.PlaceId,
+                        principalTable: "Places",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Place_Reports_Report_Options_ReportOptionId",
+                        column: x => x.ReportOptionId,
+                        principalTable: "Report_Options",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Place_Reports_Users_UserId",
+                        column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -276,12 +346,35 @@ namespace Tapar.Data.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Acception_Statuses",
+                columns: new[] { "Id", "Title" },
+                values: new object[,]
+                {
+                    { 1, "Waiting" },
+                    { 2, "Approved" },
+                    { 3, "Rejected" },
+                    { 4, "Inspecting" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Locations",
                 columns: new[] { "Id", "isActive", "name", "parentId" },
                 values: new object[,]
                 {
                     { 1, true, "آذربایجان شرقی", null },
                     { 2, true, "بناب", 1 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Report_Options",
+                columns: new[] { "Id", "Title" },
+                values: new object[,]
+                {
+                    { 1, "غلط املایی وجود دارد" },
+                    { 2, "آدرس اشتباه است" },
+                    { 3, "تلفن اشتباه است" },
+                    { 4, "موبایل اشتباه است" },
+                    { 5, "این کسب و کار وجود ندارد" }
                 });
 
             migrationBuilder.InsertData(
@@ -315,9 +408,29 @@ namespace Tapar.Data.Migrations
                 column: "userId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Place_Reports_PlaceId",
+                table: "Place_Reports",
+                column: "PlaceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Place_Reports_ReportOptionId",
+                table: "Place_Reports",
+                column: "ReportOptionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Place_Reports_UserId",
+                table: "Place_Reports",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Places_locationId",
                 table: "Places",
                 column: "locationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Places_StatusId",
+                table: "Places",
+                column: "StatusId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Places_tablo",
@@ -384,6 +497,9 @@ namespace Tapar.Data.Migrations
                 name: "LikeCounts");
 
             migrationBuilder.DropTable(
+                name: "Place_Reports");
+
+            migrationBuilder.DropTable(
                 name: "PlaceTags");
 
             migrationBuilder.DropTable(
@@ -393,6 +509,9 @@ namespace Tapar.Data.Migrations
                 name: "WeekDays");
 
             migrationBuilder.DropTable(
+                name: "Report_Options");
+
+            migrationBuilder.DropTable(
                 name: "Tags");
 
             migrationBuilder.DropTable(
@@ -400,6 +519,9 @@ namespace Tapar.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Places");
+
+            migrationBuilder.DropTable(
+                name: "Acception_Statuses");
 
             migrationBuilder.DropTable(
                 name: "Locations");
