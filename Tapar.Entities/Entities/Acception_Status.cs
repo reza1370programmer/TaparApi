@@ -15,8 +15,8 @@ namespace Tapar.Data.Entities
         {
             builder.Property(x => x.Title).IsRequired().HasMaxLength(20);
             builder.HasData(
-                new Acception_Status() { Id = 1, Title = "Waiting" },
-                new Acception_Status() { Id = 2, Title = "Approved" },
+                new Acception_Status() { Id = 1, Title = "Approved" },
+                new Acception_Status() { Id = 2, Title = "Waiting" },
                 new Acception_Status() { Id = 3, Title = "Rejected" },
                 new Acception_Status() { Id = 4, Title = "Inspecting" }
                 );

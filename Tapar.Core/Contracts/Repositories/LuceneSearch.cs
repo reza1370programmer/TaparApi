@@ -79,11 +79,13 @@ namespace Tapar.Core.Contracts.Repositories
                 _writer.Commit();
                 _writer.Flush(true, true);
                 _writer.Dispose();
+                _directory.Dispose();
+                _analyzer.Dispose();
             }
 
         }
 
-        public void AddLikeToPlace(Place place)
+        public void EditPlace(Place place)
         {
             var d = new Document()
             {
@@ -125,18 +127,19 @@ namespace Tapar.Core.Contracts.Repositories
                     new StringField("friday",place.weekDay is not null?place.weekDay.friday.ToString() : "0",Field.Store.YES),
                     new StringField("userId", place.userId.ToString(), Field.Store.YES),
                     new StringField("workTimeId", place.workTimeId.ToString(), Field.Store.YES),
-                    new StringField("like_count", place.like_count.ToString()?? "0", Field.Store.YES)
             };
             using (var _directory = FSDirectory.Open(new DirectoryInfo(Path.Combine(System.IO.Directory.GetCurrentDirectory(), "wwwroot", "LuceneData"))))
             {
                 var config = new IndexWriterConfig(version, _analyzer);
                 IndexWriter _writer = new IndexWriter(_directory, config);
-        
+
                 Term term = new Term("Id", place.Id.ToString());
                 _writer.UpdateDocument(term, d);
                 _writer.Commit();
                 _writer.Flush(true, true);
                 _writer.Dispose();
+                _analyzer.Dispose();
+                _directory.Dispose();
             }
         }
 
@@ -195,14 +198,14 @@ namespace Tapar.Core.Contracts.Repositories
                         _writer.AddDocument(document);
                     }
                     _writer.Commit();
+                    _writer.Flush(true, true);
                     _writer.Dispose();
                 }
                 _directory.Dispose();
+                _analyzer.Dispose();
             }
 
         }
-
-  
 
         public IEnumerable<LuceneDto> Search(SearchParams searchParams)
         {
@@ -215,13 +218,15 @@ namespace Tapar.Core.Contracts.Repositories
 
             if (searchParams.searchKey != null)
             {
-                searchParams.searchKey.Trim().Replace("  ", " ").Replace("*", "");
+                searchParams.searchKey = searchParams.searchKey.Trim().Replace("  ", " ").Replace("*", "");
                 var parts = searchParams.searchKey?.Split(' ');
                 foreach (var part in parts)
                 {
 
                     query.Add(new FuzzyQuery(new Term("tablo", part), 1), Occur.SHOULD);
                     query.Add(new FuzzyQuery(new Term("service_description", part), 1), Occur.SHOULD);
+                    query.Add(new WildcardQuery(new Term("tablo", $"{'*' + part + '*'}")), Occur.SHOULD);
+                    query.Add(new WildcardQuery(new Term("service_description", $"{'*' + part + '*'}")), Occur.SHOULD);
                 }
             }
             if (searchParams.cityId > 0)
@@ -286,6 +291,8 @@ namespace Tapar.Core.Contracts.Repositories
 
                 });
             }
+            _directory.Dispose();
+            _analyzer.Dispose();
             return places;
         }
     }

@@ -40,7 +40,7 @@ namespace TaparApi.Controllers
                     }
                     catch (Exception ex)
                     {
-                        throw new Exception("در ثبت اطلاعات مشکلی رخ داده هست");
+                        throw new Exception("در ثبت اطلاعات مشکلی رخ داده هست" + ex.Message);
                     }
                 }
                 else

@@ -11,6 +11,6 @@ namespace Tapar.Core.Contracts.Interfaces
         public IEnumerable<LuceneDto> Search(SearchParams searchParams);
         public void CopyDataToLucene(List<Place> places);
         public void AddDocumentToLucene(Place place);
-        public void AddLikeToPlace(Place place);
+        public void EditPlace(Place place);
     }
 }

@@ -24,7 +24,7 @@ namespace Tapar.Core.Common.Services.ImageUploader
                     var myUniqueFileName = $"{guid}_{now}";
                     var fileExtension = Path.GetExtension(fileName);
                     newFileName = String.Concat(myUniqueFileName, fileExtension);
-                    var filepath = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images")).Root + $@"\{newFileName}";
+                    //var filepath = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images")).Root + $@"\{newFileName}";
                     using (var image = Image.Load(file.OpenReadStream()))
                     {
 
@@ -42,6 +42,8 @@ namespace Tapar.Core.Common.Services.ImageUploader
                             memoryStream.Seek(0, SeekOrigin.Begin);
                             var client = new AsyncFtpClient("185.49.85.16", "dltapari", "YTWGHrfu87ghjy90r");
                             await client.AutoConnect();
+                            client.Config.EncryptionMode = FtpEncryptionMode.Explicit;
+                            client.Config.ValidateAnyCertificate = true;
                             await client.UploadStream(memoryStream, $"/www/images/{newFileName}");
                             await memoryStream.DisposeAsync();
                             await client.Disconnect();
