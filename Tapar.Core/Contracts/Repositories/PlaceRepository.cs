@@ -218,6 +218,7 @@ namespace Tapar.Core.Contracts.Repositories
             var place = await GetByIdAsync(cancellationToken, placeId);
             place.view_count += 1;
             await UpdateAsync(place, cancellationToken);
+            Lucene.EditPlace(place);
         }
 
         #region UserPanel
@@ -257,6 +258,7 @@ namespace Tapar.Core.Contracts.Repositories
                 place.bussiness_pic3 = await imageUploader.UpdateImage(dto.businessPic3, place?.bussiness_pic3);
             }
             await UpdateAsync(place, cancellationToken);
+            Lucene.EditPlace(place);
         }
 
         public async Task UpdateModirPic(UpdateModiPicDto dto, Place place, CancellationToken cancellationToken)
@@ -265,6 +267,7 @@ namespace Tapar.Core.Contracts.Repositories
             {
                 place.personal_pic = await imageUploader.UpdateImage(dto.modirpic, place?.personal_pic);
                 await UpdateAsync(place, cancellationToken);
+                Lucene.EditPlace(place);
             }
         }
 
@@ -280,6 +283,7 @@ namespace Tapar.Core.Contracts.Repositories
             }
 
             await UpdateAsync(place, cancellationToken);
+            Lucene.EditPlace(place);
         }
 
         public async Task UpdateWorkTime(UpdateWorkTimeDto dto, CancellationToken cancellationToken)
@@ -456,6 +460,7 @@ namespace Tapar.Core.Contracts.Repositories
 
             }
             await UpdateAsync(place, cancellationToken);
+            Lucene.EditPlace(place);
         }
 
         public async Task UpdateGlobalInformation(EditGlobalInformationDto dto, CancellationToken cancellationToken)
@@ -465,6 +470,7 @@ namespace Tapar.Core.Contracts.Repositories
             place.manager = dto.manager;
             place.service_description = dto.service_description;
             await UpdateAsync(place, cancellationToken);
+            Lucene.EditPlace(place);
         }
 
         public async Task DeleteBusiness(long id, CancellationToken cancellationToken)
@@ -485,6 +491,7 @@ namespace Tapar.Core.Contracts.Repositories
             if (place?.visitCart_back is not null)
                 await imageUploader.DeleteImage(place.visitCart_back);
             await DeleteAsync(place, cancellationToken);
+            Lucene.DeletePlace(id);
         }
 
         public async Task<Place> DeleteImage(DeleteImageDto Dto, CancellationToken cancellationToken)
@@ -495,38 +502,73 @@ namespace Tapar.Core.Contracts.Repositories
                 await imageUploader.DeleteImage(Dto.ImageName);
                 place.bussiness_pic1 = null;
                 await UpdateAsync(place, cancellationToken);
+                Lucene.EditPlace(place);
             }
             if (Dto.FieldName is "PlacePic2")
             {
                 await imageUploader.DeleteImage(Dto.ImageName);
                 place.bussiness_pic2 = null;
                 await UpdateAsync(place, cancellationToken);
+                Lucene.EditPlace(place);
             }
             if (Dto.FieldName is "PlacePic3")
             {
                 await imageUploader.DeleteImage(Dto.ImageName);
                 place.bussiness_pic3 = null;
                 await UpdateAsync(place, cancellationToken);
+                Lucene.EditPlace(place);
             }
             if (Dto.FieldName is "ModirPic")
             {
                 await imageUploader.DeleteImage(Dto.ImageName);
                 place.personal_pic = null;
                 await UpdateAsync(place, cancellationToken);
+                Lucene.EditPlace(place);
             }
             if (Dto.FieldName is "VisitCartFront")
             {
                 await imageUploader.DeleteImage(Dto.ImageName);
                 place.visitCart_front = null;
                 await UpdateAsync(place, cancellationToken);
+                Lucene.EditPlace(place);
+
             }
             if (Dto.FieldName is "VisitCartBack")
             {
                 await imageUploader.DeleteImage(Dto.ImageName);
                 place.visitCart_back = null;
                 await UpdateAsync(place, cancellationToken);
+                Lucene.EditPlace(place);
+
             }
             return place;
+        }
+
+        public async Task UpdateAddress(EditAddressDto dto, CancellationToken cancellationToken)
+        {
+            var place = await GetByIdAsync(cancellationToken, dto.placeid);
+            place.address = dto.restAddress;
+            place.locationId = dto.locationId;
+            await UpdateAsync(place, cancellationToken);
+            Lucene.EditPlace(place);
+        }
+
+        public async Task UpdateRelationWays(UpdateRelationWaysDto dto, CancellationToken cancellationToken)
+        {
+            var place = await GetByIdAsync(cancellationToken, dto.id);
+            place.phone1 = dto.phone1;
+            place.phone2 = dto.phone2;
+            place.phone3 = dto.phone3;
+            place.mob1 = dto.mob1;
+            place.mob2 = dto.mob2;
+            place.fax = dto.fax;
+            place.email = dto.email;
+            place.website = dto.website;
+            place.telegram = dto.telegram;
+            place.instagram = dto.instagram;
+            place.whatsapp = dto.whatsapp;
+            await UpdateAsync(place, cancellationToken);
+            Lucene.EditPlace(place);
         }
         #endregion
 

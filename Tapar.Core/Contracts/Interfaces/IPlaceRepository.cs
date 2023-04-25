@@ -24,6 +24,8 @@ namespace Tapar.Core.Contracts.Interfaces
         Task UpdateVisitCartPic(UpdateVisitCartPic dto, Place place, CancellationToken cancellationToken);
         Task UpdateWorkTime(UpdateWorkTimeDto dto, CancellationToken cancellationToken);
         Task UpdateGlobalInformation(EditGlobalInformationDto dto, CancellationToken cancellationToken);
+        Task UpdateAddress(EditAddressDto dto, CancellationToken cancellationToken);
+        Task UpdateRelationWays(UpdateRelationWaysDto dto, CancellationToken cancellationToken);
         Task DeleteBusiness(long id, CancellationToken cancellationToken);
         Task<Place> DeleteImage(DeleteImageDto Dto, CancellationToken cancellationToken);
         #endregion

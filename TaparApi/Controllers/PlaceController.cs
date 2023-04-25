@@ -131,10 +131,7 @@ namespace TaparApi.Controllers
         {
             if (ModelState.IsValid)
             {
-                var place = await repository.GetByIdAsync(cancellationToken, dto.placeid);
-                place.address = dto.restAddress;
-                place.locationId = dto.locationId;
-                await repository.UpdateAsync(place, cancellationToken);
+                await repository.UpdateAddress(dto, cancellationToken);
                 return Ok();
             }
             return BadRequest();
@@ -145,19 +142,7 @@ namespace TaparApi.Controllers
         {
             if (ModelState.IsValid)
             {
-                var place = await repository.GetByIdAsync(cancellationToken, dto.id);
-                place.phone1 = dto.phone1;
-                place.phone2 = dto.phone2;
-                place.phone3 = dto.phone3;
-                place.mob1 = dto.mob1;
-                place.mob2 = dto.mob2;
-                place.fax = dto.fax;
-                place.email = dto.email;
-                place.website = dto.website;
-                place.telegram = dto.telegram;
-                place.instagram = dto.instagram;
-                place.whatsapp = dto.whatsapp;
-                await repository.UpdateAsync(place, cancellationToken);
+                await repository.UpdateRelationWays(dto, cancellationToken);
                 return Ok();
             }
             return BadRequest();

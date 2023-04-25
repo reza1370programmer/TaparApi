@@ -295,5 +295,20 @@ namespace Tapar.Core.Contracts.Repositories
             _analyzer.Dispose();
             return places;
         }
+
+        public void DeletePlace(long placeid)
+        {
+            using (var _directory = FSDirectory.Open(new DirectoryInfo(Path.Combine(System.IO.Directory.GetCurrentDirectory(), "wwwroot", "LuceneData"))))
+            {
+                var config = new IndexWriterConfig(version, _analyzer);
+                IndexWriter _writer = new IndexWriter(_directory, config);
+                _writer.DeleteDocuments(new Term("Id", placeid.ToString()));
+                _writer.Commit();
+                _writer.Flush(true, true);
+                _writer.Dispose();
+                _directory.Dispose();
+                _analyzer.Dispose();
+            }
+        }
     }
 }
