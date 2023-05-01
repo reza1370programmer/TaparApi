@@ -58,5 +58,17 @@ namespace TaparApi.Controllers
             }
             return BadRequest();
         }
+        [HttpGet("[action]")]
+        public async Task<IActionResult> SearchPlaceForMobile([FromQuery] SearchParamsForMobile searchParams, CancellationToken cancellationToken)
+        {
+
+            if (ModelState.IsValid)
+            {
+                var data = LuceneRepository.SearchForMobile(searchParams);
+                return Ok(data);
+            }
+            return BadRequest();
+        }
+
     }
 }

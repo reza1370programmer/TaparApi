@@ -239,6 +239,7 @@ namespace TaparApi.Controllers
                 throw new Exception(ex.Message, ex);
             }
         }
+   
         #endregion
 
         #endregion

@@ -218,7 +218,7 @@ namespace Tapar.Core.Contracts.Repositories
             var place = await GetByIdAsync(cancellationToken, placeId);
             place.view_count += 1;
             await UpdateAsync(place, cancellationToken);
-            Lucene.EditPlace(place);
+            //Lucene.EditPlace(place);
         }
 
         #region UserPanel

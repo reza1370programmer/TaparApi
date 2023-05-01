@@ -1,6 +1,4 @@
 
-using AspNetCore.Totp;
-using AspNetCore.Totp.Interface;
 using Newtonsoft.Json;
 using Serilog;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
@@ -8,7 +6,7 @@ using Tapar.core.Extensions;
 using Tapar.Core.Common;
 using Tapar.Core.Common.Middlewares;
 using Tapar.Core.Contracts.Interfaces;
-
+using Tapar.Core.Contracts.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 var siteSettings = builder.Configuration.GetSection(nameof(SiteSettings)).Get<SiteSettings>();
@@ -29,6 +27,7 @@ builder.Services.Configure<SiteSettings>(builder.Configuration.GetSection(nameof
 builder.Services.AddDbContext(builder.Configuration);
 //using package TanvirArjel.Extensions.Microsoft.DependencyInjection for inserting services dynamically
 builder.Services.AddServicesOfAllTypes(typeof(IPlaceRepository).Assembly);
+builder.Services.AddSingleton<ILuceneSearch, LuceneSearch>();
 //builder.Services.AddScoped<ITotpGenerator, TotpGenerator>();
 //builder.Services.AddScoped<ITotpValidator, TotpValidator>();
 //builder.Services.AddElasticSearch(builder.Configuration);
