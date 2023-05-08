@@ -136,7 +136,7 @@ namespace Tapar.Core.Contracts.Repositories
                 stopSet.Add("هست");
                 StandardAnalyzer _analyzer = new StandardAnalyzer(version, stopSet);
                 var config = new IndexWriterConfig(version, _analyzer);
-                IndexWriter _writer = new IndexWriter(_directory, config);   
+                IndexWriter _writer = new IndexWriter(_directory, config);
                 Term term = new Term("Id", place.Id.ToString());
                 _writer.UpdateDocument(term, d);
                 _writer.Commit();
@@ -169,9 +169,9 @@ namespace Tapar.Core.Contracts.Repositories
                 {
                     new StringField("Id", place.Id.ToString(), Field.Store.YES),
                     new TextField("tablo", place.tablo, Field.Store.YES),
-                    new TextField("manager",place.manager, Field.Store.YES),
+                    new StringField("manager",place.manager, Field.Store.YES),
                     new StringField("taparcode", place.taparcode ?? "null", Field.Store.YES),
-                    new StringField("service_description", place.service_description ?? "null", Field.Store.YES),
+                    new TextField("service_description", place.service_description ?? "null", Field.Store.YES),
                     new StringField("mob1", place.mob1 ?? "null", Field.Store.YES),
                     new StringField("mob2", place.mob2 ?? "null", Field.Store.YES),
                     new StringField("phone1", place.phone1 ?? "null", Field.Store.YES),
@@ -191,20 +191,20 @@ namespace Tapar.Core.Contracts.Repositories
                     new StringField("visitCart_front", place.visitCart_front ?? "null", Field.Store.YES),
                     new StringField("visitCart_back", place.visitCart_back ?? "null", Field.Store.YES),
                     new StringField("special_message", place.special_message ?? "null", Field.Store.YES),
-                    new Int32Field("like_count",place.like_count ?? 0,Field.Store.YES),
-                    new Int32Field("view_count",place.view_count ?? 0,Field.Store.YES),
+                    new StringField("like_count",place.like_count.ToString() ?? "0",Field.Store.YES),
+                    new StringField("view_count",place.view_count.ToString() ?? "0",Field.Store.YES),
                     new StringField("on_off",place.on_off==true?"true":"false",Field.Store.YES),
-                    new Int32Field("locationId",place.locationId,Field.Store.YES),
-                    new Int32Field("statusId",place.StatusId,Field.Store.YES),
-                    new Int32Field("saturday",place.weekDay is not null?place.weekDay.saturday:0,Field.Store.YES),
-                    new Int32Field("sunday",place.weekDay is not null?place.weekDay.sunday:0,Field.Store.YES),
-                    new Int32Field("monday",place.weekDay is not null?place.weekDay.monday:0,Field.Store.YES),
-                    new Int32Field("tuesday",place.weekDay is not null?place.weekDay.tuesday:0,Field.Store.YES),
-                    new Int32Field("wednesday",place.weekDay is not null?place.weekDay.wednesday:0,Field.Store.YES),
-                    new Int32Field("thursday",place.weekDay is not null?place.weekDay.thursday:0,Field.Store.YES),
-                    new Int32Field("friday",place.weekDay is not null?place.weekDay.friday:0,Field.Store.YES),
-                    new Int64Field("userId", place.userId, Field.Store.YES),
-                    new Int32Field("workTimeId", place.workTimeId, Field.Store.YES),
+                    new StringField("locationId",place.locationId.ToString(),Field.Store.YES),
+                    new StringField("statusId",place.StatusId.ToString(),Field.Store.YES),
+                    new StringField("saturday",place.weekDay is not null?place.weekDay.saturday.ToString():"0",Field.Store.YES),
+                    new StringField("sunday",place.weekDay is not null?place.weekDay.sunday.ToString() : "0",Field.Store.YES),
+                    new StringField("monday",place.weekDay is not null?place.weekDay.monday.ToString(): "0",Field.Store.YES),
+                    new StringField("tuesday",place.weekDay is not null?place.weekDay.tuesday.ToString() : "0",Field.Store.YES),
+                    new StringField("wednesday",place.weekDay is not null?place.weekDay.wednesday.ToString() : "0",Field.Store.YES),
+                    new StringField("thursday",place.weekDay is not null?place.weekDay.thursday.ToString() : "0",Field.Store.YES),
+                    new StringField("friday",place.weekDay is not null?place.weekDay.friday.ToString() : "0",Field.Store.YES),
+                    new StringField("userId", place.userId.ToString(), Field.Store.YES),
+                    new StringField("workTimeId", place.workTimeId.ToString(), Field.Store.YES),
 
                 };
                         _writer.AddDocument(document);

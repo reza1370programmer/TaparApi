@@ -42,7 +42,7 @@ namespace Tapar.Core.Contracts.Repositories
         }
         #endregion
 
-        #region Methods
+        #region General
         public async Task AddPlace(PlaceAddDto dto, CancellationToken cancellationToken)
         {
             Place place = new Place();
@@ -218,8 +218,9 @@ namespace Tapar.Core.Contracts.Repositories
             var place = await GetByIdAsync(cancellationToken, placeId);
             place.view_count += 1;
             await UpdateAsync(place, cancellationToken);
-            //Lucene.EditPlace(place);
+            Lucene.EditPlace(place);
         }
+        #endregion
 
         #region UserPanel
         public async Task<List<Place>> GetPlacesByUserId(SearchParamsForUserPanel dto, CancellationToken cancellationToken)
@@ -570,9 +571,49 @@ namespace Tapar.Core.Contracts.Repositories
             await UpdateAsync(place, cancellationToken);
             Lucene.EditPlace(place);
         }
-        #endregion
 
         #endregion
 
+        #region SuperAdminPanel
+        public async Task<List<FilteredPlacesForSuperAdmin>> FilterPlacesForSuperAdmin(SearchParametersForSuperAdmin dto, CancellationToken cancellationToken)
+        {
+            var places = TableNoTracking.Where(p => p.StatusId == dto.StatusId);
+            if (dto.SearchKey != "null")
+                places = places.Where(p => p.tablo.Contains(dto.SearchKey));
+            return await places.Select(p => new FilteredPlacesForSuperAdmin()
+            {
+                Id = p.Id,
+                StatusId = p.StatusId,
+                Tablo = p.tablo
+            }).ToListAsync(cancellationToken);
+        }
+
+        public async Task ChangeStatusToApproved(long id, CancellationToken cancellationToken)
+        {
+            var place = await GetByIdAsync(cancellationToken, id);
+            place.StatusId = 1;
+            place.RejectedDescription = null;
+            await UpdateAsync(place, cancellationToken);
+            Lucene.EditPlace(place);
+        }
+
+        public async Task ChangeStatusToRejected(ChangeStatusToRejectedForSuperAdminDto dto, CancellationToken cancellationToken)
+        {
+            var place = await GetByIdAsync(cancellationToken, dto.id);
+            place.StatusId = 3;
+            place.RejectedDescription = dto.RejectionMessage;
+            await UpdateAsync(place, cancellationToken);
+            Lucene.EditPlace(place);
+        }
+
+        public async Task ChangeStatusToAwaitinig(long id, CancellationToken cancellationToken)
+        {
+            var place = await GetByIdAsync(cancellationToken, id);
+            place.StatusId = 2;
+            place.RejectedDescription = null;
+            await UpdateAsync(place, cancellationToken);
+            Lucene.EditPlace(place);
+        }
+        #endregion
     }
 }

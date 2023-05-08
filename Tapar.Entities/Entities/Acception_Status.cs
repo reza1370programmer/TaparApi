@@ -17,8 +17,7 @@ namespace Tapar.Data.Entities
             builder.HasData(
                 new Acception_Status() { Id = 1, Title = "Approved" },
                 new Acception_Status() { Id = 2, Title = "Waiting" },
-                new Acception_Status() { Id = 3, Title = "Rejected" },
-                new Acception_Status() { Id = 4, Title = "Inspecting" }
+                new Acception_Status() { Id = 3, Title = "Rejected" }
                 );
         }
     }

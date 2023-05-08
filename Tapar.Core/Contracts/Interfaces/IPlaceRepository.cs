@@ -30,6 +30,11 @@ namespace Tapar.Core.Contracts.Interfaces
         Task<Place> DeleteImage(DeleteImageDto Dto, CancellationToken cancellationToken);
         #endregion
 
-        //Task<PlaceGetDto> GetPlaceById(long id, CancellationToken cancellationToken);
+        #region SuperAdminPanel
+        Task<List<FilteredPlacesForSuperAdmin>> FilterPlacesForSuperAdmin(SearchParametersForSuperAdmin dto,CancellationToken cancellationToken);
+        Task ChangeStatusToApproved(long id, CancellationToken cancellationToken);
+        Task ChangeStatusToAwaitinig(long id, CancellationToken cancellationToken);
+        Task ChangeStatusToRejected(ChangeStatusToRejectedForSuperAdminDto dto, CancellationToken cancellationToken);
+        #endregion
     }
 }
