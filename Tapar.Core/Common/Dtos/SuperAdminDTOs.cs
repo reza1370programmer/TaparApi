@@ -17,8 +17,8 @@ namespace Tapar.Core.Common.Dtos
     }
     public class ChangeStatusToRejectedForSuperAdminDto
     {
-        public long id { get; set; }
+        public long Id { get; set; }
         [MaxLength(200)]
-        public string RejectionMessage { get; set; }
+        public string RejectedDescription { get; set; }
     }
 }

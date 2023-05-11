@@ -599,9 +599,9 @@ namespace Tapar.Core.Contracts.Repositories
 
         public async Task ChangeStatusToRejected(ChangeStatusToRejectedForSuperAdminDto dto, CancellationToken cancellationToken)
         {
-            var place = await GetByIdAsync(cancellationToken, dto.id);
+            var place = await GetByIdAsync(cancellationToken, dto.Id);
             place.StatusId = 3;
-            place.RejectedDescription = dto.RejectionMessage;
+            place.RejectedDescription = dto.RejectedDescription;
             await UpdateAsync(place, cancellationToken);
             Lucene.EditPlace(place);
         }

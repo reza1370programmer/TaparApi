@@ -6,6 +6,7 @@ using Lucene.Net.Index.Extensions;
 using Lucene.Net.Search;
 using Lucene.Net.Store;
 using Lucene.Net.Util;
+using SixLabors.ImageSharp.Processing;
 using Tapar.Core.Common.Dtos;
 using Tapar.Core.Common.Dtos.LuceneDto;
 using Tapar.Core.Contracts.Interfaces;
@@ -239,6 +240,7 @@ namespace Tapar.Core.Contracts.Repositories
                     query.Add(new WildcardQuery(new Term("tablo", $"{'*' + part + '*'}")), Occur.SHOULD);
                     query.Add(new WildcardQuery(new Term("service_description", $"{'*' + part + '*'}")), Occur.SHOULD);
                 }
+                
             }
             if (searchParams.cityId > 0)
             {
@@ -251,6 +253,7 @@ namespace Tapar.Core.Contracts.Repositories
                 query3.Add(query2, Occur.SHOULD);
 
             query3.Add(query, Occur.MUST);
+            query3.Add(new TermQuery(new Term("statusId", "1")), Occur.MUST);
 
             var hits = indexSearcher.Search(query3, int.MaxValue, Sort.RELEVANCE).ScoreDocs.Skip((searchParams.pageIndex - 1) * 5).Take(5);
             var places = new List<LuceneDto>();
