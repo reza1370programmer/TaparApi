@@ -577,10 +577,14 @@ namespace Tapar.Core.Contracts.Repositories
         #region SuperAdminPanel
         public async Task<List<FilteredPlacesForSuperAdmin>> FilterPlacesForSuperAdmin(SearchParametersForSuperAdmin dto, CancellationToken cancellationToken)
         {
-            var places = TableNoTracking.Where(p => p.StatusId == dto.StatusId);
+            var places = TableNoTracking.AsQueryable();
+            if (dto.StatusId > 0)
+                places = places.Where(p => p.StatusId == dto.StatusId);
+            if (dto.CityId > 0)
+                places = places.Where(p => p.locationId == dto.CityId);
             if (dto.SearchKey != "null")
                 places = places.Where(p => p.tablo.Contains(dto.SearchKey));
-            return await places.Select(p => new FilteredPlacesForSuperAdmin()
+            return await places.Skip((dto.PageIndex-1)*10).Take(10).Select(p => new FilteredPlacesForSuperAdmin()
             {
                 Id = p.Id,
                 StatusId = p.StatusId,

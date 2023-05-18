@@ -81,7 +81,6 @@ namespace Tapar.Core.Contracts.Repositories
             }
 
         }
-
         public void EditPlace(Place place)
         {
             var d = new Document()
@@ -147,7 +146,6 @@ namespace Tapar.Core.Contracts.Repositories
                 _analyzer.Dispose();
             }
         }
-
         public void CopyDataToLucene(List<Place> places)
         {
             using (var _directory = FSDirectory.Open(new DirectoryInfo(Path.Combine(System.IO.Directory.GetCurrentDirectory(), "wwwroot", "LuceneData"))))
@@ -219,7 +217,6 @@ namespace Tapar.Core.Contracts.Repositories
             }
 
         }
-
         public IEnumerable<LuceneDto> Search(SearchParams searchParams)
         {
             var _directory = FSDirectory.Open(new DirectoryInfo(Path.Combine(System.IO.Directory.GetCurrentDirectory(), "wwwroot", "LuceneData")));

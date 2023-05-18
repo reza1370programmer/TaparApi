@@ -92,6 +92,14 @@ namespace TaparApi.Controllers
             if (place is null) { return Ok(null); }
             return Conflict(place.tablo);
         }
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetCountOfPlaces(CancellationToken cancellationToken)
+        {
+            var ApprovedPlaces = await repository.TableNoTracking.CountAsync(p => p.StatusId == 1, cancellationToken);
+            var AwaitiningPlaces = await repository.TableNoTracking.CountAsync(p => p.StatusId == 2, cancellationToken);
+            var RejectedPlaces = await repository.TableNoTracking.CountAsync(p => p.StatusId == 3, cancellationToken);
+            return Ok(new {ApprovedPlaces,AwaitiningPlaces,RejectedPlaces});
+        }
         #region UserPanelMethods
 
         [HttpGet("[action]")]
@@ -239,7 +247,7 @@ namespace TaparApi.Controllers
                 throw new Exception(ex.Message, ex);
             }
         }
-   
+
         #endregion
 
         #endregion

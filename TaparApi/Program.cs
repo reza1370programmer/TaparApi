@@ -27,6 +27,7 @@ builder.Services.Configure<SiteSettings>(builder.Configuration.GetSection(nameof
 builder.Services.AddDbContext(builder.Configuration);
 //using package TanvirArjel.Extensions.Microsoft.DependencyInjection for inserting services dynamically
 builder.Services.AddServicesOfAllTypes(typeof(IPlaceRepository).Assembly);
+builder.Services.AddDetection();
 builder.Services.AddSingleton<ILuceneSearch, LuceneSearch>();
 //builder.Services.AddScoped<ITotpGenerator, TotpGenerator>();
 //builder.Services.AddScoped<ITotpValidator, TotpValidator>();
@@ -46,7 +47,7 @@ var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 app.UseMiddleware<ExceptionMiddleware>();
-
+app.UseDetection();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

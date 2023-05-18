@@ -33,11 +33,11 @@ namespace TaparApi.Controllers
                 if (report is null)
                 {
                     var ReportCount = await Repository.TableNoTracking.CountAsync(p => p.PlaceId == dto.PlaceId && p.Status == false);
-                    if (ReportCount + 1 >= 3)
+                    if (ReportCount + 1 >= 5)
                     {
                         var place = await PlaceRepository.GetByIdAsync(cancellationToken, dto.PlaceId);
-                        place.StatusId = 3;
-                        place.RejectedDescription = "تعداد گزارشات کاربران بیشتر از 3 تا شده هست";
+                        place.StatusId = 2;
+                        place.RejectedDescription = "تعداد گزارشات کاربران بیشتر از 5 تا شده هست";
                         LuceneRepository.EditPlace(place);
                     }
                     await Repository.AddAsync(newReport, cancellationToken);
@@ -48,10 +48,10 @@ namespace TaparApi.Controllers
                 else if (report is not null && report.Status is true)
                 {
                     var ReportCount = await Repository.TableNoTracking.CountAsync(p => p.PlaceId == dto.PlaceId && p.Status == false);
-                    if (ReportCount + 1 >= 3)
+                    if (ReportCount + 1 >= 5)
                     {
-                        report.Place.StatusId = 3;
-                        report.Place.RejectedDescription = "تعداد گزارشات کاربران بیشتر از 3 تا شده هست";
+                        report.Place.StatusId = 2;
+                        report.Place.RejectedDescription = "تعداد گزارشات کاربران بیشتر از 5 تا شده هست";
                         LuceneRepository.EditPlace(report.Place);
                     }
                     report.Status = false;
@@ -66,6 +66,43 @@ namespace TaparApi.Controllers
                 throw new Exception(ex.Message, ex);
             }
 
+        }
+        [HttpGet("[action]/{placeId}")]
+        public async Task<IActionResult> GetListOfPlaceReportsForSuperAdmin(long placeId, CancellationToken cancellationToken)
+        {
+            var ReportList = await Repository.TableNoTracking.Include(r => r.Report_Option).Where(r => r.PlaceId == placeId).Select(t => new ReportListOfPlaceForSuperAdminDTO()
+            {
+                PlaceId = t.PlaceId,
+                Id = t.Id,
+                ReportOptionDesc = t.Report_Option.Title,
+                ReportOptionId = t.ReportOptionId,
+                ReportStatus = t.Status
+            }).ToListAsync(cancellationToken);
+            return Ok(ReportList);
+        }
+        [HttpGet("[action]")]
+        public async Task<IActionResult> ChangeReportToSolvedForSuperAdmin([FromQuery] ChangeReportToSolvedForSuperAdminDTO dto, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var report = await Repository.Table.Include(p => p.Place).SingleOrDefaultAsync(p => p.Id == dto.Id, cancellationToken);
+                report.Status = true;
+                var ReportCount = await Repository.TableNoTracking.CountAsync(p => p.PlaceId == dto.PlaceId && p.Status == false);
+                if (ReportCount - 1 < 5)
+                {
+                    var place = await PlaceRepository.GetByIdAsync(cancellationToken, dto.PlaceId);
+                    place.StatusId = 1;
+                    place.RejectedDescription = null;
+                    LuceneRepository.EditPlace(report.Place);
+                }
+                await Repository.UpdateAsync(report, cancellationToken);
+                return Ok();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }
