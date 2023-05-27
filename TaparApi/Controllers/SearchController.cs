@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Tapar.Core.Common.Api;
 using Tapar.Core.Common.Dtos;
 using Tapar.Core.Contracts.Interfaces;
+using Tapar.Data.Entities;
 
 namespace TaparApi.Controllers
 {
@@ -13,11 +14,13 @@ namespace TaparApi.Controllers
         //public IESRepository Repository { get; set; }
         public IPlaceRepository placeRepository { get; set; }
         public ILuceneSearch LuceneRepository { get; set; }
+        public IRepository<SearchRequest>  SearchRequestRepo  { get; set; }
 
-        public SearchController(ILuceneSearch luceneRepository, IPlaceRepository placeRepository)
+        public SearchController(ILuceneSearch luceneRepository, IPlaceRepository placeRepository, IRepository<SearchRequest> searchRequestRepo)
         {
             LuceneRepository = luceneRepository;
             this.placeRepository = placeRepository;
+            SearchRequestRepo = searchRequestRepo;
         }
 
         //[HttpGet("[action]")]
@@ -54,6 +57,11 @@ namespace TaparApi.Controllers
             if (ModelState.IsValid)
             {
                 var data = LuceneRepository.Search(searchParams);
+                var SearchRequest = new SearchRequest();
+                SearchRequest.SearchKey = searchParams.searchKey;
+                SearchRequest.SearchCount = data.TotalResultCount;
+                SearchRequest.Id = Guid.NewGuid();
+                await SearchRequestRepo.AddAsync(SearchRequest, cancellationToken);
                 return Ok(data);
             }
             return BadRequest();

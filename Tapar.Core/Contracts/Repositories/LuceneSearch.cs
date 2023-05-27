@@ -217,7 +217,7 @@ namespace Tapar.Core.Contracts.Repositories
             }
 
         }
-        public IEnumerable<LuceneDto> Search(SearchParams searchParams)
+        public LuceneSearchDto Search(SearchParams searchParams)
         {
             var _directory = FSDirectory.Open(new DirectoryInfo(Path.Combine(System.IO.Directory.GetCurrentDirectory(), "wwwroot", "LuceneData")));
             var directoryReader = DirectoryReader.Open(_directory);
@@ -251,8 +251,9 @@ namespace Tapar.Core.Contracts.Repositories
 
             query3.Add(query, Occur.MUST);
             query3.Add(new TermQuery(new Term("statusId", "1")), Occur.MUST);
-
-            var hits = indexSearcher.Search(query3, int.MaxValue, Sort.RELEVANCE).ScoreDocs.Skip((searchParams.pageIndex - 1) * 5).Take(5);
+            var TotalResult = indexSearcher.Search(query3, int.MaxValue, Sort.RELEVANCE);
+            var hits =TotalResult.ScoreDocs.Skip((searchParams.pageIndex - 1) * 5).Take(5);
+            var TotalHits = TotalResult.TotalHits;
             var places = new List<LuceneDto>();
             foreach (var hit in hits)
             {
@@ -301,7 +302,7 @@ namespace Tapar.Core.Contracts.Repositories
                 });
             }
             _directory.Dispose();
-            return places;
+            return new LuceneSearchDto() { SearchResult = places, TotalResultCount = TotalHits };
         }
         public IEnumerable<LuceneDto> SearchForMobile(SearchParamsForMobile searchParams)
         {

@@ -6,7 +6,7 @@ using Tapar.Data.Common;
 
 namespace Tapar.Data.Entities
 {
-    public class UserAgent : BaseEntity<long>
+    public class UserAgent : BaseEntity<Guid>
     {
         public string Referer { get; set; }
         public DateTime EnteranceDate { get; set; } = DateTime.Now;

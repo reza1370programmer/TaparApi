@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TaparApi.Data;
 
@@ -11,9 +12,10 @@ using TaparApi.Data;
 namespace Tapar.Data.Migrations
 {
     [DbContext(typeof(TaparDbContext))]
-    partial class TaparDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230523061803_add-UserAgentAndSearchRequestTable")]
+    partial class addUserAgentAndSearchRequestTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,7 +39,7 @@ namespace Tapar.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Acception_Statuses", (string)null);
+                    b.ToTable("Acception_Statuses");
 
                     b.HasData(
                         new
@@ -88,7 +90,7 @@ namespace Tapar.Data.Migrations
 
                     b.HasIndex("userId");
 
-                    b.ToTable("Comments", (string)null);
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("Tapar.Data.Entities.LikeCount", b =>
@@ -114,7 +116,7 @@ namespace Tapar.Data.Migrations
 
                     b.HasIndex("userId");
 
-                    b.ToTable("LikeCounts", (string)null);
+                    b.ToTable("LikeCounts");
                 });
 
             modelBuilder.Entity("Tapar.Data.Entities.Location", b =>
@@ -138,7 +140,7 @@ namespace Tapar.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Locations", (string)null);
+                    b.ToTable("Locations");
 
                     b.HasData(
                         new
@@ -308,7 +310,7 @@ namespace Tapar.Data.Migrations
 
                     b.HasIndex("workTimeId");
 
-                    b.ToTable("Places", (string)null);
+                    b.ToTable("Places");
                 });
 
             modelBuilder.Entity("Tapar.Data.Entities.Place_Report", b =>
@@ -325,9 +327,6 @@ namespace Tapar.Data.Migrations
 
                     b.Property<long>("PlaceId")
                         .HasColumnType("bigint");
-
-                    b.Property<DateTime>("ReportDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<int>("ReportOptionId")
                         .HasColumnType("int");
@@ -346,7 +345,7 @@ namespace Tapar.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Place_Reports", (string)null);
+                    b.ToTable("Place_Reports");
                 });
 
             modelBuilder.Entity("Tapar.Data.Entities.PlaceTag", b =>
@@ -369,7 +368,7 @@ namespace Tapar.Data.Migrations
 
                     b.HasIndex("TagId");
 
-                    b.ToTable("PlaceTags", (string)null);
+                    b.ToTable("PlaceTags");
                 });
 
             modelBuilder.Entity("Tapar.Data.Entities.RefreshTokens", b =>
@@ -398,7 +397,7 @@ namespace Tapar.Data.Migrations
 
                     b.HasIndex("userId");
 
-                    b.ToTable("RefreshTokens", (string)null);
+                    b.ToTable("RefreshTokens");
                 });
 
             modelBuilder.Entity("Tapar.Data.Entities.Report_Option", b =>
@@ -416,7 +415,7 @@ namespace Tapar.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Report_Options", (string)null);
+                    b.ToTable("Report_Options");
 
                     b.HasData(
                         new
@@ -464,7 +463,7 @@ namespace Tapar.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SearchRequests", (string)null);
+                    b.ToTable("SearchRequests");
                 });
 
             modelBuilder.Entity("Tapar.Data.Entities.SuperAdmin", b =>
@@ -495,7 +494,7 @@ namespace Tapar.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SuperAdmins", (string)null);
+                    b.ToTable("SuperAdmins");
                 });
 
             modelBuilder.Entity("Tapar.Data.Entities.Tag", b =>
@@ -516,7 +515,7 @@ namespace Tapar.Data.Migrations
                     b.HasIndex("title")
                         .IsUnique();
 
-                    b.ToTable("Tags", (string)null);
+                    b.ToTable("Tags");
                 });
 
             modelBuilder.Entity("Tapar.Data.Entities.User", b =>
@@ -543,7 +542,7 @@ namespace Tapar.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("Tapar.Data.Entities.UserAgent", b =>
@@ -572,7 +571,7 @@ namespace Tapar.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserAgents", (string)null);
+                    b.ToTable("UserAgents");
                 });
 
             modelBuilder.Entity("Tapar.Data.Entities.WeekDays", b =>
@@ -613,7 +612,7 @@ namespace Tapar.Data.Migrations
                         .IsUnique()
                         .HasFilter("[placeId] IS NOT NULL");
 
-                    b.ToTable("WeekDays", (string)null);
+                    b.ToTable("WeekDays");
                 });
 
             modelBuilder.Entity("Tapar.Data.Entities.WorkTime", b =>
@@ -631,7 +630,7 @@ namespace Tapar.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("WorkTimes", (string)null);
+                    b.ToTable("WorkTimes");
 
                     b.HasData(
                         new

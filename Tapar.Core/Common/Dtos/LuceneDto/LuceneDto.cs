@@ -41,4 +41,9 @@
         public long userId { get; set; }
         public int workTimeId { get; set; }
     }
+    public class LuceneSearchDto
+    {
+        public IEnumerable<LuceneDto> SearchResult { get; set; }
+        public int TotalResultCount { get; set; }
+    }
 }

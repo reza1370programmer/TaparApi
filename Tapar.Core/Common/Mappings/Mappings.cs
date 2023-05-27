@@ -13,8 +13,5 @@ public class Mappings : Profile
         CreateMap<Place, BusinessForAdminPanelDto>().ForMember(x => x.cdate, y => y.MapFrom(g => g.cDate.Value.ToString("yyyy-MM-ddHHmmss")));
         CreateMap<Place, PlaceSearchDto>().ReverseMap();
         CreateMap<WeekDays, WeekDaysDto>().ReverseMap();
-        //CreateMap<PlaceIndex, Place>().ReverseMap();
-        //CreateMap<Comment, CommnetDtoForEs>().ReverseMap();
-        //CreateMap<WeekDays, WeekDaysDtoForEs>().ReverseMap();
     }
 }

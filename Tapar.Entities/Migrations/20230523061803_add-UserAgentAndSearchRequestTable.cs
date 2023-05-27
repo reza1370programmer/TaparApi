@@ -5,16 +5,29 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Tapar.Data.Migrations
 {
-    public partial class addUserAgenttable : Migration
+    public partial class addUserAgentAndSearchRequestTable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "SearchRequests",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SearchKey = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SearchCount = table.Column<int>(type: "int", nullable: false),
+                    SearchDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SearchRequests", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserAgents",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Referer = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     EnteranceDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     BrowserName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
@@ -28,6 +41,9 @@ namespace Tapar.Data.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "SearchRequests");
+
             migrationBuilder.DropTable(
                 name: "UserAgents");
         }

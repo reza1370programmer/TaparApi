@@ -11,6 +11,7 @@ namespace Tapar.Data.Entities
         public bool Status { get; set; } = false;
         public string? Other_Description { get; set; }
         public long PlaceId { get; set; }
+        public DateTime ReportDate { get; set; }
         public Place Place { get; set; }
         public long UserId { get; set; }
         public User User { get; set; }

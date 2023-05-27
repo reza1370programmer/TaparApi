@@ -12,8 +12,8 @@ using TaparApi.Data;
 namespace Tapar.Data.Migrations
 {
     [DbContext(typeof(TaparDbContext))]
-    [Migration("20230517102031_add-UserAgent-table")]
-    partial class addUserAgenttable
+    [Migration("20230527070357_add-ReportDate-to-PlaceReport-table")]
+    partial class addReportDatetoPlaceReporttable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -328,6 +328,9 @@ namespace Tapar.Data.Migrations
                     b.Property<long>("PlaceId")
                         .HasColumnType("bigint");
 
+                    b.Property<DateTime>("ReportDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("ReportOptionId")
                         .HasColumnType("int");
 
@@ -445,6 +448,27 @@ namespace Tapar.Data.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Tapar.Data.Entities.SearchRequest", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("SearchCount")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("SearchDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("SearchKey")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SearchRequests");
+                });
+
             modelBuilder.Entity("Tapar.Data.Entities.SuperAdmin", b =>
                 {
                     b.Property<int>("Id")
@@ -526,11 +550,9 @@ namespace Tapar.Data.Migrations
 
             modelBuilder.Entity("Tapar.Data.Entities.UserAgent", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("BrowserName")
                         .IsRequired()

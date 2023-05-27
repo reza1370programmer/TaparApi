@@ -1,8 +1,9 @@
 ﻿
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Tapar.Core.Common.Api;
+using Tapar.Core.Common.Dtos;
 using Tapar.Core.Contracts.Interfaces;
-using Tapar.Data.Entities;
 using Wangkanai.Detection.Models;
 using Wangkanai.Detection.Services;
 
@@ -59,6 +60,18 @@ namespace TaparApi.Controllers
             await Repository.AddAsync(user_agent, cancellationToken);
             return Ok();
 
+        }
+        [HttpGet("[action]/{PageIndex}")]
+        public async Task<IActionResult> GetUserAgentList(CancellationToken cancellationToken, int PageIndex = 1)
+        {
+            var UserAgents = await Repository.TableNoTracking.Select(u => new UserAgentDTO()
+            {
+                BrowserName = u.BrowserName,
+                DeviceType = u.DeviceType,
+                EnteranceDate = u.EnteranceDate,
+                Referer = u.Referer,
+            }).Skip((PageIndex - 1) * 10).Take(10).ToListAsync(cancellationToken);
+            return Ok(UserAgents);
         }
     }
 }

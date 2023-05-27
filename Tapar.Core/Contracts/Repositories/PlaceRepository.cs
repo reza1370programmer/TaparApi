@@ -577,18 +577,21 @@ namespace Tapar.Core.Contracts.Repositories
         #region SuperAdminPanel
         public async Task<List<FilteredPlacesForSuperAdmin>> FilterPlacesForSuperAdmin(SearchParametersForSuperAdmin dto, CancellationToken cancellationToken)
         {
-            var places = TableNoTracking.AsQueryable();
+            var places = TableNoTracking.Include(p => p.PlaceReport).AsQueryable();
             if (dto.StatusId > 0)
                 places = places.Where(p => p.StatusId == dto.StatusId);
             if (dto.CityId > 0)
                 places = places.Where(p => p.locationId == dto.CityId);
             if (dto.SearchKey != "null")
                 places = places.Where(p => p.tablo.Contains(dto.SearchKey));
-            return await places.Skip((dto.PageIndex-1)*10).Take(10).Select(p => new FilteredPlacesForSuperAdmin()
+            return await places.OrderByDescending(p=>p.Id).Skip((dto.PageIndex - 1) * 10).Take(10).Select(p => new FilteredPlacesForSuperAdmin()
             {
                 Id = p.Id,
                 StatusId = p.StatusId,
-                Tablo = p.tablo
+                Tablo = p.tablo,
+                CDate = p.cDate.Value.ToString("yyyy-MM-dd"),
+                UserId = p.userId,
+                ReportCount = p.PlaceReport.Count()
             }).ToListAsync(cancellationToken);
         }
 

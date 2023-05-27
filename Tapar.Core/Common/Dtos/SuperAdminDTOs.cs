@@ -16,6 +16,11 @@ namespace Tapar.Core.Common.Dtos
         public long Id { get; set; }
         public string Tablo { get; set; }
         public int StatusId { get; set; }
+        public string? CDate { get; set; }
+        public long UserId { get; set; }
+        public int ReportCount { get; set; }
+
+
     }
     public class ChangeStatusToRejectedForSuperAdminDto
     {
@@ -28,6 +33,7 @@ namespace Tapar.Core.Common.Dtos
         public int Id { get; set; }
         public long PlaceId { get; set; }
         public bool ReportStatus { get; set; }
+        public DateTime ReportDate { get; set; }
         public int ReportOptionId { get; set; }
         public string ReportOptionDesc { get; set; }
     }

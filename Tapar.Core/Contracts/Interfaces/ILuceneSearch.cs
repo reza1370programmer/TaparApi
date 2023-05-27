@@ -6,7 +6,7 @@ namespace Tapar.Core.Contracts.Interfaces
 {
     public interface ILuceneSearch
     {
-        public IEnumerable<LuceneDto> Search(SearchParams searchParams);
+        public LuceneSearchDto Search(SearchParams searchParams);
         public IEnumerable<LuceneDto> SearchForMobile(SearchParamsForMobile searchParams);
         public void CopyDataToLucene(List<Place> places);
         public void AddDocumentToLucene(Place place);

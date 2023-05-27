@@ -36,7 +36,7 @@ namespace TaparApi.Controllers
                     if (ReportCount + 1 >= 5)
                     {
                         var place = await PlaceRepository.GetByIdAsync(cancellationToken, dto.PlaceId);
-                        place.StatusId = 2;
+                        place.StatusId = 3;
                         place.RejectedDescription = "تعداد گزارشات کاربران بیشتر از 5 تا شده هست";
                         LuceneRepository.EditPlace(place);
                     }
@@ -50,7 +50,7 @@ namespace TaparApi.Controllers
                     var ReportCount = await Repository.TableNoTracking.CountAsync(p => p.PlaceId == dto.PlaceId && p.Status == false);
                     if (ReportCount + 1 >= 5)
                     {
-                        report.Place.StatusId = 2;
+                        report.Place.StatusId = 3;
                         report.Place.RejectedDescription = "تعداد گزارشات کاربران بیشتر از 5 تا شده هست";
                         LuceneRepository.EditPlace(report.Place);
                     }
@@ -76,7 +76,8 @@ namespace TaparApi.Controllers
                 Id = t.Id,
                 ReportOptionDesc = t.Report_Option.Title,
                 ReportOptionId = t.ReportOptionId,
-                ReportStatus = t.Status
+                ReportStatus = t.Status,
+                ReportDate=t.ReportDate,
             }).ToListAsync(cancellationToken);
             return Ok(ReportList);
         }
