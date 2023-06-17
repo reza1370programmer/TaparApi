@@ -8,6 +8,7 @@ namespace Tapar.Core.Contracts.Interfaces
     {
         public LuceneSearchDto Search(SearchParams searchParams);
         public IEnumerable<LuceneDto> SearchForMobile(SearchParamsForMobile searchParams);
+        public LuceneDto GetPlaceById(long id);
         public void CopyDataToLucene(List<Place> places);
         public void AddDocumentToLucene(Place place);
         public void EditPlace(Place place);

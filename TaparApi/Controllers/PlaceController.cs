@@ -98,7 +98,7 @@ namespace TaparApi.Controllers
             var ApprovedPlaces = await repository.TableNoTracking.CountAsync(p => p.StatusId == 1, cancellationToken);
             var AwaitiningPlaces = await repository.TableNoTracking.CountAsync(p => p.StatusId == 2, cancellationToken);
             var RejectedPlaces = await repository.TableNoTracking.CountAsync(p => p.StatusId == 3, cancellationToken);
-            return Ok(new {ApprovedPlaces,AwaitiningPlaces,RejectedPlaces});
+            return Ok(new { ApprovedPlaces, AwaitiningPlaces, RejectedPlaces });
         }
         #region UserPanelMethods
 
@@ -248,6 +248,15 @@ namespace TaparApi.Controllers
             }
         }
 
+        #endregion
+
+        #region SuperAdminMethods
+        [HttpGet("[action]/{UserId}")]
+        public async Task<IActionResult> PlaceListOfUserForSuperAdmin(long UserId, CancellationToken cancellationToken)
+        {
+            var PlaceList = await repository.GetPlaceListOfUser(UserId, cancellationToken);
+            return Ok(PlaceList);
+        }
         #endregion
 
         #endregion

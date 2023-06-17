@@ -30,6 +30,7 @@
         public int view_count { get; set; } = 0;
         public string? on_off { get; set; }
         public int locationId { get; set; }
+        public string locationName { get; set; }
         public int StatusId { get; set; }
         public int saturday { get; set; }
         public int sunday { get; set; }
@@ -43,7 +44,18 @@
     }
     public class LuceneSearchDto
     {
-        public IEnumerable<LuceneDto> SearchResult { get; set; }
+        public IEnumerable<SearchResult> SearchResult { get; set; }
         public int TotalResultCount { get; set; }
+    }
+    public class SearchResult
+    {
+        public long Id { get; set; }
+        public string tablo { get; set; }
+        public string? address { get; set; } = null;
+        public string? bussiness_pic1 { get; set; } = null;
+        public int like_count { get; set; } = 0;
+        public int view_count { get; set; } = 0;
+        public string locationName { get; set; }
+
     }
 }

@@ -35,6 +35,7 @@ namespace Tapar.Core.Contracts.Interfaces
         Task ChangeStatusToApproved(long id, CancellationToken cancellationToken);
         Task ChangeStatusToAwaitinig(long id, CancellationToken cancellationToken);
         Task ChangeStatusToRejected(ChangeStatusToRejectedForSuperAdminDto dto, CancellationToken cancellationToken);
+        Task<List<PlaceListOfUserSuperAdminDto>> GetPlaceListOfUser(long id, CancellationToken cancellationToken);
         #endregion
     }
 }

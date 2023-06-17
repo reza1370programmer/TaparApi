@@ -18,6 +18,7 @@ public class UserRepository : Repository<User>, IUserRepository
             Mobile = p.Mobile,
             Password = p.Password,
             FullName = p.FullName,
+            UserId = p.Id,
             PlaceCount = p.places.Count()
         }).ToListAsync(cancellationToken);
         return Users;

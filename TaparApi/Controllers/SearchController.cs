@@ -42,11 +42,16 @@ namespace TaparApi.Controllers
         //    Repository.CopyDataToElastic(documents);
         //    return Ok();
         //}
+        [HttpGet("[action]/{placeId}")]
+        public IActionResult GetPlaceById(long placeId)
+        {
+            return Ok(LuceneRepository.GetPlaceById(placeId));
+        }
         [HttpGet("[action]")]
         public IActionResult CopyDataToLucene()
         {
 
-            var places = placeRepository.TableNoTracking.Include(p => p.weekDay).ToList();
+            var places = placeRepository.TableNoTracking.Include(p=>p.location).Include(p => p.weekDay).ToList();
             LuceneRepository.CopyDataToLucene(places);
             return Ok();
         }

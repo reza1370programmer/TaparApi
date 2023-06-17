@@ -175,6 +175,7 @@ namespace Tapar.Core.Contracts.Repositories
             }
             place.cDate = DateTime.Now;
             await AddAsync(place, cancellationToken);
+            await LoadReferenceAsync(place, p => p.location, cancellationToken);
             Lucene.AddDocumentToLucene(place);
         }
         public async Task<List<Place>> SearchPlace(SearchParams searchParams, CancellationToken cancellationToken)
@@ -191,7 +192,7 @@ namespace Tapar.Core.Contracts.Repositories
                 query = query.Where(p => p.locationId.ToString() == searchParams.cityId.ToString());
             }
 
-            query = query.Skip((searchParams.pageIndex - 1) * 5).Take(5);
+            query = query.Skip((searchParams.pageIndex - 1) * 15).Take(15);
             return await query.ToListAsync(cancellationToken);
         }
         public async Task<int?> AddLikeForPlace(long idplaceId, CancellationToken cancellationToken)
@@ -584,14 +585,19 @@ namespace Tapar.Core.Contracts.Repositories
                 places = places.Where(p => p.locationId == dto.CityId);
             if (dto.SearchKey != "null")
                 places = places.Where(p => p.tablo.Contains(dto.SearchKey));
-            return await places.OrderByDescending(p=>p.Id).Skip((dto.PageIndex - 1) * 10).Take(10).Select(p => new FilteredPlacesForSuperAdmin()
+            if (dto.UnSolvedReports)
+            {
+                places = places.Include(p => p.PlaceReport).SelectMany(p => p.PlaceReport).Where(p => p.Status == false).Select(p => p.Place);
+            }
+            return await places.OrderByDescending(p => p.Id).Skip((dto.PageIndex - 1) * 10).Take(10).Select(p => new FilteredPlacesForSuperAdmin()
             {
                 Id = p.Id,
                 StatusId = p.StatusId,
                 Tablo = p.tablo,
                 CDate = p.cDate.Value.ToString("yyyy-MM-dd"),
                 UserId = p.userId,
-                ReportCount = p.PlaceReport.Count()
+                ReportCount = p.PlaceReport.Count(),
+                UnSolvedReportsCount = p.PlaceReport.Count(p => p.Status == false)
             }).ToListAsync(cancellationToken);
         }
 
@@ -620,6 +626,17 @@ namespace Tapar.Core.Contracts.Repositories
             place.RejectedDescription = null;
             await UpdateAsync(place, cancellationToken);
             Lucene.EditPlace(place);
+        }
+
+        public async Task<List<PlaceListOfUserSuperAdminDto>> GetPlaceListOfUser(long id, CancellationToken cancellationToken)
+        {
+            var PlaceList = await TableNoTracking.Where(p => p.userId == id).Select(p => new PlaceListOfUserSuperAdminDto()
+            {
+                tablo = p.tablo,
+                cdate = p.cDate.Value.ToString("yyyy-MM-dd"),
+                statusId = p.StatusId
+            }).ToListAsync(cancellationToken);
+            return PlaceList;
         }
         #endregion
     }

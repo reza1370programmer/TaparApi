@@ -10,6 +10,7 @@ namespace Tapar.Core.Common.Dtos
         public int StatusId { get; set; }
         public int CityId { get; set; }
         public int PageIndex { get; set; } = 1;
+        public bool UnSolvedReports { get; set; }
     }
     public class FilteredPlacesForSuperAdmin
     {
@@ -19,6 +20,7 @@ namespace Tapar.Core.Common.Dtos
         public string? CDate { get; set; }
         public long UserId { get; set; }
         public int ReportCount { get; set; }
+        public int UnSolvedReportsCount { get; set; }
 
 
     }

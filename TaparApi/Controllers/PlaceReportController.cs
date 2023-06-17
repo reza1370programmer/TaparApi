@@ -28,38 +28,40 @@ namespace TaparApi.Controllers
             try
             {
                 var userId = Convert.ToInt64(HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
-                var newReport = new Place_Report() { Other_Description = dto.Other_Description, PlaceId = dto.PlaceId, ReportOptionId = dto.ReportOptionId, UserId = userId };
-                var report = await Repository.Table.Include(r => r.Place).Include(r => r.Report_Option).SingleOrDefaultAsync(p => p.UserId == userId && p.PlaceId == dto.PlaceId && p.ReportOptionId == dto.ReportOptionId);
-                if (report is null)
+                foreach (var reportId in dto.ReportOptionIds)
                 {
-                    var ReportCount = await Repository.TableNoTracking.CountAsync(p => p.PlaceId == dto.PlaceId && p.Status == false);
-                    if (ReportCount + 1 >= 5)
+                    var newReport = new Place_Report() { Other_Description = dto.Other_Description, PlaceId = dto.PlaceId, ReportOptionId = reportId, UserId = userId };
+                    var report = await Repository.Table.Include(r => r.Place).Include(r => r.Report_Option).SingleOrDefaultAsync(p => p.UserId == userId && p.PlaceId == dto.PlaceId && p.ReportOptionId == reportId);
+                    if (report is null)
                     {
-                        var place = await PlaceRepository.GetByIdAsync(cancellationToken, dto.PlaceId);
-                        place.StatusId = 3;
-                        place.RejectedDescription = "تعداد گزارشات کاربران بیشتر از 5 تا شده هست";
-                        LuceneRepository.EditPlace(place);
+                        var ReportCount = await Repository.TableNoTracking.CountAsync(p => p.PlaceId == dto.PlaceId && p.Status == false);
+                        if (ReportCount + 1 >= 5)
+                        {
+                            var place = await PlaceRepository.GetByIdAsync(cancellationToken, dto.PlaceId);
+                            place.StatusId = 3;
+                            place.RejectedDescription = "تعداد گزارشات کاربران بیشتر از 5 تا شده هست";
+                            LuceneRepository.EditPlace(place);
+                        }
+                        await Repository.AddAsync(newReport, cancellationToken);
                     }
-                    await Repository.AddAsync(newReport, cancellationToken);
-                    return Ok();
-                }
-                else if (report is not null && report.Status is false)
-                    return Conflict();
-                else if (report is not null && report.Status is true)
-                {
-                    var ReportCount = await Repository.TableNoTracking.CountAsync(p => p.PlaceId == dto.PlaceId && p.Status == false);
-                    if (ReportCount + 1 >= 5)
+                    else if (report is not null && report.Status is false)
+                        continue;
+                    else if (report is not null && report.Status is true)
                     {
-                        report.Place.StatusId = 3;
-                        report.Place.RejectedDescription = "تعداد گزارشات کاربران بیشتر از 5 تا شده هست";
-                        LuceneRepository.EditPlace(report.Place);
+                        var ReportCount = await Repository.TableNoTracking.CountAsync(p => p.PlaceId == dto.PlaceId && p.Status == false);
+                        if (ReportCount + 1 >= 5)
+                        {
+                            report.Place.StatusId = 3;
+                            report.Place.RejectedDescription = "تعداد گزارشات کاربران بیشتر از 5 تا شده هست";
+                            LuceneRepository.EditPlace(report.Place);
+                        }
+                        report.Status = false;
+                        await Repository.UpdateAsync(report, cancellationToken);
                     }
-                    report.Status = false;
-                    await Repository.UpdateAsync(report, cancellationToken);
-                    return Ok();
+                    else
+                        continue;
                 }
-                else
-                    return Ok();
+                return Ok();
             }
             catch (Exception ex)
             {
@@ -77,7 +79,7 @@ namespace TaparApi.Controllers
                 ReportOptionDesc = t.Report_Option.Title,
                 ReportOptionId = t.ReportOptionId,
                 ReportStatus = t.Status,
-                ReportDate=t.ReportDate,
+                ReportDate = t.ReportDate,
             }).ToListAsync(cancellationToken);
             return Ok(ReportList);
         }

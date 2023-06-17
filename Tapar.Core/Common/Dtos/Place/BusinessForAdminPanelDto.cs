@@ -8,4 +8,10 @@ namespace Tapar.Core.Common.Dtos.Place
         public string cdate { get; set; }
         public int statusId { get; set; }
     }
+    public class PlaceListOfUserSuperAdminDto
+    {
+        public string tablo { get; set; }
+        public string cdate { get; set; }
+        public int statusId { get; set; }
+    }
 }

@@ -2,11 +2,9 @@
 using Lucene.Net.Analysis.Util;
 using Lucene.Net.Documents;
 using Lucene.Net.Index;
-using Lucene.Net.Index.Extensions;
 using Lucene.Net.Search;
 using Lucene.Net.Store;
 using Lucene.Net.Util;
-using SixLabors.ImageSharp.Processing;
 using Tapar.Core.Common.Dtos;
 using Tapar.Core.Common.Dtos.LuceneDto;
 using Tapar.Core.Contracts.Interfaces;
@@ -61,6 +59,7 @@ namespace Tapar.Core.Contracts.Repositories
                     new StringField("view_count",place.view_count.ToString() ?? "0",Field.Store.YES),
                     new StringField("on_off",place.on_off==true?"true":"false",Field.Store.YES),
                     new StringField("locationId",place.locationId.ToString(),Field.Store.YES),
+                    new StringField("locationName",place.location.name.ToString(),Field.Store.YES),
                     new StringField("statusId",place.StatusId.ToString(),Field.Store.YES),
                     new StringField("saturday",place.weekDay is not null?place.weekDay.saturday.ToString():"0",Field.Store.YES),
                     new StringField("sunday",place.weekDay is not null?place.weekDay.sunday.ToString() : "0",Field.Store.YES),
@@ -113,6 +112,7 @@ namespace Tapar.Core.Contracts.Repositories
                     new StringField("view_count",place.view_count.ToString() ?? "0",Field.Store.YES),
                     new StringField("on_off",place.on_off==true?"true":"false",Field.Store.YES),
                     new StringField("locationId",place.locationId.ToString(),Field.Store.YES),
+                    new StringField("locationName",place.location.name.ToString(),Field.Store.YES),
                     new StringField("statusId",place.StatusId.ToString(),Field.Store.YES),
                     new StringField("saturday",place.weekDay is not null?place.weekDay.saturday.ToString():"0",Field.Store.YES),
                     new StringField("sunday",place.weekDay is not null?place.weekDay.sunday.ToString() : "0",Field.Store.YES),
@@ -194,6 +194,7 @@ namespace Tapar.Core.Contracts.Repositories
                     new StringField("view_count",place.view_count.ToString() ?? "0",Field.Store.YES),
                     new StringField("on_off",place.on_off==true?"true":"false",Field.Store.YES),
                     new StringField("locationId",place.locationId.ToString(),Field.Store.YES),
+                    new StringField("locationName",place.location.name.ToString(),Field.Store.YES),
                     new StringField("statusId",place.StatusId.ToString(),Field.Store.YES),
                     new StringField("saturday",place.weekDay is not null?place.weekDay.saturday.ToString():"0",Field.Store.YES),
                     new StringField("sunday",place.weekDay is not null?place.weekDay.sunday.ToString() : "0",Field.Store.YES),
@@ -237,7 +238,7 @@ namespace Tapar.Core.Contracts.Repositories
                     query.Add(new WildcardQuery(new Term("tablo", $"{'*' + part + '*'}")), Occur.SHOULD);
                     query.Add(new WildcardQuery(new Term("service_description", $"{'*' + part + '*'}")), Occur.SHOULD);
                 }
-                
+
             }
             if (searchParams.cityId > 0)
             {
@@ -252,52 +253,21 @@ namespace Tapar.Core.Contracts.Repositories
             query3.Add(query, Occur.MUST);
             query3.Add(new TermQuery(new Term("statusId", "1")), Occur.MUST);
             var TotalResult = indexSearcher.Search(query3, int.MaxValue, Sort.RELEVANCE);
-            var hits =TotalResult.ScoreDocs.Skip((searchParams.pageIndex - 1) * 5).Take(5);
+            var hits = TotalResult.ScoreDocs.Skip((searchParams.pageIndex - 1) * 20).Take(20);
             var TotalHits = TotalResult.TotalHits;
-            var places = new List<LuceneDto>();
+            var places = new List<SearchResult>();
             foreach (var hit in hits)
             {
                 var document = indexSearcher.Doc(hit.Doc);
-                places.Add(new LuceneDto
+                places.Add(new SearchResult
                 {
                     tablo = document.Get("tablo"),
-                    service_description = document.Get("service_description"),
                     Id = Int64.Parse(document.Get("Id")),
                     address = document.Get("address"),
                     bussiness_pic1 = document.Get("bussiness_pic1"),
-                    bussiness_pic2 = document.Get("bussiness_pic2"),
-                    bussiness_pic3 = document.Get("bussiness_pic3"),
-                    email = document.Get("email"),
-                    fax = document.Get("fax"),
-                    instagram = document.Get("instagram"),
-                    telegram = document.Get("telegram"),
-                    whatsapp = document.Get("whatsapp"),
-                    website = document.Get("website"),
-                    mob1 = document.Get("mob1"),
-                    mob2 = document.Get("mob2"),
-                    phone1 = document.Get("phone1"),
-                    phone2 = document.Get("phone2"),
-                    phone3 = document.Get("phone3"),
-                    personal_pic = document.Get("personal_pic"),
-                    visitCart_front = document.Get("visitCart_front"),
-                    visitCart_back = document.Get("visitCart_back"),
-                    manager = document.Get("manager"),
                     like_count = int.Parse(document.Get("like_count")),
                     view_count = int.Parse(document.Get("view_count")),
-                    locationId = int.Parse(document.Get("locationId")),
-                    userId = Int64.Parse(document.Get("userId")),
-                    StatusId = int.Parse(document.Get("statusId")),
-                    on_off = document.Get("on_off"),
-                    special_message = document.Get("special_message"),
-                    taparcode = document.Get("taparcode"),
-                    workTimeId = int.Parse(document.Get("workTimeId")),
-                    saturday = int.Parse(document.Get("saturday")),
-                    sunday = int.Parse(document.Get("sunday")),
-                    monday = int.Parse(document.Get("monday")),
-                    tuesday = int.Parse(document.Get("tuesday")),
-                    wednesday = int.Parse(document.Get("wednesday")),
-                    thursday = int.Parse(document.Get("thursday")),
-                    friday = int.Parse(document.Get("friday"))
+                    locationName = document.Get("locationName"),
 
                 });
             }
@@ -369,6 +339,7 @@ namespace Tapar.Core.Contracts.Repositories
                     like_count = int.Parse(document.Get("like_count")),
                     view_count = int.Parse(document.Get("view_count")),
                     locationId = int.Parse(document.Get("locationId")),
+                    locationName = document.Get("locationName"),
                     userId = Int64.Parse(document.Get("userId")),
                     StatusId = int.Parse(document.Get("statusId")),
                     on_off = document.Get("on_off"),
@@ -403,6 +374,60 @@ namespace Tapar.Core.Contracts.Repositories
                 _directory.Dispose();
                 _analyzer.Dispose();
             }
+        }
+
+        public LuceneDto GetPlaceById(long id)
+        {
+            var _directory = FSDirectory.Open(new DirectoryInfo(Path.Combine(System.IO.Directory.GetCurrentDirectory(), "wwwroot", "LuceneData")));
+            var directoryReader = DirectoryReader.Open(_directory);
+            var indexSearcher = new IndexSearcher(directoryReader);
+            var query = new TermQuery(new Term("Id", id.ToString()));
+            var hits = indexSearcher.Search(query, 1).ScoreDocs;
+            var document = indexSearcher.Doc(hits[0].Doc);
+            _directory.Dispose();
+            directoryReader.Dispose();
+            return new LuceneDto()
+            {
+                tablo = document.Get("tablo"),
+                service_description = document.Get("service_description"),
+                Id = Int64.Parse(document.Get("Id")),
+                address = document.Get("address"),
+                bussiness_pic1 = document.Get("bussiness_pic1"),
+                bussiness_pic2 = document.Get("bussiness_pic2"),
+                bussiness_pic3 = document.Get("bussiness_pic3"),
+                email = document.Get("email"),
+                fax = document.Get("fax"),
+                instagram = document.Get("instagram"),
+                telegram = document.Get("telegram"),
+                whatsapp = document.Get("whatsapp"),
+                website = document.Get("website"),
+                mob1 = document.Get("mob1"),
+                mob2 = document.Get("mob2"),
+                phone1 = document.Get("phone1"),
+                phone2 = document.Get("phone2"),
+                phone3 = document.Get("phone3"),
+                personal_pic = document.Get("personal_pic"),
+                visitCart_front = document.Get("visitCart_front"),
+                visitCart_back = document.Get("visitCart_back"),
+                manager = document.Get("manager"),
+                like_count = int.Parse(document.Get("like_count")),
+                view_count = int.Parse(document.Get("view_count")),
+                locationId = int.Parse(document.Get("locationId")),
+                locationName = document.Get("locationName"),
+                userId = Int64.Parse(document.Get("userId")),
+                StatusId = int.Parse(document.Get("statusId")),
+                on_off = document.Get("on_off"),
+                special_message = document.Get("special_message"),
+                taparcode = document.Get("taparcode"),
+                workTimeId = int.Parse(document.Get("workTimeId")),
+                saturday = int.Parse(document.Get("saturday")),
+                sunday = int.Parse(document.Get("sunday")),
+                monday = int.Parse(document.Get("monday")),
+                tuesday = int.Parse(document.Get("tuesday")),
+                wednesday = int.Parse(document.Get("wednesday")),
+                thursday = int.Parse(document.Get("thursday")),
+                friday = int.Parse(document.Get("friday"))
+            };
         }
     }
 }
