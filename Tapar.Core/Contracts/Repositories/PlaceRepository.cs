@@ -217,6 +217,7 @@ namespace Tapar.Core.Contracts.Repositories
         public async Task AddView(long placeId, CancellationToken cancellationToken)
         {
             var place = await GetByIdAsync(cancellationToken, placeId);
+            await LoadReferenceAsync(place, p => p.location, cancellationToken);
             place.view_count += 1;
             await UpdateAsync(place, cancellationToken);
             Lucene.EditPlace(place);
@@ -260,6 +261,7 @@ namespace Tapar.Core.Contracts.Repositories
                 place.bussiness_pic3 = await imageUploader.UpdateImage(dto.businessPic3, place?.bussiness_pic3);
             }
             await UpdateAsync(place, cancellationToken);
+            await LoadReferenceAsync(place, p => p.location, cancellationToken);
             Lucene.EditPlace(place);
         }
 
@@ -269,6 +271,7 @@ namespace Tapar.Core.Contracts.Repositories
             {
                 place.personal_pic = await imageUploader.UpdateImage(dto.modirpic, place?.personal_pic);
                 await UpdateAsync(place, cancellationToken);
+                await LoadReferenceAsync(place, p => p.location, cancellationToken);
                 Lucene.EditPlace(place);
             }
         }
@@ -285,6 +288,7 @@ namespace Tapar.Core.Contracts.Repositories
             }
 
             await UpdateAsync(place, cancellationToken);
+            await LoadReferenceAsync(place, p => p.location, cancellationToken);
             Lucene.EditPlace(place);
         }
 
@@ -462,6 +466,7 @@ namespace Tapar.Core.Contracts.Repositories
 
             }
             await UpdateAsync(place, cancellationToken);
+            await LoadReferenceAsync(place, p => p.location, cancellationToken);
             Lucene.EditPlace(place);
         }
 
@@ -472,6 +477,7 @@ namespace Tapar.Core.Contracts.Repositories
             place.manager = dto.manager;
             place.service_description = dto.service_description;
             await UpdateAsync(place, cancellationToken);
+            await LoadReferenceAsync(place, p => p.location, cancellationToken);
             Lucene.EditPlace(place);
         }
 
@@ -552,6 +558,7 @@ namespace Tapar.Core.Contracts.Repositories
             place.address = dto.restAddress;
             place.locationId = dto.locationId;
             await UpdateAsync(place, cancellationToken);
+            await LoadReferenceAsync(place, p => p.location, cancellationToken);
             Lucene.EditPlace(place);
         }
 
@@ -570,6 +577,7 @@ namespace Tapar.Core.Contracts.Repositories
             place.instagram = dto.instagram;
             place.whatsapp = dto.whatsapp;
             await UpdateAsync(place, cancellationToken);
+            await LoadReferenceAsync(place, p => p.location, cancellationToken);
             Lucene.EditPlace(place);
         }
 
