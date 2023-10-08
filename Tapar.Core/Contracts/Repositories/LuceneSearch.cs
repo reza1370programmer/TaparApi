@@ -233,26 +233,27 @@ namespace Tapar.Core.Contracts.Repositories
                 var parts = searchParams.searchKey?.Split(' ');
                 foreach (var part in parts)
                 {
-                    query.Add(new FuzzyQuery(new Term("tablo", part), 1), Occur.SHOULD);
-                    query.Add(new FuzzyQuery(new Term("service_description", part), 1), Occur.SHOULD);
+                    var tabloFuzzyQuery = new FuzzyQuery(new Term("tablo", part), 1);
+                    tabloFuzzyQuery.Boost = 10;
+                    query.Add(tabloFuzzyQuery, Occur.SHOULD);
                     query.Add(new WildcardQuery(new Term("tablo", $"{'*' + part + '*'}")), Occur.SHOULD);
+                    var serviceFuzzyQuery = new FuzzyQuery(new Term("service_description", part), 1);
+                    serviceFuzzyQuery.Boost = 1;
+                    query.Add(serviceFuzzyQuery, Occur.SHOULD);
                     query.Add(new WildcardQuery(new Term("service_description", $"{'*' + part + '*'}")), Occur.SHOULD);
                 }
 
             }
-            if (searchParams.cityId > 0)
-            {
+            //if (searchParams.cityId > 0)
+            //{
 
-                Term term = new Term("locationId", searchParams.cityId.ToString());
-                query2.Add(new TermQuery(term), Occur.MUST);
-                query3.Add(query2, Occur.MUST);
-            }
-            else
-                query3.Add(query2, Occur.SHOULD);
-
+            //    Term term = new Term("locationId", searchParams.cityId.ToString());
+            //    query2.Add(new TermQuery(term), Occur.MUST);
+            //    query3.Add(query2, Occur.MUST);
+            //}
             query3.Add(query, Occur.MUST);
-            query3.Add(new TermQuery(new Term("statusId", "1")), Occur.MUST);
-            var TotalResult = indexSearcher.Search(query3, int.MaxValue, Sort.RELEVANCE);
+            //query3.Add(new TermQuery(new Term("statusId", "1")), Occur.MUST);
+            var TotalResult = indexSearcher.Search(query, int.MaxValue, Sort.RELEVANCE);
             var hits = TotalResult.ScoreDocs.Skip((searchParams.pageIndex - 1) * 20).Take(20);
             var TotalHits = TotalResult.TotalHits;
             var places = new List<SearchResult>();
